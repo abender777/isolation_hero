@@ -1,4 +1,4 @@
-package com.example.isolation_hero
+package com.isolationhero
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

@@ -1,4 +1,4 @@
-# isolation_hero
+# isolation hero
 
 A new Flutter project.
 
