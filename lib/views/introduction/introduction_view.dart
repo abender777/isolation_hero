@@ -1,5 +1,7 @@
 library introduction_view;
 
+import 'package:introduction_screen/introduction_screen.dart';
+import 'package:isolationhero/views/home/home_view.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:flutter/material.dart';

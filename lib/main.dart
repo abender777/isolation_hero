@@ -1,9 +1,10 @@
+import 'package:isolationhero/views/introduction/introduction_view.dart';
+
 import 'core/locator.dart';
 import 'core/providers.dart';
 import 'core/services/navigator_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'views/home/home_view.dart';
 
 void main() async {
   await LocatorInjector.setupLocator();
@@ -17,7 +18,7 @@ class MainApplication extends StatelessWidget {
       providers: ProviderInjector.providers,
       child: MaterialApp(
         navigatorKey: locator<NavigatorService>().navigatorKey,
-        home: HomeView(),
+        home: IntroductionView(),
       ),
     );
   }
