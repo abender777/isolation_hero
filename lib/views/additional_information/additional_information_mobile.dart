@@ -8,7 +8,71 @@ class _AdditionalInformationMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text('AdditionalInformationMobile')),
-    );
+        body: Container(
+            padding: EdgeInsets.all(5),
+            child: SingleChildScrollView(
+                child: Column(children: <Widget>[
+              Container(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text("Personal Information")),
+              Container(
+                  padding: EdgeInsets.all(5.0),
+                  child: TextField(
+                    autocorrect: true,
+                    decoration: InputDecoration(
+                      hintText: 'Date Of Birth',
+                      prefixIcon: Icon(Icons.person),
+                      hintStyle: TextStyle(
+                          color: Theme.of(context).hintColor,
+                          fontFamily: 'Monte'),
+                      filled: true,
+                      fillColor: Colors.white70,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                        borderSide: BorderSide(color: Colors.blue, width: 1),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                        borderSide: BorderSide(color: Colors.blue, width: 1),
+                      ),
+                    ),
+                  )),
+              Container(
+                  padding: EdgeInsets.all(5.0),
+                  child: TextField(
+                    autocorrect: true,
+                    decoration: InputDecoration(
+                      hintText: 'Gender',
+                      prefixIcon: Icon(Icons.email),
+                      hintStyle: TextStyle(
+                          color: Theme.of(context).hintColor,
+                          fontFamily: 'Monte'),
+                      filled: true,
+                      fillColor: Colors.white70,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                        borderSide: BorderSide(color: Colors.blue, width: 1),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                        borderSide: BorderSide(color: Colors.blue, width: 1),
+                      ),
+                    ),
+                  )),
+              ButtonTheme(
+                minWidth: MediaQuery.of(context).size.width,
+                height: 70.0,
+                child: RaisedButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(10.0),
+                      side: BorderSide(color: Colors.blue)),
+                  onPressed: () {},
+                  child: Text('CONTINUE',
+                      style: Theme.of(context).textTheme.button),
+                ),
+              )
+            ]))));
   }
 }

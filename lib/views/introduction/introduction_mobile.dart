@@ -14,7 +14,7 @@ class _IntroductionPageState extends State<_IntroductionMobile> {
 
   void _onIntroEnd(context) {
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => HomeView()),
+      MaterialPageRoute(builder: (_) => SignUpView()),
     );
   }
 
