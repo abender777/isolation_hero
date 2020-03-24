@@ -1,3 +1,4 @@
+import 'package:isolationhero/theme/app_theme.dart';
 import 'package:isolationhero/views/introduction/introduction_view.dart';
 
 import 'core/locator.dart';
@@ -17,6 +18,8 @@ class MainApplication extends StatelessWidget {
     return MultiProvider(
       providers: ProviderInjector.providers,
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: lightTheme,
         navigatorKey: locator<NavigatorService>().navigatorKey,
         home: IntroductionView(),
       ),
