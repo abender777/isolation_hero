@@ -12,26 +12,14 @@ class _HomeMobile extends StatefulWidget {
 class _HomePageState extends State<_HomeMobile>
     with SingleTickerProviderStateMixin {
   final int delayedAmount = 500;
-  double _scale;
-  AnimationController _controller;
+
   @override
   void initState() {
-    _controller = AnimationController(
-      vsync: this,
-      duration: Duration(
-        milliseconds: 200,
-      ),
-      lowerBound: 0.0,
-      upperBound: 0.1,
-    )..addListener(() {
-        setState(() {});
-      });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    _scale = 1 - _controller.value;
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
