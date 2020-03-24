@@ -28,7 +28,8 @@ class _LocationSetupMobileState extends State<_LocationSetupMobile> {
             body: new Stack(children: <Widget>[
           new FlutterMap(
             options: new MapOptions(
-              center: new LatLng(18.5764, 73.9940),
+              center: new LatLng(this.viewModel.position.latitude,
+                  this.viewModel.position.longitude),
               zoom: 13.0,
             ),
             layers: [
@@ -41,9 +42,10 @@ class _LocationSetupMobileState extends State<_LocationSetupMobile> {
                   new Marker(
                     width: 80.0,
                     height: 80.0,
-                    point: new LatLng(18.5764, 73.9940),
+                    point: new LatLng(this.viewModel.position.latitude,
+                        this.viewModel.position.longitude),
                     builder: (ctx) => new Container(
-                      child: new FlutterLogo(),
+                      child: Icon(Icons.pin_drop),
                     ),
                   ),
                 ],
@@ -51,32 +53,33 @@ class _LocationSetupMobileState extends State<_LocationSetupMobile> {
             ],
           ),
           Align(
-            alignment: FractionalOffset.bottomCenter,
-            child: ButtonTheme(
-            minWidth: MediaQuery.of(context).size.width,
-            height: 70.0,
-            child: RaisedButton(
-              color: Colors.blue,
-              textColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(10.0),
-                  side: BorderSide(color: Colors.blue)),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MyLeaderboardView(),
-                  ),
-                );
-              },
-              child:
-                  Text('CONTINUE', style: Theme.of(context).textTheme.button),
-            ),
-          ))
+              alignment: FractionalOffset.bottomCenter,
+              child: ButtonTheme(
+                minWidth: MediaQuery.of(context).size.width,
+                height: 70.0,
+                child: RaisedButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(10.0),
+                      side: BorderSide(color: Colors.blue)),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MyLeaderboardView(),
+                      ),
+                    );
+                  },
+                  child: Text('CONTINUE',
+                      style: Theme.of(context).textTheme.button),
+                ),
+              ))
         ]));
       });
     } else {
-      mapWidget = Scaffold(body: CircularProgressIndicator());
+      mapWidget = Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     return mapWidget;
   }

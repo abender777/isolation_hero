@@ -13,6 +13,7 @@ class _IntroductionPageState extends State<_IntroductionMobile> {
   final introKey = GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(context) {
+    Navigator.pop(context);
     Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => SignUpView()),
     );
