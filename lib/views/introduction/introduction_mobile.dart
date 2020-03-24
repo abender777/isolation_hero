@@ -49,7 +49,7 @@ class _IntroductionPageState extends State<_IntroductionMobile> {
         PageViewModel(
           title: "Maintain social distancing",
           body:
-              "Maintain at least 1 metre (3 feet) distance between yourself and anyone who is coughing or sneezing",
+              "Maintain at least 2 metres (3 feet) distance between yourself and anyone else",
           image: _buildImage('img2'),
           decoration: pageDecoration,
         ),
