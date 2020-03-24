@@ -13,8 +13,13 @@ class _AdditionalInformationMobile extends StatelessWidget {
             child: SingleChildScrollView(
                 child: Column(children: <Widget>[
               Container(
+                  margin: EdgeInsets.only(top: 30),
                   padding: EdgeInsets.all(5.0),
-                  child: Text("Personal Information")),
+                  child: Row(children: <Widget>[
+                    IconButton(icon: Icon(Icons.arrow_back), onPressed: null),
+                    Text("Personal Information",
+                        style: Theme.of(context).textTheme.headline),
+                  ])),
               Container(
                   padding: EdgeInsets.all(5.0),
                   child: TextField(
@@ -68,7 +73,14 @@ class _AdditionalInformationMobile extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(10.0),
                       side: BorderSide(color: Colors.blue)),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LocationSetupView(),
+                      ),
+                    );
+                  },
                   child: Text('CONTINUE',
                       style: Theme.of(context).textTheme.button),
                 ),

@@ -1,5 +1,6 @@
 library additional_information_view;
 
+import 'package:isolationhero/views/location_setup/location_setup_view.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:flutter/material.dart';
