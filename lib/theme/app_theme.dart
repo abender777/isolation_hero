@@ -17,9 +17,9 @@ final darkTheme = ThemeData(
 
 final lightTheme = ThemeData(
     primarySwatch: Colors.grey,
-    primaryColor: Colors.white,
+    primaryColor: Color.fromRGBO(42, 52, 71, 1),  
     brightness: Brightness.light,
-    backgroundColor: const Color(0xFFE5E5E5),
+    backgroundColor: Color.fromRGBO(42, 52, 71, 1),
     accentColor: Colors.black,
     accentIconTheme: IconThemeData(color: Colors.white),
     dividerColor: Colors.white54,

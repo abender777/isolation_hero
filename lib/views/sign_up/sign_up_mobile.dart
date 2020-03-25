@@ -9,6 +9,7 @@ class _SignUpMobile extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
+        theme: lightTheme,
         home: Scaffold(
           body: Container(
               padding: EdgeInsets.all(5),
@@ -193,7 +194,14 @@ class _SignUpMobile extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(10.0),
                           side: BorderSide(color: Colors.blue)),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignInView(),
+                          ),
+                        );
+                      },
                       child: Text('LOGIN',
                           style: Theme.of(context).textTheme.button),
                     ),

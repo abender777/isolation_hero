@@ -16,6 +16,8 @@ class _MyLeaderboardState extends State<_MyLeaderboardMobile> {
 
   _MyLeaderboardState(this.viewModel);
 
+  Widget body;
+
   @override
   void initState() {
     super.initState();
@@ -25,21 +27,14 @@ class _MyLeaderboardState extends State<_MyLeaderboardMobile> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Container(
+    setState(() {
+    body = Container(
             padding: EdgeInsets.all(5),
             child: SingleChildScrollView(
                 child: Column(children: <Widget>[
               Container(
-                  margin: EdgeInsets.only(top: 30),
                   padding: EdgeInsets.all(5.0),
                   child: Column(children: <Widget>[
-                    Row(children: <Widget>[
-                      IconButton(icon: Icon(Icons.arrow_back), onPressed: null),
-                      Text("My Leaderboard",
-                          style: Theme.of(context).textTheme.headline)
-                    ]),
-                    SizedBox(height: 20),
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 20.0),
                       height: 150.0,
@@ -57,10 +52,10 @@ class _MyLeaderboardState extends State<_MyLeaderboardMobile> {
                       ),
                     ),
                   ])),
-                  
-            ]))));
+            ]))); 
+    });
+    return MasterWidget(showDrawer: true, body: body, title: "My Stats");
   }
-
 
   List<Widget> getStatisticsListView(BuildContext context) {
     List<Widget> result = new List<Widget>();
@@ -71,7 +66,7 @@ class _MyLeaderboardState extends State<_MyLeaderboardMobile> {
         result.add(Container(
             width: 160.0,
             decoration: BoxDecoration(
-                color: Color.fromRGBO(99, 168, 201, 1),
+                color: Color.fromRGBO(44, 74, 104, 1),
                 borderRadius: BorderRadius.circular(8)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -79,7 +74,7 @@ class _MyLeaderboardState extends State<_MyLeaderboardMobile> {
               children: <Widget>[
                 Text(this.viewModel.learderbordStats[count].count,
                     style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.amberAccent,
                         fontFamily: 'Monte',
                         fontSize: 50)),
                 Text(this.viewModel.learderbordStats[count].name,
@@ -101,9 +96,9 @@ class _MyLeaderboardState extends State<_MyLeaderboardMobile> {
           count++) {
         result.add(Container(
             width: 160.0,
-            padding: EdgeInsets.only(left:10),
+            padding: EdgeInsets.only(left: 10),
             decoration: BoxDecoration(
-                color: Color.fromRGBO(99, 168, 201, 1),
+                color: Color.fromRGBO(44, 74, 104, 1),
                 borderRadius: BorderRadius.circular(8)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,14 +111,27 @@ class _MyLeaderboardState extends State<_MyLeaderboardMobile> {
                         fontSize: 25)),
                 Text(this.viewModel.learderbordDailyStats[count].date,
                     style: TextStyle(
-                        color: Colors.white, fontFamily: 'Monte', fontSize: 45)),
+                        color: Colors.amberAccent,
+                        fontFamily: 'Monte',
+                        fontSize: 45)),
                 Text(this.viewModel.learderbordDailyStats[count].month,
                     style: TextStyle(
-                        color: Colors.white, fontFamily: 'Monte', fontSize: 25)),
-                Text(this.viewModel.learderbordDailyStats[count].percentage + "%",
+                        color: Colors.white,
+                        fontFamily: 'Monte',
+                        fontSize: 25)),
+                Text(
+                    this.viewModel.learderbordDailyStats[count].percentage +
+                        "%",
                     style: TextStyle(
-                        color: Colors.white, fontFamily: 'Monte', fontSize: 30)),
-                Text(this.viewModel.learderbordDailyStats[count].status.toUpperCase(),
+                        color: Colors.white,
+                        fontFamily: 'Monte',
+                        fontSize: 30)),
+                Text(
+                    this
+                        .viewModel
+                        .learderbordDailyStats[count]
+                        .status
+                        .toUpperCase(),
                     style: TextStyle(
                         color: Colors.white, fontFamily: 'Monte', fontSize: 30))
               ],
@@ -133,5 +141,4 @@ class _MyLeaderboardState extends State<_MyLeaderboardMobile> {
     }
     return result;
   }
-
 }
