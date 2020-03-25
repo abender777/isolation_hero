@@ -57,14 +57,15 @@ class _SignUpMobileState extends State<_SignUpMobile> {
                           enabledBorder: OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(8.0)),
-                            borderSide:
-                                BorderSide(color: Theme.of(context).backgroundColor, width: 1),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).backgroundColor,
+                                width: 1),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(8.0)),
-                            borderSide:
-                                BorderSide(color: Theme.of(context).buttonColor, width: 1),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).buttonColor, width: 1),
                           ),
                         ),
                       )),
@@ -83,14 +84,15 @@ class _SignUpMobileState extends State<_SignUpMobile> {
                           enabledBorder: OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(8.0)),
-                            borderSide:
-                                BorderSide(color: Theme.of(context).backgroundColor, width: 1),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).backgroundColor,
+                                width: 1),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(8.0)),
-                            borderSide:
-                                BorderSide(color: Theme.of(context).buttonColor, width: 1),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).buttonColor, width: 1),
                           ),
                         ),
                       )),
@@ -109,19 +111,20 @@ class _SignUpMobileState extends State<_SignUpMobile> {
                           enabledBorder: OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(8.0)),
-                            borderSide:
-                                BorderSide(color: Theme.of(context).backgroundColor, width: 1),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).backgroundColor,
+                                width: 1),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(8.0)),
-                            borderSide:
-                                BorderSide(color: Theme.of(context).buttonColor, width: 1),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).buttonColor, width: 1),
                           ),
                         ),
                       )),
-                ButtonTheme(
-                  minWidth: MediaQuery.of(context).size.width,
+                  ButtonTheme(
+                    minWidth: MediaQuery.of(context).size.width,
                     height: 70.0,
                     buttonColor: Theme.of(context).buttonColor,
                     child: RaisedButton(
@@ -185,25 +188,25 @@ class _SignUpMobileState extends State<_SignUpMobile> {
                 ),
                 Text(
                   "Already have an account?",
-                  style: Theme.of(context).textTheme.body2,
+                  style: TextStyle(color: Colors.white),
                 ),
                 SizedBox(height: 10),
                 ButtonTheme(
-                  minWidth: MediaQuery.of(context).size.width,
+                    minWidth: MediaQuery.of(context).size.width,
                     height: 70.0,
                     buttonColor: Theme.of(context).buttonColor,
-                child: RaisedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SignInView(),
-                        ),
-                      );
-                    },
-                    child: Text('LOGIN',
-                        style: Theme.of(context).textTheme.button),
-                  )),
+                    child: RaisedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignInView(),
+                          ),
+                        );
+                      },
+                      child: Text('LOGIN',
+                          style: Theme.of(context).textTheme.button),
+                    )),
               ],
             ),
           ));

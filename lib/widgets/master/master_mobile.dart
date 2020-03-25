@@ -27,7 +27,7 @@ class _MasterMobile extends StatelessWidget {
           centerTitle: true,
         ),
         body: body,
-        drawer: Drawer(),
+        drawer: DrawerWidget(),
       );
     } else {
       return Scaffold(

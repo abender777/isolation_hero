@@ -28,10 +28,7 @@ class _MyLeaderboardState extends State<_MyLeaderboardMobile> {
   @override
   Widget build(BuildContext context) {
     setState(() {
-    body = Container(
-            padding: EdgeInsets.all(5),
-            child: SingleChildScrollView(
-                child: Column(children: <Widget>[
+    body = Column(children: <Widget>[
               Container(
                   padding: EdgeInsets.all(5.0),
                   child: Column(children: <Widget>[
@@ -52,9 +49,9 @@ class _MyLeaderboardState extends State<_MyLeaderboardMobile> {
                       ),
                     ),
                   ])),
-            ]))); 
+            ]); 
     });
-    return MasterWidget(showDrawer: true, body: body, title: "My Stats");
+    return MasterWidget(showDrawer: true, body: body, title: "MY STATS", showAppBar: true);
   }
 
   List<Widget> getStatisticsListView(BuildContext context) {

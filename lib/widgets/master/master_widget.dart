@@ -1,5 +1,6 @@
 library master_widget;
 
+import 'package:isolationhero/widgets/drawer/drawer_widget.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,7 @@ class MasterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenTypeLayout(
-        mobile: _MasterMobile(showDrawer: showDrawer, body: body, title: title),
+        mobile: _MasterMobile(showDrawer: showDrawer, body: body, title: title, showAppBar: showAppBar),
         desktop: _MasterDesktop(),
         tablet: _MasterTablet(),
     );

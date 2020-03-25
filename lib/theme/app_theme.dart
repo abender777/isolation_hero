@@ -20,7 +20,7 @@ final lightTheme = ThemeData(
     primaryColor: Color.fromRGBO(42, 52, 71, 1),
     brightness: Brightness.light,
     backgroundColor: Color.fromRGBO(42, 52, 71, 1),
-    accentColor: Colors.black,
+    accentColor: Colors.white,
     accentIconTheme: IconThemeData(color: Colors.white),
     dividerColor: Colors.white54,
     fontFamily: 'Monte',
