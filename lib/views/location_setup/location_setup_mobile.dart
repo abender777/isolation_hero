@@ -24,8 +24,7 @@ class _LocationSetupMobileState extends State<_LocationSetupMobile> {
   Widget build(BuildContext context) {
     if (this.viewModel.position != null) {
       setState(() {
-        mapWidget = Scaffold(
-            body: new Stack(children: <Widget>[
+        mapWidget = new Stack(children: <Widget>[
           new FlutterMap(
             options: new MapOptions(
               center: new LatLng(this.viewModel.position.latitude,
@@ -45,42 +44,71 @@ class _LocationSetupMobileState extends State<_LocationSetupMobile> {
                     point: new LatLng(this.viewModel.position.latitude,
                         this.viewModel.position.longitude),
                     builder: (ctx) => new Container(
-                      child: Icon(Icons.pin_drop),
+                      child: Icon(
+                        Icons.person_pin_circle,
+                        size: 50,
+                      ),
                     ),
                   ),
                 ],
               ),
             ],
           ),
-          Align(
+          Container(
+              margin: EdgeInsets.only(top: 30),
+              padding: EdgeInsets.all(5.0),
+              child: Row(children: <Widget>[
+                IconButton(
+                    icon: Icon(Icons.arrow_back,
+                        color: Theme.of(context).buttonColor),
+                    onPressed: null),
+                Text("Set Home Location",
+                    style: TextStyle(
+                        color: Theme.of(context).buttonColor, fontSize: 28)),
+              ])),
+          Container(
               alignment: FractionalOffset.bottomCenter,
-              child: ButtonTheme(
-                minWidth: MediaQuery.of(context).size.width,
-                height: 70.0,
-                child: RaisedButton(
-                  color: Colors.blue,
-                  textColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(10.0),
-                      side: BorderSide(color: Colors.blue)),
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MyLeaderboardView(),
-                      ),
-                    );
-                  },
-                  child: Text('CONTINUE',
-                      style: Theme.of(context).textTheme.button),
-                ),
-              ))
-        ]));
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Container(
+                        decoration: BoxDecoration(color: Colors.white),
+                        child: Wrap(
+                          children: <Widget>[
+                            Text(
+                                this.viewModel.address != null
+                                    ? this.viewModel.address
+                                    : "",
+                                style: TextStyle(
+                                    color: Theme.of(context).buttonColor,
+                                    fontSize: 15))
+                          ],
+                        )),
+                    ButtonTheme(
+                        minWidth: MediaQuery.of(context).size.width,
+                        height: 70.0,
+                        buttonColor: Theme.of(context).buttonColor,
+                        child: RaisedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MyLeaderboardView(),
+                              ),
+                            );
+                          },
+                          child: Text('CONTINUE',
+                              style: Theme.of(context).textTheme.button),
+                        )),
+                  ]))
+        ]);
       });
     } else {
-      mapWidget = Scaffold(body: Center(child: CircularProgressIndicator()));
+      setState(() {
+        mapWidget = Center(child: CircularProgressIndicator());
+      });
     }
-    return mapWidget;
+    return MasterWidget(body: mapWidget, showAppBar: false, showDrawer: false);
   }
 }
