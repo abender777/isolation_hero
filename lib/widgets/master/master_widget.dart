@@ -9,10 +9,11 @@ part 'master_desktop.dart';
 
 class MasterWidget extends StatelessWidget {
   final bool showDrawer;
+  final bool showAppBar;
   final Widget body;
   final String title;
 
-  const MasterWidget({Key key, this.showDrawer, this.body, this.title}) : super(key: key);
+  const MasterWidget({Key key, this.showDrawer, this.body, this.title, this.showAppBar}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,13 +1,23 @@
 part of sign_in_view;
 
-class _SignInMobile extends StatelessWidget {
+class _SignInMobile extends StatefulWidget {
   final SignInViewModel viewModel;
 
   _SignInMobile(this.viewModel);
 
   @override
+  State<StatefulWidget> createState() {
+    return _SignInMobileState();
+  }
+}
+
+class _SignInMobileState extends State<_SignInMobile> {
+  Widget body;
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    setState(() {
+    body = Scaffold(
         body: Stack(children: <Widget>[
               Container(
                 padding: EdgeInsets.only(top: 30.0),
@@ -81,6 +91,8 @@ class _SignInMobile extends StatelessWidget {
                           style: Theme.of(context).textTheme.button),
                     )),
               )
-            ]));
+            ]));                
+    });
+  return MasterWidget(body: body);
   }
 }
