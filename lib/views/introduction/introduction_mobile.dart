@@ -33,7 +33,6 @@ class _IntroductionPageState extends State<_IntroductionMobile> {
       titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
       bodyTextStyle: bodyStyle,
       descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-      pageColor: Colors.white,
       imagePadding: EdgeInsets.zero,
     );
 
