@@ -2,7 +2,6 @@ library drawer_widget;
 
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:isolationhero/core/models/leaderboard.dart';
 import 'package:isolationhero/views/earn_more_points/earn_more_points_view.dart';
 import 'package:isolationhero/views/going_out/going_out_view.dart';
 import 'package:isolationhero/views/leaderboard/leaderboard_view.dart';
