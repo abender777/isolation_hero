@@ -73,7 +73,7 @@ class _MasterMobile extends StatelessWidget {
                         color: Colors.amber),
                     onPressed: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => null));
+                          MaterialPageRoute(builder: (context) => MyLeaderboardView()));
                     },
                     padding: EdgeInsets.only(bottom: 0),
                   )

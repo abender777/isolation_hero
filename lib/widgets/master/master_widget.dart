@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:isolationhero/theme/app_theme.dart';
 import 'package:isolationhero/views/earn_more_points/earn_more_points_view.dart';
 import 'package:isolationhero/views/leaderboard/leaderboard_view.dart';
+import 'package:isolationhero/views/my_leaderboard/my_leaderboard_view.dart';
 import 'package:isolationhero/widgets/drawer/drawer_widget.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:flutter/material.dart';
