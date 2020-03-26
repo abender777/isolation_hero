@@ -1,5 +1,9 @@
 library drawer_widget;
 
+import 'package:avatar_glow/avatar_glow.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:isolationhero/core/models/leaderboard.dart';
+import 'package:isolationhero/views/my_leaderboard/my_leaderboard_view.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:flutter/material.dart';
 
