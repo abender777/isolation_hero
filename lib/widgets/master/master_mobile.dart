@@ -14,6 +14,7 @@ class _MasterMobile extends StatelessWidget {
   Widget build(BuildContext context) {
     if (this.showAppBar != null && this.showAppBar) {
       return MaterialApp(
+        theme: lightTheme,
           home: new Stack(children: <Widget>[
         Scaffold(
             resizeToAvoidBottomPadding: false,

@@ -54,7 +54,7 @@ class _DrawerState extends State<_DrawerMobile> {
                 Divider(color: Colors.white),
                 menuItem(3, "Going Out", FontAwesomeIcons.running, null),
                 Divider(color: Colors.white),
-                menuItem(3, "Earn More Points", FontAwesomeIcons.plusCircle, null),
+                menuItem(3, "Earn More Points", FontAwesomeIcons.plusCircle, EarnMorePointsView()),
                 Divider(color: Colors.white),
                 menuItem(3, "My Profile", FontAwesomeIcons.user, null)
               ]))
