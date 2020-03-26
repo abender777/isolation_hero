@@ -75,10 +75,7 @@ class _AdditionalInformationState extends State<_AdditionalInformationMobile> {
                   ),
                 ),
               )),
-        ]),
-        Align(
-            alignment: FractionalOffset.bottomCenter,
-            child: ButtonTheme(
+          ButtonTheme(
               minWidth: MediaQuery.of(context).size.width,
               height: 70.0,
               buttonColor: Theme.of(context).buttonColor,
@@ -93,8 +90,26 @@ class _AdditionalInformationState extends State<_AdditionalInformationMobile> {
                 },
                 child:
                     Text('CONTINUE', style: Theme.of(context).textTheme.button),
-              ),
-            ))
+              )),
+        ]),
+        Align(
+            alignment: FractionalOffset.bottomCenter,
+            child: ButtonTheme(
+                minWidth: MediaQuery.of(context).size.width,
+                height: 70.0,
+                buttonColor: Theme.of(context).buttonColor,
+                child: RaisedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LocationSetupView(),
+                      ),
+                    );
+                  },
+                  child: Text('NEVER MIND, SKIP THIS STEP',
+                      style: Theme.of(context).textTheme.button),
+                )))
       ]);
     });
     return MasterWidget(body: body);
