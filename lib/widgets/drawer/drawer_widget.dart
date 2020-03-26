@@ -4,7 +4,10 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:isolationhero/core/models/leaderboard.dart';
 import 'package:isolationhero/views/earn_more_points/earn_more_points_view.dart';
+import 'package:isolationhero/views/going_out/going_out_view.dart';
+import 'package:isolationhero/views/leaderboard/leaderboard_view.dart';
 import 'package:isolationhero/views/my_leaderboard/my_leaderboard_view.dart';
+import 'package:isolationhero/views/user_profile/user_profile_view.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:flutter/material.dart';
 

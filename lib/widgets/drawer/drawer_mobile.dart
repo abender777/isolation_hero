@@ -50,13 +50,13 @@ class _DrawerState extends State<_DrawerMobile> {
                     MyLeaderboardView()),
                 Divider(color: Colors.white),
                 menuItem(
-                    2, "Leaderboard", FontAwesomeIcons.trophy, Leaderboard()),
+                    2, "Leaderboard", FontAwesomeIcons.trophy, LeaderboardView()),
                 Divider(color: Colors.white),
-                menuItem(3, "Going Out", FontAwesomeIcons.running, null),
+                menuItem(3, "Going Out", FontAwesomeIcons.running, GoingOutView()),
                 Divider(color: Colors.white),
                 menuItem(3, "Earn More Points", FontAwesomeIcons.plusCircle, EarnMorePointsView()),
                 Divider(color: Colors.white),
-                menuItem(3, "My Profile", FontAwesomeIcons.user, null)
+                menuItem(3, "My Profile", FontAwesomeIcons.user, UserProfileView())
               ]))
         ],
       ),

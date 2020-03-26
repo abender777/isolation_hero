@@ -1,17 +1,17 @@
-part of user_profile_view;
+part of going_out_view;
 
-class _UserProfileMobile extends StatefulWidget {
-  final UserProfileViewModel viewModel;
+class _GoingOutMobile extends StatefulWidget {
+  final GoingOutViewModel viewModel;
 
-  _UserProfileMobile(this.viewModel);
+  _GoingOutMobile(this.viewModel);
 
   @override
   State<StatefulWidget> createState() {
-    return _UserProfileMobileState();
+    return _GoingOutMobileState();
   }
 }
 
-class _UserProfileMobileState extends State<_UserProfileMobile> {
+class _GoingOutMobileState extends State<_GoingOutMobile> {
   Widget body;
 
   @override
@@ -26,7 +26,7 @@ class _UserProfileMobileState extends State<_UserProfileMobile> {
                   child: TextField(
                     autocorrect: true,
                     decoration: InputDecoration(
-                      hintText: 'User Name',
+                      hintText: 'Reason for going out?',
                       prefixIcon: Icon(Icons.person),
                       hintStyle: TextStyle(
                           color: Theme.of(context).hintColor,
@@ -50,7 +50,7 @@ class _UserProfileMobileState extends State<_UserProfileMobile> {
                   child: TextField(
                     autocorrect: true,
                     decoration: InputDecoration(
-                      hintText: 'Email',
+                      hintText: 'Back In',
                       prefixIcon: Icon(Icons.email),
                       hintStyle: TextStyle(
                           color: Theme.of(context).hintColor,
@@ -69,55 +69,6 @@ class _UserProfileMobileState extends State<_UserProfileMobile> {
                       ),
                     ),
                   )),
-              Container(
-                  padding: EdgeInsets.all(5.0),
-                  child: TextField(
-                    autocorrect: true,
-                    decoration: InputDecoration(
-                      hintText: 'Password',
-                      prefixIcon: Icon(Icons.email),
-                      hintStyle: TextStyle(
-                          color: Theme.of(context).hintColor,
-                          fontFamily: 'Monte'),
-                      filled: true,
-                      fillColor: Colors.white70,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).backgroundColor, width: 1),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).buttonColor, width: 1),
-                      ),
-                    ),
-                  )),
-              Container(
-                  padding: EdgeInsets.all(5.0),
-                  child: TextField(
-                    autocorrect: true,
-                    decoration: InputDecoration(
-                      hintText: 'Confirm Password',
-                      prefixIcon: Icon(Icons.email),
-                      hintStyle: TextStyle(
-                          color: Theme.of(context).hintColor,
-                          fontFamily: 'Monte'),
-                      filled: true,
-                      fillColor: Colors.white70,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).backgroundColor, width: 1),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).buttonColor, width: 1),
-                      ),
-                    ),
-                  )),
-
               ButtonTheme(
                   minWidth: MediaQuery.of(context).size.width,
                   height: 70.0,

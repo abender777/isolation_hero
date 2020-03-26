@@ -1,29 +1,29 @@
-library user_profile_view;
+library going_out_view;
 
 import 'package:isolationhero/widgets/master/master_widget.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:flutter/material.dart';
-import 'user_profile_view_model.dart';
+import 'going_out_view_model.dart';
 
-part 'user_profile_mobile.dart';
-part 'user_profile_tablet.dart';
-part 'user_profile_desktop.dart';
+part 'going_out_mobile.dart';
+part 'going_out_tablet.dart';
+part 'going_out_desktop.dart';
 
-class UserProfileView extends StatelessWidget {
+class GoingOutView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    UserProfileViewModel viewModel = UserProfileViewModel();
-    return ViewModelProvider<UserProfileViewModel>.withConsumer(
+    GoingOutViewModel viewModel = GoingOutViewModel();
+    return ViewModelProvider<GoingOutViewModel>.withConsumer(
       viewModel: viewModel,
       onModelReady: (viewModel) {
         // Do something once your viewModel is initialized
       },
       builder: (context, viewModel, child) {
         return ScreenTypeLayout(
-          mobile: _UserProfileMobile(viewModel),
-          desktop: _UserProfileDesktop(viewModel),
-          tablet: _UserProfileTablet(viewModel),  
+          mobile: _GoingOutMobile(viewModel),
+          desktop: _GoingOutDesktop(viewModel),
+          tablet: _GoingOutTablet(viewModel),  
         );
       }
     );

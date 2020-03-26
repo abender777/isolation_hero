@@ -127,7 +127,7 @@ class _MasterMobile extends StatelessWidget {
                     icon: Icon(FontAwesomeIcons.running, color: Colors.amber),
                     onPressed: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => null));
+                          MaterialPageRoute(builder: (context) => GoingOutView()));
                     },
                     padding: EdgeInsets.only(bottom: 0),
                   )
