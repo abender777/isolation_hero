@@ -13,27 +13,134 @@ class _MasterMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (this.showAppBar != null && this.showAppBar) {
-      return Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
-        appBar: AppBar(
-          title: Text(title != null ? title : "",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0,
-                  color: Colors.white,
-                  fontFamily: 'Monte')),
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          centerTitle: true,
-        ),
-        body: body,
-        drawer: DrawerWidget(),
-      );
+      return MaterialApp(
+          home: new Stack(children: <Widget>[
+        Scaffold(
+            resizeToAvoidBottomPadding: false,
+            appBar: AppBar(
+              title: Text(title != null ? title : "",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.0,
+                      color: Colors.white,
+                      fontFamily: 'Monte')),
+              backgroundColor: Colors.transparent,
+              elevation: 0.0,
+              centerTitle: true,
+            ),
+            backgroundColor: Colors.transparent,
+            resizeToAvoidBottomInset: false,
+            body: buildBody(context, body),
+            drawer: DrawerWidget())
+      ]));
     } else {
       return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         body: body,
       );
     }
+  }
+
+  Column buildBody(BuildContext context, body) {
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: Container(
+              margin: new EdgeInsets.only(top: 10.0),
+              child: SingleChildScrollView(
+                  child: new Container(
+                      padding: new EdgeInsets.only(left: 5, right: 5),
+                      child: new Center(
+                          child: new Column(children: <Widget>[body]))))),
+        ),
+        bottomNavigationBar(context),
+      ],
+    );
+  }
+
+  Widget bottomNavigationBar(BuildContext context) {
+    return Container(
+        color: Theme.of(context).buttonColor,
+        child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(FontAwesomeIcons.sortNumericUpAlt,
+                        color: Colors.amber),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => null));
+                    },
+                    padding: EdgeInsets.only(bottom: 0),
+                  )
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Text("MY STATS",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Monte',
+                          fontSize: 10)),
+                ],
+              )
+            ],
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(FontAwesomeIcons.trophy, color: Colors.amber),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => null));
+                    },
+                    padding: EdgeInsets.only(bottom: 0),
+                  )
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Text("LEADERBOARD",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Monte',
+                          fontSize: 10)),
+                ],
+              )
+            ],
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(FontAwesomeIcons.running, color: Colors.amber),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => null));
+                    },
+                    padding: EdgeInsets.only(bottom: 0),
+                  )
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Text("GOING OUT",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Monte',
+                          fontSize: 10)),
+                ],
+              )
+            ],
+          )
+        ]));
   }
 }
