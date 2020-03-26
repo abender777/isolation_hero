@@ -28,30 +28,31 @@ class _MyLeaderboardState extends State<_MyLeaderboardMobile> {
   @override
   Widget build(BuildContext context) {
     setState(() {
-    body = Column(children: <Widget>[
+      body = Column(children: <Widget>[
+        Container(
+            padding: EdgeInsets.all(5.0),
+            child: Column(children: <Widget>[
               Container(
-                  padding: EdgeInsets.all(5.0),
-                  child: Column(children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 20.0),
-                      height: 150.0,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: getStatisticsListView(context),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 20.0),
-                      height: 230.0,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: getDaywiseScoreListView(context),
-                      ),
-                    ),
-                  ])),
-            ]); 
+                margin: EdgeInsets.symmetric(vertical: 20.0),
+                height: 150.0,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: getStatisticsListView(context),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 20.0),
+                height: 230.0,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: getDaywiseScoreListView(context),
+                ),
+              ),
+            ])),
+      ]);
     });
-    return MasterWidget(showDrawer: true, body: body, title: "MY STATS", showAppBar: true);
+    return MasterWidget(
+        showDrawer: true, body: body, title: "MY STATS", showAppBar: true);
   }
 
   List<Widget> getStatisticsListView(BuildContext context) {
@@ -76,7 +77,9 @@ class _MyLeaderboardState extends State<_MyLeaderboardMobile> {
                         fontSize: 50)),
                 Text(this.viewModel.learderbordStats[count].name,
                     style: TextStyle(
-                        color: Colors.white, fontFamily: 'Monte', fontSize: 30))
+                        color: Color.fromRGBO(13, 169, 196, 1),
+                        fontFamily: 'Monte',
+                        fontSize: 30))
               ],
             )));
         result.add(SizedBox(width: 20));
