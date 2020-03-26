@@ -14,26 +14,26 @@ class _MasterMobile extends StatelessWidget {
   Widget build(BuildContext context) {
     if (this.showAppBar != null && this.showAppBar) {
       return MaterialApp(
-        theme: lightTheme,
+          theme: lightTheme,
           home: new Stack(children: <Widget>[
-        Scaffold(
-            resizeToAvoidBottomPadding: false,
-            appBar: AppBar(
-              title: Text(title != null ? title : "",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.0,
-                      color: Colors.white,
-                      fontFamily: 'Monte')),
-              backgroundColor: Colors.transparent,
-              elevation: 0.0,
-              centerTitle: true,
-            ),
-            backgroundColor: Colors.transparent,
-            resizeToAvoidBottomInset: false,
-            body: buildBody(context, body),
-            drawer: DrawerWidget())
-      ]));
+            Scaffold(
+                resizeToAvoidBottomPadding: false,
+                appBar: AppBar(
+                  title: Text(title != null ? title : "",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18.0,
+                          color: Colors.white,
+                          fontFamily: 'Monte')),
+                  backgroundColor: Colors.transparent,
+                  elevation: 0.0,
+                  centerTitle: true,
+                ),
+                backgroundColor: Colors.transparent,
+                resizeToAvoidBottomInset: false,
+                body: buildBody(context, body),
+                drawer: DrawerWidget())
+          ]));
     } else {
       return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
@@ -98,8 +98,10 @@ class _MasterMobile extends StatelessWidget {
                   IconButton(
                     icon: Icon(FontAwesomeIcons.trophy, color: Colors.amber),
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => LeaderboardView()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LeaderboardView()));
                     },
                     padding: EdgeInsets.only(bottom: 0),
                   )
@@ -134,6 +136,35 @@ class _MasterMobile extends StatelessWidget {
               Row(
                 children: <Widget>[
                   Text("GOING OUT",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Monte',
+                          fontSize: 10)),
+                ],
+              )
+            ],
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  IconButton(
+                    icon:
+                        Icon(FontAwesomeIcons.plusCircle, color: Colors.amber),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EarnMorePointsView()));
+                    },
+                    padding: EdgeInsets.only(bottom: 0),
+                  )
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Text("BONUS POINTS",
                       style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'Monte',
