@@ -1,10 +1,10 @@
-class LearderbordStat {
+class UserStat {
   String name;
   String count;
 
-  LearderbordStat({this.name, this.count});
+  UserStat({this.name, this.count});
 
-  LearderbordStat.fromJson(Map<String, dynamic> json) {
+  UserStat.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     count = json['count'];
   }

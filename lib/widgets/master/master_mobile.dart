@@ -98,7 +98,7 @@ class _MasterMobile extends StatelessWidget {
                     icon: Icon(FontAwesomeIcons.trophy, color: Colors.amber),
                     onPressed: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => null));
+                          MaterialPageRoute(builder: (context) => LeaderboardView()));
                     },
                     padding: EdgeInsets.only(bottom: 0),
                   )

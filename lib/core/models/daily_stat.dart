@@ -1,14 +1,14 @@
-class LearderbordDailyStat {
+class UserDailyStat {
   String day;
   String date;
   String month;
   String percentage;
   String status;
 
-  LearderbordDailyStat(
+  UserDailyStat(
       {this.day, this.date, this.month, this.percentage, this.status});
 
-  LearderbordDailyStat.fromJson(Map<String, dynamic> json) {
+  UserDailyStat.fromJson(Map<String, dynamic> json) {
     day = json['day'];
     date = json['date'];
     month = json['month'];
