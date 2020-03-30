@@ -133,7 +133,7 @@ class _UserProfileMobileState extends State<_UserProfileMobile> {
     return MasterWidget(
         showDrawer: true,
         body: body,
-        title: "EARN MORE POINTS",
+        title: "USER PROFILE",
         showAppBar: true);
   }
 }

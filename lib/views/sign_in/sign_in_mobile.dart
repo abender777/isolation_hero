@@ -36,7 +36,7 @@ class _SignInMobileState extends State<_SignInMobile> {
                   child: TextField(
                     autocorrect: true,
                     decoration: InputDecoration(
-                      hintText: 'Enter User name/email',
+                      hintText: 'Username OR Email',
                       prefixIcon: Icon(Icons.person),
                       hintStyle: TextStyle(
                           color: Theme.of(context).hintColor,
@@ -87,7 +87,14 @@ class _SignInMobileState extends State<_SignInMobile> {
               height: 70.0,
               buttonColor: Theme.of(context).buttonColor,
               child: RaisedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MyLeaderboardView(),
+                    ),
+                  );
+                },
                 child: Text('LOGIN', style: Theme.of(context).textTheme.button),
               )),
         )

@@ -11,8 +11,22 @@ class _AdditionalInformationMobile extends StatefulWidget {
   }
 }
 
+enum Gender { male, female, other, not_to_say }
+
 class _AdditionalInformationState extends State<_AdditionalInformationMobile> {
   Widget body;
+  Gender _gender;
+  List<String> _ageValues;
+
+  @override
+  void initState() {
+    super.initState();
+    _gender = Gender.male;
+    _ageValues = List<String>();
+    for (int count = 13; count <= 100; count++) {
+      _ageValues.add(count.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,50 +45,90 @@ class _AdditionalInformationState extends State<_AdditionalInformationMobile> {
               ])),
           Container(
               padding: EdgeInsets.all(5.0),
-              child: TextField(
-                autocorrect: true,
-                decoration: InputDecoration(
-                  hintText: 'Date Of Birth',
-                  prefixIcon: Icon(Icons.person),
-                  hintStyle: TextStyle(
-                      color: Theme.of(context).hintColor, fontFamily: 'Monte'),
-                  filled: true,
-                  fillColor: Colors.white70,
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                    borderSide: BorderSide(
-                        color: Theme.of(context).backgroundColor, width: 1),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                    borderSide: BorderSide(
-                        color: Theme.of(context).buttonColor, width: 1),
-                  ),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(children: <Widget>[
+                      SizedBox(width: 20),
+                      Text("Age", style: TextStyle(color: Colors.white)),
+                    ]),
+                    SizedBox(height: 10),
+                    Row(children: <Widget>[
+                      Container(
+                        padding:
+                            EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).buttonColor,
+                            borderRadius: BorderRadius.circular(10)),
+                        width: MediaQuery.of(context).size.width * 0.95,
+                        // dropdown below..
+                        child: new DropdownButton<String>(
+                            items: _ageValues.map((String value) {
+                              return new DropdownMenuItem<String>(
+                                value: value,
+                                child: new Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (_) {}),
+                      )
+                    ])
+                  ])),
+          Column(
+            children: <Widget>[
+              ListTile(
+                title:
+                    const Text('Male', style: TextStyle(color: Colors.white)),
+                leading: Radio(
+                  value: Gender.male,
+                  groupValue: _gender,
+                  onChanged: (Gender value) {
+                    setState(() {
+                      _gender = value;
+                    });
+                  },
                 ),
-              )),
-          Container(
-              padding: EdgeInsets.all(5.0),
-              child: TextField(
-                autocorrect: true,
-                decoration: InputDecoration(
-                  hintText: 'Gender',
-                  prefixIcon: Icon(Icons.email),
-                  hintStyle: TextStyle(
-                      color: Theme.of(context).hintColor, fontFamily: 'Monte'),
-                  filled: true,
-                  fillColor: Colors.white70,
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                    borderSide: BorderSide(
-                        color: Theme.of(context).backgroundColor, width: 1),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                    borderSide: BorderSide(
-                        color: Theme.of(context).buttonColor, width: 1),
-                  ),
+              ),
+              ListTile(
+                title:
+                    const Text('Female', style: TextStyle(color: Colors.white)),
+                leading: Radio(
+                  value: Gender.female,
+                  groupValue: _gender,
+                  onChanged: (Gender value) {
+                    setState(() {
+                      _gender = value;
+                    });
+                  },
                 ),
-              )),
+              ),
+              ListTile(
+                title:
+                    const Text('Other', style: TextStyle(color: Colors.white)),
+                leading: Radio(
+                  value: Gender.other,
+                  groupValue: _gender,
+                  onChanged: (Gender value) {
+                    setState(() {
+                      _gender = value;
+                    });
+                  },
+                ),
+              ),
+              ListTile(
+                title: const Text('Prefer not to say',
+                    style: TextStyle(color: Colors.white)),
+                leading: Radio(
+                  value: Gender.not_to_say,
+                  groupValue: _gender,
+                  onChanged: (Gender value) {
+                    setState(() {
+                      _gender = value;
+                    });
+                  },
+                ),
+              ),
+            ],
+          ),
           ButtonTheme(
               minWidth: MediaQuery.of(context).size.width,
               height: 70.0,

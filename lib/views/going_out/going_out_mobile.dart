@@ -84,7 +84,7 @@ class _GoingOutMobileState extends State<_GoingOutMobile> {
     return MasterWidget(
         showDrawer: true,
         body: body,
-        title: "EARN MORE POINTS",
+        title: "GOING OUT",
         showAppBar: true);
   }
 }

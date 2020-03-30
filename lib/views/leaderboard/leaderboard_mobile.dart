@@ -39,7 +39,7 @@ class _LeaderboardMobileState extends State<_LeaderboardMobile> {
       ]);
     });
     return MasterWidget(
-        showDrawer: true, body: body, title: "MY STATS", showAppBar: true);
+        showDrawer: true, body: body, title: "LEADERBOARD", showAppBar: true);
   }
 
   Column getStatisticsListView(BuildContext context) {
