@@ -4,12 +4,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:isolationhero/core/locator.dart';
+import 'package:isolationhero/core/services/database_helper.dart';
 import 'package:isolationhero/theme/app_theme.dart';
 import 'package:isolationhero/views/introduction/introduction_view.dart';
 import 'package:http/http.dart' as http;
+import 'package:isolationhero/views/sign_up/sign_up_view.dart';
 import 'core/services/navigator_service.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await LocatorInjector.setupLocator();
   runApp(new MyApp());
 }
@@ -65,12 +68,45 @@ class PlatformEnabledButton extends RaisedButton {
 
 class _MyAppState extends State<MyApp> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    bool isIntroSeen = false;
+    
+    isIntroductionSeenByUser().then((onValue){
+      isIntroSeen = onValue; 
+    });
+    
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
       navigatorKey: locator<NavigatorService>().navigatorKey,
-      home: IntroductionView(),
+      home:  isIntroSeen ? SignUpView() : IntroductionView(),
     );
+  }
+
+  Future<bool> isIntroductionSeenByUser() async {
+    DatabaseHelper helper = DatabaseHelper.instance;
+    await helper.querySetting("introduction_viewed_by_user").then((onValue) {
+      if (onValue != null) {
+        return onValue.value == 1;
+      }
+      return false;
+    });
+    return false;
+  }
+
+  bool isUserLoggedIn() {
+    DatabaseHelper helper = DatabaseHelper.instance;
+    helper.querySetting("user_logged_in").then((onValue) {
+      if (onValue != null) {
+        return onValue.value;
+      }
+      return false;
+    });
+    return false;
   }
 }
