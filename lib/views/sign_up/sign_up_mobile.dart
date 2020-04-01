@@ -170,17 +170,6 @@ class _SignUpMobileState extends State<_SignUpMobile> {
                           padding: EdgeInsets.all(16),
                           shape: CircleBorder(),
                         ),
-                        MaterialButton(
-                          onPressed: () {},
-                          color: Colors.white,
-                          textColor: Theme.of(context).buttonColor,
-                          child: Icon(
-                            FontAwesomeIcons.twitter,
-                            size: 24,
-                          ),
-                          padding: EdgeInsets.all(16),
-                          shape: CircleBorder(),
-                        ),
                       ]),
                 ]),
                 SizedBox(
