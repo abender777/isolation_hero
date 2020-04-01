@@ -7,18 +7,39 @@ class _SignInMobile extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _SignInMobileState();
+    return _SignInMobileState(this.viewModel);
   }
 }
 
 class _SignInMobileState extends State<_SignInMobile> {
+  final SignInViewModel viewModel;
+  _SignInMobileState(this.viewModel);
+
   Widget body;
+  String userNameOrEmail;
+  String password;
+
+  final _formKey = GlobalKey<FormState>();
+
+  void submit() async {
+    if (this._formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      this.viewModel.login("", userNameOrEmail, password).then((result) {
+        if (result != null && result) {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => MyLeaderboardView()));
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     setState(() {
       body = Stack(children: <Widget>[
-        Container(
+        Form(
+        key: _formKey,
+        child: Container(
             padding: EdgeInsets.only(top: 30.0),
             child: Column(children: <Widget>[
               Container(
@@ -33,8 +54,22 @@ class _SignInMobileState extends State<_SignInMobile> {
                   ])),
               Container(
                   padding: EdgeInsets.all(5.0),
-                  child: TextField(
+                  child: TextFormField(
                     autocorrect: true,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter user name or email';
+                      }
+                      return null;
+                    },
+                    controller: TextEditingController()
+                      ..text = userNameOrEmail != null ? userNameOrEmail : "",
+                    onChanged: (String value) {
+                      userNameOrEmail = value;
+                    },
+                    onSaved: (String value) {
+                      userNameOrEmail = value;
+                    },
                     decoration: InputDecoration(
                       hintText: 'Username OR Email',
                       prefixIcon: Icon(Icons.person),
@@ -57,11 +92,25 @@ class _SignInMobileState extends State<_SignInMobile> {
                   )),
               Container(
                   padding: EdgeInsets.all(5.0),
-                  child: TextField(
-                    autocorrect: true,
+                  child: TextFormField(
+                    obscureText: true,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter password';
+                      }
+                      return null;
+                    },
+                    controller: TextEditingController()
+                      ..text = password != null ? password : "",
+                    onChanged: (String value) {
+                      password = value;
+                    },
+                    onSaved: (String value) {
+                      password = value;
+                    },
                     decoration: InputDecoration(
                       hintText: 'Password',
-                      prefixIcon: Icon(Icons.email),
+                      prefixIcon: Icon(FontAwesomeIcons.eye),
                       hintStyle: TextStyle(
                           color: Theme.of(context).hintColor,
                           fontFamily: 'Monte'),
@@ -79,7 +128,7 @@ class _SignInMobileState extends State<_SignInMobile> {
                       ),
                     ),
                   ))
-            ])),
+            ]))),
         Align(
           alignment: FractionalOffset.bottomCenter,
           child: ButtonTheme(
@@ -88,12 +137,7 @@ class _SignInMobileState extends State<_SignInMobile> {
               buttonColor: Theme.of(context).buttonColor,
               child: RaisedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MyLeaderboardView(),
-                    ),
-                  );
+                  submit();
                 },
                 child: Text('LOGIN', style: Theme.of(context).textTheme.button),
               )),

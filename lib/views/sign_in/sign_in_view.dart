@@ -1,5 +1,6 @@
 library sign_in_view;
 
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:isolationhero/views/my_leaderboard/my_leaderboard_view.dart';
 import 'package:isolationhero/widgets/master/master_widget.dart';
 import 'package:provider_architecture/provider_architecture.dart';

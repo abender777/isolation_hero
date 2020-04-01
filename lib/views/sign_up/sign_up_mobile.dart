@@ -171,26 +171,6 @@ class _SignUpMobileState extends State<_SignUpMobile> {
                           padding: EdgeInsets.all(16),
                           shape: CircleBorder(),
                         ),
-                        MaterialButton(
-                          onPressed: () {
-                            this.viewModel.signInWithFacebook().then((val) {
-                              if (val) {
-                                NavigatorService().navigateToPage(
-                                    MaterialPageRoute(builder: (context) {
-                                  return MyLeaderboardView();
-                                }));
-                              }
-                            });
-                          },
-                          color: Colors.white,
-                          textColor: Theme.of(context).buttonColor,
-                          child: Icon(
-                            FontAwesomeIcons.facebookF,
-                            size: 24,
-                          ),
-                          padding: EdgeInsets.all(16),
-                          shape: CircleBorder(),
-                        ),
                       ]),
                 ]),
                 SizedBox(

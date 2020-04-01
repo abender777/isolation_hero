@@ -1,12 +1,10 @@
-import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:isolationhero/core/base/base_view_model.dart';
-import 'package:http/http.dart' as http;
 import 'package:isolationhero/core/models/setting.dart';
 import 'package:isolationhero/core/services/database_helper.dart';
+import 'package:http/http.dart' as http;
 
 class SignUpViewModel extends BaseViewModel {
   SignUpViewModel();
@@ -14,7 +12,6 @@ class SignUpViewModel extends BaseViewModel {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  final FacebookLogin facebookSignIn = new FacebookLogin();
 
   Future<bool> signInWithGoogle() async {
     final GoogleSignInAccount googleSignInAccount =
@@ -62,27 +59,6 @@ class SignUpViewModel extends BaseViewModel {
     }
   }
 
-  Future<bool> signInWithFacebook() async {
-    final FacebookLoginResult result = await facebookSignIn.logIn(["email"]);
-
-    switch (result.status) {
-      case FacebookLoginStatus.loggedIn:
-        final token = result.accessToken.token;
-        final graphResponse = await http.get(
-            'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,birthday,hometown,picture&access_token=$token');
-        final profile = json.decode(graphResponse.body);
-        addLoginInfoInDatabase(profile['name'],
-            profile['picture']['data']['url'], profile['email']);
-        return fetchAndSetUserId(profile['email'], profile['name'],
-            profile['picture']['data']['url'], "Facebook");
-      case FacebookLoginStatus.cancelledByUser:
-      //_showMessage('Login cancelled by the user.');
-        return false;
-      case FacebookLoginStatus.error:
-        return false;
-    }
-    return false;
-  }
 
   void insertSetting(String settingName, Object settingValue) {
     DatabaseHelper helper = DatabaseHelper.instance;
@@ -116,4 +92,25 @@ class SignUpViewModel extends BaseViewModel {
 
     return user;
   }
+
+
+  Future<bool> createUser(
+      String userName, String email, String password) async {
+    var body = {
+      "email": email,
+      "password1": password,
+      "password2": password,
+    };
+
+    await http.post(
+        'http://isolationhero.vishleshak.io/users/rest-auth/registration/',
+        body: body).then((response) {
+      if (response.statusCode == 200) {
+        return true;
+      }
+       return false;
+    });
+    return null;
+  }
+
 }
