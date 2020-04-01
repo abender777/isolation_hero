@@ -1,6 +1,8 @@
 library introduction_view;
 
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:isolationhero/core/services/database_helper.dart';
+import 'package:isolationhero/views/loading/loading_view.dart';
 import 'package:isolationhero/views/sign_up/sign_up_view.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:responsive_builder/responsive_builder.dart';

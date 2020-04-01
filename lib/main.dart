@@ -1,46 +1,71 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:isolationhero/core/locator.dart';
 import 'package:isolationhero/core/services/database_helper.dart';
 import 'package:isolationhero/theme/app_theme.dart';
 import 'package:isolationhero/views/introduction/introduction_view.dart';
-import 'package:http/http.dart' as http;
+import 'package:isolationhero/views/loading/loading_view.dart';
 import 'package:isolationhero/views/sign_up/sign_up_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'core/services/navigator_service.dart';
+
+const EVENTS_KEY = "fetch_events";
+
+/// This "Headless Task" is run when app is terminated.
+void backgroundFetchHeadlessTask(String taskId) async {
+  print("[BackgroundFetch] Headless event received: $taskId");
+  DateTime timestamp = DateTime.now();
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  // Read fetch_events from SharedPreferences
+  List<String> events = [];
+  String json = prefs.getString(EVENTS_KEY);
+  if (json != null) {
+    events = jsonDecode(json).cast<String>();
+  }
+
+  // Add new event.
+  events.insert(0, "$taskId@$timestamp [Headless]");
+  saveLocation(events, taskId, timestamp);
+  // Persist fetch events in SharedPreferences
+  prefs.setString(EVENTS_KEY, jsonEncode(events));
+
+  BackgroundFetch.finish(taskId);
+
+  if (taskId == 'flutter_background_fetch') {
+    BackgroundFetch.scheduleTask(TaskConfig(
+        taskId: "com.transistorsoft.customtask",
+        delay: 5000,
+        periodic: false,
+        forceAlarmManager: true,
+        stopOnTerminate: false,
+        enableHeadless: true));
+  }
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocatorInjector.setupLocator();
   runApp(new MyApp());
+  BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
 }
 
-void saveLocation(String id) async {
+void saveLocation(
+    List<String> events, String taskId, DateTime timestamp) async {
   await Geolocator()
       .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
       .then((onValue) {
     if (onValue != null) {
-      sendLocationToDatabase(
-          id, onValue.latitude.toString(), onValue.longitude.toString());
+      events.insert(0,
+          "$taskId@$timestamp@${onValue.longitude}@${onValue.longitude} [Headless]");
     }
   });
-}
-
-Future<bool> sendLocationToDatabase(
-    String userId, String lat, String long) async {
-  var body = {"user_id": userId, "lat": lat, "long": long};
-
-  await http
-      .post('http://heroapis.vishleshak.io/api/v1/userlocation', body: body)
-      .then((response) {
-    if (response.statusCode == 200) {
-      return true;
-    }
-    return false;
-  });
-  return null;
 }
 
 class MyApp extends StatefulWidget {
@@ -67,6 +92,9 @@ class PlatformEnabledButton extends RaisedButton {
 }
 
 class _MyAppState extends State<MyApp> {
+  bool isIntroSeen;
+  Widget body;
+
   @override
   void initState() {
     super.initState();
@@ -74,39 +102,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    bool isIntroSeen = false;
-    
-    isIntroductionSeenByUser().then((onValue){
-      isIntroSeen = onValue; 
-    });
-    
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: lightTheme,
-      navigatorKey: locator<NavigatorService>().navigatorKey,
-      home:  isIntroSeen ? SignUpView() : IntroductionView(),
-    );
-  }
-
-  Future<bool> isIntroductionSeenByUser() async {
-    DatabaseHelper helper = DatabaseHelper.instance;
-    await helper.querySetting("introduction_viewed_by_user").then((onValue) {
-      if (onValue != null) {
-        return onValue.value == 1;
-      }
-      return false;
-    });
-    return false;
-  }
-
-  bool isUserLoggedIn() {
-    DatabaseHelper helper = DatabaseHelper.instance;
-    helper.querySetting("user_logged_in").then((onValue) {
-      if (onValue != null) {
-        return onValue.value;
-      }
-      return false;
-    });
-    return false;
+        debugShowCheckedModeBanner: false,
+        theme: lightTheme,
+        navigatorKey: locator<NavigatorService>().navigatorKey,
+        home: IntroductionView());
   }
 }
