@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -6,11 +5,8 @@ import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:isolationhero/core/locator.dart';
-import 'package:isolationhero/core/services/database_helper.dart';
 import 'package:isolationhero/theme/app_theme.dart';
 import 'package:isolationhero/views/introduction/introduction_view.dart';
-import 'package:isolationhero/views/loading/loading_view.dart';
-import 'package:isolationhero/views/sign_up/sign_up_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'core/services/navigator_service.dart';
 
@@ -92,9 +88,6 @@ class PlatformEnabledButton extends RaisedButton {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool isIntroSeen;
-  Widget body;
-
   @override
   void initState() {
     super.initState();

@@ -7,11 +7,14 @@ class _SignUpMobile extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _SignUpMobileState();
+    return _SignUpMobileState(this.viewModel);
   }
 }
 
 class _SignUpMobileState extends State<_SignUpMobile> {
+  final SignUpViewModel viewModel;
+  _SignUpMobileState(this.viewModel);
+
   Widget body;
 
   @override
@@ -149,7 +152,16 @@ class _SignUpMobileState extends State<_SignUpMobile> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         MaterialButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            this.viewModel.signInWithGoogle().then((userId) {
+                              if (userId != null && userId) {
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(builder: (context) {
+                                  return MyLeaderboardView();
+                                }));
+                              }
+                            });
+                          },
                           color: Colors.white,
                           textColor: Theme.of(context).buttonColor,
                           child: Icon(
@@ -160,7 +172,16 @@ class _SignUpMobileState extends State<_SignUpMobile> {
                           shape: CircleBorder(),
                         ),
                         MaterialButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            this.viewModel.signInWithFacebook().then((val) {
+                              if (val) {
+                                NavigatorService().navigateToPage(
+                                    MaterialPageRoute(builder: (context) {
+                                  return MyLeaderboardView();
+                                }));
+                              }
+                            });
+                          },
                           color: Colors.white,
                           textColor: Theme.of(context).buttonColor,
                           child: Icon(
