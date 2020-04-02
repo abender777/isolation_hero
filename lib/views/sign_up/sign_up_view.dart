@@ -2,7 +2,6 @@ library sign_up_view;
 
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:isolationhero/views/additional_information/additional_information_view.dart';
 import 'package:isolationhero/views/location_setup/location_setup_view.dart';
 import 'package:isolationhero/views/my_leaderboard/my_leaderboard_view.dart';
 import 'package:isolationhero/views/sign_in/sign_in_view.dart';

@@ -65,7 +65,6 @@ class LocationSetupViewModel extends BaseViewModel {
     bool result = false;
     SecuredStorage securedStorage = SecuredStorage.instance;
 
-    String token= await securedStorage.readValue("token");
     String userId = await securedStorage.readValue("user_id");
 
     var body = {
