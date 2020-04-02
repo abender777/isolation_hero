@@ -13,7 +13,6 @@ class _MyLeaderboardMobile extends StatefulWidget {
 
 class _MyLeaderboardState extends State<_MyLeaderboardMobile> {
   final MyLeaderboardViewModel viewModel;
-
   _MyLeaderboardState(this.viewModel);
 
   Widget body;
@@ -21,8 +20,8 @@ class _MyLeaderboardState extends State<_MyLeaderboardMobile> {
   @override
   void initState() {
     super.initState();
-    this.viewModel.getLearderbordStats();
-    this.viewModel.getLearderbordDailyStats();
+    this.viewModel.getUserStats();
+    this.viewModel.getUserDailyStats();
   }
 
   @override
@@ -57,10 +56,8 @@ class _MyLeaderboardState extends State<_MyLeaderboardMobile> {
 
   List<Widget> getStatisticsListView(BuildContext context) {
     List<Widget> result = new List<Widget>();
-    if (this.viewModel.learderbordStats != null) {
-      for (int count = 0;
-          count < this.viewModel.learderbordStats.length;
-          count++) {
+    if (this.viewModel.userStats != null) {
+      for (int count = 0; count < this.viewModel.userStats.length; count++) {
         result.add(Container(
             width: 160.0,
             decoration: BoxDecoration(
@@ -70,12 +67,12 @@ class _MyLeaderboardState extends State<_MyLeaderboardMobile> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text(this.viewModel.learderbordStats[count].count,
+                Text(this.viewModel.userStats[count].count,
                     style: TextStyle(
                         color: Colors.amberAccent,
                         fontFamily: 'Monte',
                         fontSize: 50)),
-                Text(this.viewModel.learderbordStats[count].name,
+                Text(this.viewModel.userStats[count].name,
                     style: TextStyle(
                         color: Color.fromRGBO(13, 169, 196, 1),
                         fontFamily: 'Monte',
@@ -90,9 +87,9 @@ class _MyLeaderboardState extends State<_MyLeaderboardMobile> {
 
   List<Widget> getDaywiseScoreListView(BuildContext context) {
     List<Widget> result = new List<Widget>();
-    if (this.viewModel.learderbordDailyStats != null) {
+    if (this.viewModel.userDailyStats != null) {
       for (int count = 0;
-          count < this.viewModel.learderbordDailyStats.length;
+          count < this.viewModel.userDailyStats.length;
           count++) {
         result.add(Container(
             width: 160.0,
@@ -104,36 +101,42 @@ class _MyLeaderboardState extends State<_MyLeaderboardMobile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text(this.viewModel.learderbordDailyStats[count].day,
+                Text(this.viewModel.userDailyStats[count].dayName.toString(),
                     style: TextStyle(
                         color: Colors.white,
                         fontFamily: 'Monte',
                         fontSize: 25)),
-                Text(this.viewModel.learderbordDailyStats[count].date,
+                Text(this.viewModel.userDailyStats[count].monthName.toString(),
                     style: TextStyle(
                         color: Colors.amberAccent,
                         fontFamily: 'Monte',
                         fontSize: 45)),
-                Text(this.viewModel.learderbordDailyStats[count].month,
+                Text(this.viewModel.userDailyStats[count].month.toString(),
                     style: TextStyle(
                         color: Colors.white,
                         fontFamily: 'Monte',
                         fontSize: 25)),
                 Text(
-                    this.viewModel.learderbordDailyStats[count].percentage +
+                    this
+                            .viewModel
+                            .userDailyStats[count]
+                            .percentageScore
+                            .toString() +
                         "%",
                     style: TextStyle(
                         color: Colors.white,
                         fontFamily: 'Monte',
                         fontSize: 30)),
                 Text(
-                    this
-                        .viewModel
-                        .learderbordDailyStats[count]
-                        .status
-                        .toUpperCase(),
+                    this.viewModel.userDailyStats[count].status == 1
+                        ? "OK"
+                        : "",
                     style: TextStyle(
-                        color: Colors.white, fontFamily: 'Monte', fontSize: 30))
+                        color: this.viewModel.userDailyStats[count].status == 1
+                            ? Colors.green
+                            : Colors.white,
+                        fontFamily: 'Monte',
+                        fontSize: 30))
               ],
             )));
         result.add(SizedBox(width: 20));
