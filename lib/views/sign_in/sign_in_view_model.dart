@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:isolationhero/core/base/base_view_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:isolationhero/core/models/auth_user.dart';
+import 'package:isolationhero/core/models/constants.dart';
 import 'package:isolationhero/core/services/secure_store.dart';
 
 class SignInViewModel extends BaseViewModel {
@@ -15,7 +16,7 @@ class SignInViewModel extends BaseViewModel {
     var body = {"email": email, "password": password};
 
     await http
-        .post('http://isolationhero.vishleshak.io/users/rest-auth/login/',
+        .post(API_BASE_URL + '/users/rest-auth/login/',
             body: body)
         .then((response) {
       if (response.statusCode == 200) {

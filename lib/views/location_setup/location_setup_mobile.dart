@@ -90,13 +90,20 @@ class _LocationSetupMobileState extends State<_LocationSetupMobile> {
                         buttonColor: Theme.of(context).buttonColor,
                         child: RaisedButton(
                           onPressed: () {
-                            Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MyLeaderboardView(),
-                              ),
-                            );
+                            this
+                                .viewModel
+                                .setLocation(this.viewModel.userLocation)
+                                .then((onValue) {
+                              if (onValue != null && onValue) {
+                                Navigator.pop(context);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MyLeaderboardView(),
+                                  ),
+                                );
+                              }
+                            });
                           },
                           child: Text('CONTINUE',
                               style: Theme.of(context).textTheme.button),

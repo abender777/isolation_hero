@@ -14,8 +14,25 @@ class _SignUpMobile extends StatefulWidget {
 class _SignUpMobileState extends State<_SignUpMobile> {
   final SignUpViewModel viewModel;
   _SignUpMobileState(this.viewModel);
-
   Widget body;
+
+  String userName;
+  String email;
+  String password;
+
+  final _formKey = GlobalKey<FormState>();
+
+  void submit() async {
+    if (this._formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      this.viewModel.register(userName, email, password).then((result) {
+        if (result != null && result) {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => LocationSetupView()));
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,106 +61,147 @@ class _SignUpMobileState extends State<_SignUpMobile> {
                         radius: 30.0,
                       )),
                 ),
-                Column(children: <Widget>[
-                  Container(
-                      padding: EdgeInsets.all(5.0),
-                      child: TextField(
-                        autocorrect: true,
-                        decoration: InputDecoration(
-                          hintText: 'Enter user name here(optional)',
-                          prefixIcon: Icon(Icons.person),
-                          hintStyle: TextStyle(
-                              color: Theme.of(context).hintColor,
-                              fontFamily: 'Monte'),
-                          filled: true,
-                          fillColor: Colors.white70,
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(8.0)),
-                            borderSide: BorderSide(
-                                color: Theme.of(context).backgroundColor,
-                                width: 1),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(8.0)),
-                            borderSide: BorderSide(
-                                color: Theme.of(context).buttonColor, width: 1),
-                          ),
+                Form(
+                    key: _formKey,
+                    child: Column(children: <Widget>[
+                      Container(
+                          padding: EdgeInsets.all(5.0),
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter username';
+                              }
+                              return null;
+                            },
+                            controller: TextEditingController()
+                              ..text = userName != null ? userName : "",
+                            onChanged: (String value) {
+                              userName = value;
+                            },
+                            onSaved: (String value) {
+                              userName = value;
+                            },
+                            decoration: InputDecoration(
+                              hintText: 'Enter user name here(optional)',
+                              prefixIcon: Icon(Icons.person),
+                              hintStyle: TextStyle(
+                                  color: Theme.of(context).hintColor,
+                                  fontFamily: 'Monte'),
+                              filled: true,
+                              fillColor: Colors.white70,
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8.0)),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).backgroundColor,
+                                    width: 1),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8.0)),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).buttonColor,
+                                    width: 1),
+                              ),
+                            ),
+                          )),
+                      Container(
+                          padding: EdgeInsets.all(5.0),
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter email';
+                              }
+                              return null;
+                            },
+                            controller: TextEditingController()
+                              ..text = email != null ? email : "",
+                            onChanged: (String value) {
+                              email = value;
+                            },
+                            onSaved: (String value) {
+                              email = value;
+                            },
+                            decoration: InputDecoration(
+                              hintText: 'Enter email here',
+                              prefixIcon: Icon(Icons.email),
+                              hintStyle: TextStyle(
+                                  color: Theme.of(context).hintColor,
+                                  fontFamily: 'Monte'),
+                              filled: true,
+                              fillColor: Colors.white70,
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8.0)),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).backgroundColor,
+                                    width: 1),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8.0)),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).buttonColor,
+                                    width: 1),
+                              ),
+                            ),
+                          )),
+                      Container(
+                          padding: EdgeInsets.all(5.0),
+                          child: TextFormField(
+                            autocorrect: true,
+                            obscureText: true,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter password';
+                              }
+                              return null;
+                            },
+                            controller: TextEditingController()
+                              ..text = password != null ? password : "",
+                            onChanged: (String value) {
+                              password = value;
+                            },
+                            onSaved: (String value) {
+                              password = value;
+                            },
+                            decoration: InputDecoration(
+                              hintText: 'Enter password here ',
+                              prefixIcon: Icon(Icons.lock),
+                              hintStyle: TextStyle(
+                                  color: Theme.of(context).hintColor,
+                                  fontFamily: 'Monte'),
+                              filled: true,
+                              fillColor: Colors.white70,
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8.0)),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).backgroundColor,
+                                    width: 1),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8.0)),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).buttonColor,
+                                    width: 1),
+                              ),
+                            ),
+                          )),
+                      ButtonTheme(
+                        minWidth: MediaQuery.of(context).size.width,
+                        height: 70.0,
+                        buttonColor: Theme.of(context).buttonColor,
+                        child: RaisedButton(
+                          onPressed: () {
+                            submit();
+                          },
+                          child: Text('CONTINUE',
+                              style: Theme.of(context).textTheme.button),
                         ),
-                      )),
-                  Container(
-                      padding: EdgeInsets.all(5.0),
-                      child: TextField(
-                        autocorrect: true,
-                        decoration: InputDecoration(
-                          hintText: 'Enter email here',
-                          prefixIcon: Icon(Icons.email),
-                          hintStyle: TextStyle(
-                              color: Theme.of(context).hintColor,
-                              fontFamily: 'Monte'),
-                          filled: true,
-                          fillColor: Colors.white70,
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(8.0)),
-                            borderSide: BorderSide(
-                                color: Theme.of(context).backgroundColor,
-                                width: 1),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(8.0)),
-                            borderSide: BorderSide(
-                                color: Theme.of(context).buttonColor, width: 1),
-                          ),
-                        ),
-                      )),
-                  Container(
-                      padding: EdgeInsets.all(5.0),
-                      child: TextField(
-                        autocorrect: true,
-                        decoration: InputDecoration(
-                          hintText: 'Enter password here ',
-                          prefixIcon: Icon(Icons.lock),
-                          hintStyle: TextStyle(
-                              color: Theme.of(context).hintColor,
-                              fontFamily: 'Monte'),
-                          filled: true,
-                          fillColor: Colors.white70,
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(8.0)),
-                            borderSide: BorderSide(
-                                color: Theme.of(context).backgroundColor,
-                                width: 1),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(8.0)),
-                            borderSide: BorderSide(
-                                color: Theme.of(context).buttonColor, width: 1),
-                          ),
-                        ),
-                      )),
-                  ButtonTheme(
-                    minWidth: MediaQuery.of(context).size.width,
-                    height: 70.0,
-                    buttonColor: Theme.of(context).buttonColor,
-                    child: RaisedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AdditionalInformationView(),
-                          ),
-                        );
-                      },
-                      child: Text('CONTINUE',
-                          style: Theme.of(context).textTheme.button),
-                    ),
-                  )
-                ]),
+                      )
+                    ])),
                 SizedBox(
                   height: 50.0,
                 ),

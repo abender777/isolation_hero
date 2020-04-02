@@ -8,11 +8,13 @@ class SecuredStorage {
   static final SecuredStorage instance = SecuredStorage._privateConstructor();
   final _storage = new FlutterSecureStorage();
 
-  Future<String> readValue(String key) async {
+  Future<String> readValue(String val) async {
     // Read value
-    _storage.read(key: key).then((onValue) {
-      return onValue;
+    String value;
+    await _storage.read(key: val).then((onValue) {
+      value = onValue.toString();
     });
+    return value;
   }
 
   Future<void> deleteValue(String key) async {

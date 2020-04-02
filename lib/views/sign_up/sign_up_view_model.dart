@@ -1,10 +1,15 @@
 
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:isolationhero/core/base/base_view_model.dart';
+import 'package:isolationhero/core/models/auth_user.dart';
+import 'package:isolationhero/core/models/constants.dart';
 import 'package:isolationhero/core/models/setting.dart';
 import 'package:isolationhero/core/services/database_helper.dart';
 import 'package:http/http.dart' as http;
+import 'package:isolationhero/core/services/secure_store.dart';
 
 class SignUpViewModel extends BaseViewModel {
   SignUpViewModel();
@@ -94,23 +99,44 @@ class SignUpViewModel extends BaseViewModel {
   }
 
 
-  Future<bool> createUser(
-      String userName, String email, String password) async {
-    var body = {
-      "email": email,
-      "password1": password,
-      "password2": password,
-    };
+  Future<bool> login(String email, String password) async {
+    bool result = false;
+    var body = {"email": email, "password": password};
 
-    await http.post(
-        'http://isolationhero.vishleshak.io/users/rest-auth/registration/',
-        body: body).then((response) {
+    await http
+        .post(API_BASE_URL + '/users/rest-auth/login/',
+            body: body)
+        .then((response) {
       if (response.statusCode == 200) {
-        return true;
+        AuthUser authUser = AuthUser.fromJson(json.decode(response.body));
+        SecuredStorage securedStorage = SecuredStorage.instance;
+        securedStorage.insertValue("token", authUser.token);
+        securedStorage.insertValue("user_id", authUser.user.pk.toString());
+        result = true;
+      } else {
+        result = false;
       }
-       return false;
     });
-    return null;
+    return result;
   }
+
+    Future<bool> register(String userName, String email, String password) async {
+    bool result = false;
+    var body = {"email": email, "password1": password, "password2": password};
+    print(API_BASE_URL + '/users/rest-auth/registration/');
+    await http
+        .post(API_BASE_URL + '/users/rest-auth/registration/',
+            body: body)
+        .then((response) {
+      if (response.statusCode == 201) {
+        login(email, password);
+        result = true;
+      } else {
+        result = false;
+      }
+    });
+    return result;
+  }
+
 
 }
