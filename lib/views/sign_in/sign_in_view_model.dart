@@ -8,7 +8,6 @@ import 'package:isolationhero/core/services/secure_store.dart';
 
 class SignInViewModel extends BaseViewModel {
 
-
   SignInViewModel();
 
   Future<bool> login(String userName, String email, String password) async {

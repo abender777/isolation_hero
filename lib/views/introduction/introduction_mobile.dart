@@ -16,37 +16,13 @@ class _IntroductionPageState extends State<_IntroductionMobile> {
 
   _IntroductionPageState(this.viewModel);
 
-  bool isIntroSeen;
   Widget body;
-
-  Future<bool> isIntroductionSeenByUser() async {
-    bool result = false;
-    DatabaseHelper helper = DatabaseHelper.instance;
-    await helper.querySetting("introduction_viewed_by_user").then((onValue) {
-      if (onValue != null) {
-        result = onValue.value == 1;
-      }
-    });
-    return result;
-  }
-
-  bool isUserLoggedIn() {
-    DatabaseHelper helper = DatabaseHelper.instance;
-    helper.querySetting("user_logged_in").then((onValue) {
-      if (onValue != null) {
-        return onValue.value;
-      }
-      return false;
-    });
-    return false;
-  }
 
   @override
   void initState() {
     super.initState();
-    isIntroductionSeenByUser().then((onValue) {
-      isIntroSeen = onValue;
-    });
+    this.viewModel.isIntroductionSeenByUser();
+    this.viewModel.verifyUserToken();
   }
 
   void _onIntroEnd(context) {
@@ -66,11 +42,17 @@ class _IntroductionPageState extends State<_IntroductionMobile> {
 
   @override
   Widget build(BuildContext context) {
-    if (isIntroSeen == null) {
+    if (this.viewModel.isTokenValid != null && this.viewModel.isTokenValid) {
+      setState(() {
+        body = MyLeaderboardView();
+      });
+    }
+    if (this.viewModel.isTokenValid != null && !this.viewModel.isTokenValid) {
       setState(() {
         body = SignUpView();
       });
-    } else {
+    }
+    if (this.viewModel.isIntroSeen != null && !this.viewModel.isIntroSeen) {
       setState(() {
         const bodyStyle = TextStyle(fontSize: 19.0);
         const pageDecoration = const PageDecoration(
@@ -145,7 +127,12 @@ class _IntroductionPageState extends State<_IntroductionMobile> {
           ),
         );
       });
+    } else {
+      setState(() {
+        body = Center(child: CircularProgressIndicator());
+      });
     }
+
     return body;
   }
 }

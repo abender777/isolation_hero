@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,9 +19,9 @@ class SignUpViewModel extends BaseViewModel {
 
   Future<bool> signInWithGoogle() async {
     final GoogleSignInAccount googleSignInAccount =
-    await _googleSignIn.signIn();
+        await _googleSignIn.signIn();
     final GoogleSignInAuthentication googleSignInAuthentication =
-    await googleSignInAccount.authentication;
+        await googleSignInAccount.authentication;
 
     final AuthCredential credential = GoogleAuthProvider.getCredential(
       accessToken: googleSignInAuthentication.accessToken,
@@ -46,7 +45,6 @@ class SignUpViewModel extends BaseViewModel {
     return true;
   }
 
-
   void addLoginInfoInDatabase(
       String displayName, String photoUrl, String email) async {
     try {
@@ -63,7 +61,6 @@ class SignUpViewModel extends BaseViewModel {
       print(e);
     }
   }
-
 
   void insertSetting(String settingName, Object settingValue) {
     DatabaseHelper helper = DatabaseHelper.instance;
@@ -98,14 +95,12 @@ class SignUpViewModel extends BaseViewModel {
     return user;
   }
 
-
   Future<bool> login(String email, String password) async {
     bool result = false;
     var body = {"email": email, "password": password};
 
     await http
-        .post(API_BASE_URL + '/users/rest-auth/login/',
-            body: body)
+        .post(API_BASE_URL + '/users/rest-auth/login/', body: body)
         .then((response) {
       if (response.statusCode == 200) {
         AuthUser authUser = AuthUser.fromJson(json.decode(response.body));
@@ -120,13 +115,12 @@ class SignUpViewModel extends BaseViewModel {
     return result;
   }
 
-    Future<bool> register(String userName, String email, String password) async {
+  Future<bool> register(String userName, String email, String password) async {
     bool result = false;
     var body = {"email": email, "password1": password, "password2": password};
     print(API_BASE_URL + '/users/rest-auth/registration/');
     await http
-        .post(API_BASE_URL + '/users/rest-auth/registration/',
-            body: body)
+        .post(API_BASE_URL + '/users/rest-auth/registration/', body: body)
         .then((response) {
       if (response.statusCode == 201) {
         login(email, password);
@@ -137,6 +131,4 @@ class SignUpViewModel extends BaseViewModel {
     });
     return result;
   }
-
-
 }
