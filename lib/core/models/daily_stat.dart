@@ -28,6 +28,7 @@ class UserDailyStat {
   UserDailyStat.fromJson(Map<String, dynamic> json) {
     var dateTime = new DateTime.utc(json['year'], json['month'], json['day']);
     id = json['id'];
+    day = json['day'];
     dayName = new DateFormat('EEEE').format(dateTime);
     monthName = new DateFormat('LLL').format(dateTime);
     month = json['month'];

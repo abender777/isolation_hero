@@ -106,12 +106,12 @@ class _MyLeaderboardState extends State<_MyLeaderboardMobile> {
                         color: Colors.white,
                         fontFamily: 'Monte',
                         fontSize: 25)),
-                Text(this.viewModel.userDailyStats[count].monthName.toString(),
+                Text(this.viewModel.userDailyStats[count].day.toString(),
                     style: TextStyle(
                         color: Colors.amberAccent,
                         fontFamily: 'Monte',
                         fontSize: 45)),
-                Text(this.viewModel.userDailyStats[count].month.toString(),
+                Text(this.viewModel.userDailyStats[count].monthName.toString(),
                     style: TextStyle(
                         color: Colors.white,
                         fontFamily: 'Monte',
