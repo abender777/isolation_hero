@@ -118,7 +118,6 @@ class SignUpViewModel extends BaseViewModel {
   Future<bool> register(String userName, String email, String password) async {
     bool result = false;
     var body = {"email": email, "password1": password, "password2": password};
-    print(API_BASE_URL + '/users/rest-auth/registration/');
     await http
         .post(API_BASE_URL + '/users/rest-auth/registration/', body: body)
         .then((response) {

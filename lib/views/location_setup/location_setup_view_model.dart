@@ -63,8 +63,8 @@ class LocationSetupViewModel extends BaseViewModel {
 
   Future<bool> setLocation(UserLocation userLocation) async {
     bool result = false;
-    SecuredStorage securedStorage = SecuredStorage.instance;
 
+    SecuredStorage securedStorage = SecuredStorage.instance;
     String userId = await securedStorage.readValue("user_id");
 
     var body = {
@@ -85,10 +85,32 @@ class LocationSetupViewModel extends BaseViewModel {
         .then((response) {
       if (response.statusCode == 201) {
         result = true;
+        addUserScore(userId);
       } else {
         result = false;
       }
     });
     return result;
   }
+
+  Future<bool> addUserScore(String userId) async {
+    bool result = false;
+
+    SecuredStorage securedStorage = SecuredStorage.instance;
+    String userId = await securedStorage.readValue("user_id");
+
+    var body = {"user": userId, "points": "100", "level": "1"};
+
+    await http
+        .post(API_BASE_URL + '/api/userlevelscore/', body: body)
+        .then((response) {
+      if (response.statusCode == 200) {
+        result = true;
+      } else {
+        result = false;
+      }
+    });
+    return result;
+  }
+
 }

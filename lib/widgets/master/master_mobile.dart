@@ -25,11 +25,10 @@ class _MasterMobile extends StatelessWidget {
                           fontSize: 18.0,
                           color: Colors.white,
                           fontFamily: 'Monte')),
-                  backgroundColor: Colors.transparent,
                   elevation: 0.0,
                   centerTitle: true,
                 ),
-                backgroundColor: Colors.transparent,
+                backgroundColor: Theme.of(context).backgroundColor,
                 resizeToAvoidBottomInset: false,
                 body: buildBody(context, body),
                 drawer: DrawerWidget())
@@ -72,8 +71,10 @@ class _MasterMobile extends StatelessWidget {
                     icon: Icon(FontAwesomeIcons.sortNumericUpAlt,
                         color: Colors.amber),
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => MyLeaderboardView()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MyLeaderboardView()));
                     },
                     padding: EdgeInsets.only(bottom: 0),
                   )
@@ -126,8 +127,10 @@ class _MasterMobile extends StatelessWidget {
                   IconButton(
                     icon: Icon(FontAwesomeIcons.running, color: Colors.amber),
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => GoingOutView()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GoingOutView()));
                     },
                     padding: EdgeInsets.only(bottom: 0),
                   )

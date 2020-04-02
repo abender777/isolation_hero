@@ -22,6 +22,7 @@ class SignInViewModel extends BaseViewModel {
         AuthUser authUser = AuthUser.fromJson(json.decode(response.body));
         SecuredStorage securedStorage = SecuredStorage.instance;
         securedStorage.insertValue("token", authUser.token);
+        securedStorage.insertValue("user_id", authUser.user.pk.toString());
         result = true;
       } else {
         result = false;

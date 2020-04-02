@@ -127,11 +127,7 @@ class _IntroductionPageState extends State<_IntroductionMobile> {
           ),
         );
       });
-    } else {
-      setState(() {
-        body = Center(child: CircularProgressIndicator());
-      });
-    }
+    } 
 
     return body;
   }

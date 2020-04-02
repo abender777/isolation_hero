@@ -5,12 +5,11 @@ import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:isolationhero/core/locator.dart';
+import 'package:isolationhero/core/models/constants.dart';
 import 'package:isolationhero/theme/app_theme.dart';
 import 'package:isolationhero/views/introduction/introduction_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'core/services/navigator_service.dart';
-
-const EVENTS_KEY = "fetch_events";
 
 /// This "Headless Task" is run when app is terminated.
 void backgroundFetchHeadlessTask(String taskId) async {
@@ -88,7 +87,6 @@ class PlatformEnabledButton extends RaisedButton {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool tokenValid;
   @override
   void initState() {
     super.initState();
@@ -96,6 +94,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: lightTheme,

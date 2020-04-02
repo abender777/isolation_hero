@@ -1,5 +1,8 @@
 library going_out_view;
 
+import 'package:isolationhero/core/models/back_in_time.dart';
+import 'package:isolationhero/core/models/movement_reason.dart';
+import 'package:isolationhero/views/my_leaderboard/my_leaderboard_view.dart';
 import 'package:isolationhero/widgets/master/master_widget.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:responsive_builder/responsive_builder.dart';
