@@ -16,17 +16,17 @@ class SignInViewModel extends BaseViewModel {
 
   set setLoginError(String loginError) {
     this._loginError = loginError;
-    notifyListeners();
+    //notifyListeners();
   }
 
   Future<bool> login(String userName, String email, String password) async {
     bool result = false;
     var body = {"email": email, "password": password};
 
-    await http
+    final response = await http
         .post(API_BASE_URL + '/users/rest-auth/login/',
-            body: body)
-        .then((response) {
+            body: body);
+
       if (response.statusCode == 200) {
         AuthUser authUser = AuthUser.fromJson(json.decode(response.body));
         SecuredStorage securedStorage = SecuredStorage.instance;
@@ -39,10 +39,8 @@ class SignInViewModel extends BaseViewModel {
         if (error['non_field_errors'] != null) {
           setLoginError = error['non_field_errors'][0].toString();
         }
-        _loginError = json.decode(response.body);
         result = false;
       }
-    });
     return result;
   }
 }

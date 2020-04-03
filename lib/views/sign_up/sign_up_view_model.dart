@@ -52,7 +52,7 @@ class SignUpViewModel extends BaseViewModel {
           login(emailId, firebaseUserId);
         }
         if (json.decode(response.body)['user_exists'] == 0) {
-          register(emailId, firebaseUserId, firebaseUserId);
+          register("", emailId, firebaseUserId);
         }
         result = true;
       }
@@ -114,40 +114,39 @@ class SignUpViewModel extends BaseViewModel {
     bool result = false;
     var body = {"email": email, "password": password};
 
-    await http
-        .post(API_BASE_URL + '/users/rest-auth/login/', body: body)
-        .then((response) {
-      if (response.statusCode == 200) {
-        AuthUser authUser = AuthUser.fromJson(json.decode(response.body));
-        SecuredStorage securedStorage = SecuredStorage.instance;
-        securedStorage.insertValue("token", authUser.token);
-        securedStorage.insertValue("user_id", authUser.user.pk.toString());
-        result = true;
-      } else {
-        result = false;
-      }
-    });
+    final response =
+        await http.post(API_BASE_URL + '/users/rest-auth/login/', body: body);
+
+    if (response.statusCode == 200) {
+      AuthUser authUser = AuthUser.fromJson(json.decode(response.body));
+      SecuredStorage securedStorage = SecuredStorage.instance;
+      securedStorage.insertValue("token", authUser.token);
+      securedStorage.insertValue("user_id", authUser.user.pk.toString());
+      result = true;
+    } else {
+      result = false;
+    }
     return result;
   }
 
   Future<bool> register(String userName, String email, String password) async {
     bool result = false;
     var body = {"email": email, "password1": password, "password2": password};
-    await http
-        .post(API_BASE_URL + '/users/rest-auth/registration/', body: body)
-        .then((response) {
-      if (response.statusCode == 201) {
-        login(email, password);
-        result = true;
-      } else if (response.statusCode == 400) {
-        var error = json.decode(response.body);
-        if (error['email'] != null) {
-          setLoginError = error['email'][0].toString();
-        }
-        _loginError = json.decode(response.body);
-        result = false;
+    final response = await http
+        .post(API_BASE_URL + '/users/rest-auth/registration/', body: body);
+
+    if (response.statusCode == 201) {
+      login(email, password);
+      result = true;
+    }
+    if (response.statusCode == 400) {
+      var error = json.decode(response.body);
+      if (error['email'] != null) {
+        setLoginError = error['email'][0].toString();
       }
-    });
+      _loginError = json.decode(response.body);
+      result = false;
+    }
     return result;
   }
 }

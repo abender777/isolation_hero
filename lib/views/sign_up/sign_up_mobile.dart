@@ -30,11 +30,33 @@ class _SignUpMobileState extends State<_SignUpMobile> {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => LocationSetupView()));
         } else {
-          SnackBar(
-            content: Text(this.viewModel.loginError));
+          _showDialog(this.viewModel.loginError);
         }
       });
     }
+  }
+
+  void _showDialog(String message) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Login Error!!"),
+          content: new Text(message),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -198,9 +220,8 @@ class _SignUpMobileState extends State<_SignUpMobile> {
                         buttonColor: Theme.of(context).buttonColor,
                         child: RaisedButton(
                           onPressed: () {
-                            SnackBar(
-                              content: Text('Creating your account'));
-                              submit();
+                            SnackBar(content: Text('Creating your account'));
+                            submit();
                           },
                           child: Text('CONTINUE',
                               style: Theme.of(context).textTheme.button),
