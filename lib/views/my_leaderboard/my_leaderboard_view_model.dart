@@ -27,10 +27,28 @@ class MyLeaderboardViewModel extends BaseViewModel {
   }
 
   void getUserStats() async {
-    List<UserStat> learderbordStats = new List<UserStat>();
-    learderbordStats.add(new UserStat(name: "points", count: "1433"));
-    learderbordStats.add(new UserStat(name: "level", count: "6"));
-    setUserStats = learderbordStats;
+    SecuredStorage securedStorage = SecuredStorage.instance;
+    String userId = await securedStorage.readValue("user_id");
+
+    final response =
+        await http.get(API_BASE_URL + '/api/userscore/' + userId + '/');
+
+    if (response.statusCode == 200) {
+      var tagObjsJson = json.decode(response.body);
+
+      List<UserStat> learderbordStats = new List<UserStat>();
+      learderbordStats.add(new UserStat(
+          name: "points",
+          count: tagObjsJson["points"] != null
+              ? tagObjsJson["points"].toString()
+              : "0"));
+      learderbordStats.add(new UserStat(
+          name: "level",
+          count: tagObjsJson["level_id"] != null
+              ? tagObjsJson["level_id"].toString()
+              : "0"));
+      setUserStats = learderbordStats;
+    }
   }
 
   void getUserDailyStats() async {
@@ -45,8 +63,6 @@ class MyLeaderboardViewModel extends BaseViewModel {
       setUserDailyStats = tagObjsJson
           .map((tagJson) => UserDailyStat.fromJson(tagJson))
           .toList();
-    } else {
-      throw Exception('Failed to load post');
     }
   }
 }

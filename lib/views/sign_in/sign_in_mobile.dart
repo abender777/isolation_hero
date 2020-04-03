@@ -25,7 +25,7 @@ class _SignInMobileState extends State<_SignInMobile> {
       _formKey.currentState.save();
       this.viewModel.login("", userNameOrEmail, password).then((result) {
         if (result != null && result) {
-          Navigator.push(context,
+          locator<NavigatorService>().navigateToPageWithReplacement(
               MaterialPageRoute(builder: (context) => MyLeaderboardView()));
         } else {
           _showDialog(this.viewModel.loginError);

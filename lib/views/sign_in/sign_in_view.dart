@@ -1,12 +1,14 @@
 library sign_in_view;
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:isolationhero/core/locator.dart';
 import 'package:isolationhero/views/my_leaderboard/my_leaderboard_view.dart';
 import 'package:isolationhero/widgets/master/master_widget.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:flutter/material.dart';
 import 'sign_in_view_model.dart';
+import '../../core/services/navigator_service.dart';
 
 part 'sign_in_mobile.dart';
 part 'sign_in_tablet.dart';

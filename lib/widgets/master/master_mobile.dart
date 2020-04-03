@@ -71,8 +71,7 @@ class _MasterMobile extends StatelessWidget {
                     icon: Icon(FontAwesomeIcons.sortNumericUpAlt,
                         color: Colors.amber),
                     onPressed: () {
-                      Navigator.push(
-                          context,
+                      locator<NavigatorService>().navigateToPageWithReplacement(
                           MaterialPageRoute(
                               builder: (context) => MyLeaderboardView()));
                     },
@@ -99,8 +98,7 @@ class _MasterMobile extends StatelessWidget {
                   IconButton(
                     icon: Icon(FontAwesomeIcons.trophy, color: Colors.amber),
                     onPressed: () {
-                      Navigator.push(
-                          context,
+                      locator<NavigatorService>().navigateToPageWithReplacement(
                           MaterialPageRoute(
                               builder: (context) => LeaderboardView()));
                     },
@@ -127,9 +125,7 @@ class _MasterMobile extends StatelessWidget {
                   IconButton(
                     icon: Icon(FontAwesomeIcons.running, color: Colors.amber),
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
+                      locator<NavigatorService>().navigateToPageWithReplacement(MaterialPageRoute(
                               builder: (context) => GoingOutView()));
                     },
                     padding: EdgeInsets.only(bottom: 0),
@@ -156,9 +152,7 @@ class _MasterMobile extends StatelessWidget {
                     icon:
                         Icon(FontAwesomeIcons.plusCircle, color: Colors.amber),
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
+                            locator<NavigatorService>().navigateToPageWithReplacement(MaterialPageRoute(
                               builder: (context) => EarnMorePointsView()));
                     },
                     padding: EdgeInsets.only(bottom: 0),

@@ -2,6 +2,7 @@ library sign_up_view;
 
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:isolationhero/core/locator.dart';
 import 'package:isolationhero/views/location_setup/location_setup_view.dart';
 import 'package:isolationhero/views/my_leaderboard/my_leaderboard_view.dart';
 import 'package:isolationhero/views/sign_in/sign_in_view.dart';
@@ -10,6 +11,7 @@ import 'package:provider_architecture/provider_architecture.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:flutter/material.dart';
 import 'sign_up_view_model.dart';
+import '../../core/services/navigator_service.dart';
 
 part 'sign_up_mobile.dart';
 part 'sign_up_tablet.dart';

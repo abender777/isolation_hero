@@ -44,9 +44,8 @@ class SignUpViewModel extends BaseViewModel {
 
   Future<bool> fetchAndSetUserId(String emailId, String firebaseUserId) async {
     bool result = false;
-    await http
-        .get(API_BASE_URL + '/api/checkuserexists/' + emailId)
-        .then((response) {
+    final response = await http
+        .get(API_BASE_URL + '/api/checkuserexists/' + emailId);
       if (response.statusCode == 200) {
         if (json.decode(response.body)['user_exists'] == 1) {
           login(emailId, firebaseUserId);
@@ -56,7 +55,6 @@ class SignUpViewModel extends BaseViewModel {
         }
         result = true;
       }
-    });
     return result;
   }
 
@@ -137,6 +135,7 @@ class SignUpViewModel extends BaseViewModel {
 
     if (response.statusCode == 201) {
       login(email, password);
+      addPoints();
       result = true;
     }
     if (response.statusCode == 400) {
@@ -148,6 +147,21 @@ class SignUpViewModel extends BaseViewModel {
         setLoginError = error['password1'][0].toString();
       }
       result = false;
+    }
+    return result;
+  }
+
+  Future<bool> addPoints() async {
+    bool result = false;
+    SecuredStorage securedStorage = SecuredStorage.instance;
+    String userId = await securedStorage.readValue("user_id");
+    var body = {"points": "100", "user": userId, "level": "1"};
+
+    final response =
+        await http.post(API_BASE_URL + '/api/userlevelscore/', body: body);
+
+    if (response.statusCode == 201) {
+      result = true;
     }
     return result;
   }
