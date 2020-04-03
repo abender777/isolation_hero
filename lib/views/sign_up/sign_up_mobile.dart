@@ -239,10 +239,25 @@ class _SignUpMobileState extends State<_SignUpMobile> {
                           onPressed: () {
                             this.viewModel.signInWithGoogle().then((userId) {
                               if (userId != null && userId) {
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute(builder: (context) {
-                                  return MyLeaderboardView();
-                                }));
+                                this
+                                    .viewModel
+                                    .getUserIsolationLocation()
+                                    .then((onValue) {
+                                  if (onValue != null && onValue) {
+                                    locator<NavigatorService>()
+                                        .navigateToPageWithReplacement(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    LocationSetupView()));
+                                  }
+                                  if (onValue != null && !onValue) {
+                                    locator<NavigatorService>()
+                                        .navigateToPageWithReplacement(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MyLeaderboardView()));
+                                  }
+                                });
                               }
                             });
                           },

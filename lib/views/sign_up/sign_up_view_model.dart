@@ -17,6 +17,15 @@ class SignUpViewModel extends BaseViewModel {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
+  bool _isolationLocationSet;
+
+  bool get isolationLocationSet => this._isolationLocationSet;
+
+  set setIsolationLocationSet(bool isolationLocationSet) {
+    this._isolationLocationSet = isolationLocationSet;
+    notifyListeners();
+  }
+
   String _loginError;
 
   String get loginError => this._loginError;
@@ -44,17 +53,17 @@ class SignUpViewModel extends BaseViewModel {
 
   Future<bool> fetchAndSetUserId(String emailId, String firebaseUserId) async {
     bool result = false;
-    final response = await http
-        .get(API_BASE_URL + '/api/checkuserexists/' + emailId);
-      if (response.statusCode == 200) {
-        if (json.decode(response.body)['user_exists'] == 1) {
-          login(emailId, firebaseUserId);
-        }
-        if (json.decode(response.body)['user_exists'] == 0) {
-          register("", emailId, firebaseUserId);
-        }
-        result = true;
+    final response =
+        await http.get(API_BASE_URL + '/api/checkuserexists/' + emailId);
+    if (response.statusCode == 200) {
+      if (json.decode(response.body)['user_exists'] == 1) {
+        login(emailId, firebaseUserId);
       }
+      if (json.decode(response.body)['user_exists'] == 0) {
+        register("", emailId, firebaseUserId);
+      }
+      result = true;
+    }
     return result;
   }
 
@@ -162,6 +171,25 @@ class SignUpViewModel extends BaseViewModel {
 
     if (response.statusCode == 201) {
       result = true;
+    }
+    return result;
+  }
+
+  Future<bool> getUserIsolationLocation() async {
+    bool result = false;
+    SecuredStorage securedStorage = SecuredStorage.instance;
+    String userId = await securedStorage.readValue("user_id");
+
+    final response = await http
+        .get(API_BASE_URL + '/api/isolationlocationbyuser/' + userId + '/');
+
+    if (response.statusCode == 200) {
+      setIsolationLocationSet = true;
+      result = true;
+    }
+    if (response.statusCode == 404) {
+      setIsolationLocationSet = false;
+      result = false;
     }
     return result;
   }

@@ -44,8 +44,8 @@ class MyLeaderboardViewModel extends BaseViewModel {
               : "0"));
       learderbordStats.add(new UserStat(
           name: "level",
-          count: tagObjsJson["level_id"] != null
-              ? tagObjsJson["level_id"].toString()
+          count: tagObjsJson["level"] != null
+              ? tagObjsJson["level"].toString()
               : "0"));
       setUserStats = learderbordStats;
     }
