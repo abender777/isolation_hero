@@ -10,6 +10,15 @@ class SignInViewModel extends BaseViewModel {
 
   SignInViewModel();
 
+  String _loginError;
+
+  String get loginError => this._loginError;
+
+  set setLoginError(String loginError) {
+    this._loginError = loginError;
+    notifyListeners();
+  }
+
   Future<bool> login(String userName, String email, String password) async {
     bool result = false;
     var body = {"email": email, "password": password};
@@ -24,7 +33,13 @@ class SignInViewModel extends BaseViewModel {
         securedStorage.insertValue("token", authUser.token);
         securedStorage.insertValue("user_id", authUser.user.pk.toString());
         result = true;
-      } else {
+      } 
+      if (response.statusCode == 400) {
+        var error = json.decode(response.body);
+        if (error['non_field_errors'] != null) {
+          setLoginError = error['non_field_errors'][0].toString();
+        }
+        _loginError = json.decode(response.body);
         result = false;
       }
     });

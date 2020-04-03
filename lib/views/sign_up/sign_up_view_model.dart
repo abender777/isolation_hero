@@ -17,6 +17,15 @@ class SignUpViewModel extends BaseViewModel {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
+  String _loginError;
+
+  String get loginError => this._loginError;
+
+  set setLoginError(String loginError) {
+    this._loginError = loginError;
+    notifyListeners();
+  }
+
   Future<bool> signInWithGoogle() async {
     final GoogleSignInAccount googleSignInAccount =
         await _googleSignIn.signIn();
@@ -30,19 +39,25 @@ class SignUpViewModel extends BaseViewModel {
     final AuthResult authResult = await _auth.signInWithCredential(credential);
     final FirebaseUser user = authResult.user;
     addLoginInfoInDatabase(user.displayName, user.photoUrl, user.email);
-    return fetchAndSetUserId(
-        user.email, user.displayName, user.photoUrl, "Google");
+    return await fetchAndSetUserId(user.email, user.uid);
   }
 
-  bool fetchAndSetUserId(
-      String emailId, String displayName, String photoUrl, String method) {
-    final body = {
-      "display_name": displayName,
-      "email_id": emailId,
-      "photo_url": photoUrl,
-      "signup_by": method
-    };
-    return true;
+  Future<bool> fetchAndSetUserId(String emailId, String firebaseUserId) async {
+    bool result = false;
+    await http
+        .get(API_BASE_URL + '/api/checkuserexists/' + emailId)
+        .then((response) {
+      if (response.statusCode == 200) {
+        if (json.decode(response.body)['user_exists'] == 1) {
+          login(emailId, firebaseUserId);
+        }
+        if (json.decode(response.body)['user_exists'] == 0) {
+          register(emailId, firebaseUserId, firebaseUserId);
+        }
+        result = true;
+      }
+    });
+    return result;
   }
 
   void addLoginInfoInDatabase(
@@ -124,7 +139,12 @@ class SignUpViewModel extends BaseViewModel {
       if (response.statusCode == 201) {
         login(email, password);
         result = true;
-      } else {
+      } else if (response.statusCode == 400) {
+        var error = json.decode(response.body);
+        if (error['email'] != null) {
+          setLoginError = error['email'][0].toString();
+        }
+        _loginError = json.decode(response.body);
         result = false;
       }
     });

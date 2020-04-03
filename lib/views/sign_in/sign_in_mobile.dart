@@ -28,6 +28,8 @@ class _SignInMobileState extends State<_SignInMobile> {
         if (result != null && result) {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => MyLeaderboardView()));
+        } else {
+          SnackBar(content: Text(this.viewModel.loginError));
         }
       });
     }
@@ -38,97 +40,105 @@ class _SignInMobileState extends State<_SignInMobile> {
     setState(() {
       body = Stack(children: <Widget>[
         Form(
-        key: _formKey,
-        child: Container(
-            padding: EdgeInsets.only(top: 30.0),
-            child: Column(children: <Widget>[
-              Container(
-                  margin: EdgeInsets.only(top: 30),
-                  padding: EdgeInsets.all(5.0),
-                  child: Row(children: <Widget>[
-                    IconButton(
-                        icon: Icon(Icons.arrow_back, color: Colors.white),
-                        onPressed: null),
-                    Text("Sign In",
-                        style: TextStyle(color: Colors.white, fontSize: 30)),
-                  ])),
-              Container(
-                  padding: EdgeInsets.all(5.0),
-                  child: TextFormField(
-                    autocorrect: true,
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter user name or email';
-                      }
-                      return null;
-                    },
-                    controller: TextEditingController()
-                      ..text = userNameOrEmail != null ? userNameOrEmail : "",
-                    onChanged: (String value) {
-                      userNameOrEmail = value;
-                    },
-                    onSaved: (String value) {
-                      userNameOrEmail = value;
-                    },
-                    decoration: InputDecoration(
-                      hintText: 'Username OR Email',
-                      prefixIcon: Icon(Icons.person),
-                      hintStyle: TextStyle(
-                          color: Theme.of(context).hintColor,
-                          fontFamily: 'Monte'),
-                      filled: true,
-                      fillColor: Colors.white70,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).backgroundColor, width: 1),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).buttonColor, width: 1),
-                      ),
-                    ),
-                  )),
-              Container(
-                  padding: EdgeInsets.all(5.0),
-                  child: TextFormField(
-                    obscureText: true,
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter password';
-                      }
-                      return null;
-                    },
-                    controller: TextEditingController()
-                      ..text = password != null ? password : "",
-                    onChanged: (String value) {
-                      password = value;
-                    },
-                    onSaved: (String value) {
-                      password = value;
-                    },
-                    decoration: InputDecoration(
-                      hintText: 'Password',
-                      prefixIcon: Icon(FontAwesomeIcons.eye),
-                      hintStyle: TextStyle(
-                          color: Theme.of(context).hintColor,
-                          fontFamily: 'Monte'),
-                      filled: true,
-                      fillColor: Colors.white70,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).backgroundColor, width: 1),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).buttonColor, width: 1),
-                      ),
-                    ),
-                  ))
-            ]))),
+            key: _formKey,
+            child: Container(
+                padding: EdgeInsets.only(top: 30.0),
+                child: Column(children: <Widget>[
+                  Container(
+                      margin: EdgeInsets.only(top: 30),
+                      padding: EdgeInsets.all(5.0),
+                      child: Row(children: <Widget>[
+                        IconButton(
+                            icon: Icon(Icons.arrow_back, color: Colors.white),
+                            onPressed: null),
+                        Text("Sign In",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 30)),
+                      ])),
+                  Container(
+                      padding: EdgeInsets.all(5.0),
+                      child: TextFormField(
+                        autocorrect: true,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Please enter user name or email';
+                          }
+                          return null;
+                        },
+                        controller: TextEditingController()
+                          ..text =
+                              userNameOrEmail != null ? userNameOrEmail : "",
+                        onChanged: (String value) {
+                          userNameOrEmail = value;
+                        },
+                        onSaved: (String value) {
+                          userNameOrEmail = value;
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Username OR Email',
+                          prefixIcon: Icon(Icons.person),
+                          hintStyle: TextStyle(
+                              color: Theme.of(context).hintColor,
+                              fontFamily: 'Monte'),
+                          filled: true,
+                          fillColor: Colors.white70,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0)),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).backgroundColor,
+                                width: 1),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0)),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).buttonColor, width: 1),
+                          ),
+                        ),
+                      )),
+                  Container(
+                      padding: EdgeInsets.all(5.0),
+                      child: TextFormField(
+                        obscureText: true,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Please enter password';
+                          }
+                          return null;
+                        },
+                        controller: TextEditingController()
+                          ..text = password != null ? password : "",
+                        onChanged: (String value) {
+                          password = value;
+                        },
+                        onSaved: (String value) {
+                          password = value;
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Password',
+                          prefixIcon: Icon(FontAwesomeIcons.eye),
+                          hintStyle: TextStyle(
+                              color: Theme.of(context).hintColor,
+                              fontFamily: 'Monte'),
+                          filled: true,
+                          fillColor: Colors.white70,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0)),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).backgroundColor,
+                                width: 1),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0)),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).buttonColor, width: 1),
+                          ),
+                        ),
+                      ))
+                ]))),
         Align(
           alignment: FractionalOffset.bottomCenter,
           child: ButtonTheme(

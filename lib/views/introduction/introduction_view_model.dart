@@ -1,12 +1,9 @@
-import 'dart:convert';
-
 import 'package:isolationhero/core/base/base_view_model.dart';
 import 'package:isolationhero/core/models/constants.dart';
 import 'package:isolationhero/core/models/setting.dart';
 import 'package:isolationhero/core/services/database_helper.dart';
 import 'package:isolationhero/core/services/secure_store.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class IntroductionViewModel extends BaseViewModel {
   IntroductionViewModel();
@@ -41,16 +38,6 @@ class IntroductionViewModel extends BaseViewModel {
     String token = await securedStorage.readValue("token");
     bool isTokenValid = await verifyToken(token);
     setIsTokenValid = isTokenValid;
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    // Read fetch_events from SharedPreferences
-    List<String> events = [];
-    String json = prefs.getString(EVENTS_KEY);
-    if (json != null) {
-      events = jsonDecode(json).cast<String>();
-    }
-    print(events);
   }
 
   Future<bool> verifyToken(String token) async {

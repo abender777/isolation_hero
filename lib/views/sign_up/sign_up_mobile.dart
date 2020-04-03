@@ -29,6 +29,9 @@ class _SignUpMobileState extends State<_SignUpMobile> {
         if (result != null && result) {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => LocationSetupView()));
+        } else {
+          SnackBar(
+            content: Text(this.viewModel.loginError));
         }
       });
     }
@@ -195,7 +198,9 @@ class _SignUpMobileState extends State<_SignUpMobile> {
                         buttonColor: Theme.of(context).buttonColor,
                         child: RaisedButton(
                           onPressed: () {
-                            submit();
+                            SnackBar(
+                              content: Text('Creating your account'));
+                              submit();
                           },
                           child: Text('CONTINUE',
                               style: Theme.of(context).textTheme.button),
