@@ -144,7 +144,9 @@ class SignUpViewModel extends BaseViewModel {
       if (error['email'] != null) {
         setLoginError = error['email'][0].toString();
       }
-      _loginError = json.decode(response.body);
+      if (error['password1'] != null) {
+        setLoginError = error['password1'][0].toString();
+      }
       result = false;
     }
     return result;
