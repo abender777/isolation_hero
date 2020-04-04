@@ -109,7 +109,7 @@ class _GoingOutMobileState extends State<_GoingOutMobile> {
                                 // dropdown below..
                                 child: new DropdownButton<String>(
                                     isExpanded: true,
-                                    hint: Text("Back In"),
+                                    hint: Text("Back In", style: TextStyle(color: Colors.white)),
                                     value: _selectedTime,
                                     items: this
                                         .viewModel
