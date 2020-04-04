@@ -107,7 +107,7 @@ class _SignUpMobileState extends State<_SignUpMobile> {
                               userName = value;
                             },
                             decoration: InputDecoration(
-                              hintText: 'Enter user name here(optional)',
+                              hintText: 'Enter user name here',
                               prefixIcon: Icon(Icons.person),
                               hintStyle: TextStyle(
                                   color: Theme.of(context).hintColor,
@@ -242,25 +242,25 @@ class _SignUpMobileState extends State<_SignUpMobile> {
                                 .signInWithGoogle()
                                 .then((loginSuccessful) {
                               if (loginSuccessful != null && loginSuccessful) {
-                                this
-                                    .viewModel
-                                    .getUserIsolationLocation()
-                                    .then((onValue) {
-                                  if (onValue != null && onValue) {
-                                    locator<NavigatorService>()
-                                        .navigateToPageWithReplacement(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    LocationSetupView()));
-                                  }
-                                  if (onValue != null && !onValue) {
-                                    locator<NavigatorService>()
-                                        .navigateToPageWithReplacement(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    MyLeaderboardView()));
-                                  }
-                                });
+                                this.viewModel.getUserIsolationLocation();
+                                bool isolationLocationSet =
+                                    this.viewModel.isolationLocationSet;
+                                if (isolationLocationSet != null &&
+                                    !isolationLocationSet) {
+                                  locator<NavigatorService>()
+                                      .navigateToPageWithReplacement(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LocationSetupView()));
+                                }
+                                if (isolationLocationSet != null &&
+                                    isolationLocationSet) {
+                                  locator<NavigatorService>()
+                                      .navigateToPageWithReplacement(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MyLeaderboardView()));
+                                }
                               } else {
                                 _showDialog(this.viewModel.loginError);
                               }

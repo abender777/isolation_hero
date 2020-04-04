@@ -42,14 +42,6 @@ class _MyLeaderboardState extends State<_MyLeaderboardMobile> {
               ),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 20.0),
-                height: 150.0,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: getEvents(context),
-                ),
-              ),              
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 20.0),
                 height: 230.0,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
@@ -91,35 +83,6 @@ class _MyLeaderboardState extends State<_MyLeaderboardMobile> {
         result.add(SizedBox(width: 20));
       }
     }
-    return result;
-  }
-
-  List<Widget> getEvents(BuildContext context) {
-    List<Widget> result = new List<Widget>();
-    if (this.viewModel.totalEvents != null) {
-        result.add(Container(
-            width: 160.0,
-            decoration: BoxDecoration(
-                color: Color.fromRGBO(44, 74, 104, 1),
-                borderRadius: BorderRadius.circular(8)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Text(this.viewModel.totalEvents != null ? this.viewModel.totalEvents.toString() : "0",
-                    style: TextStyle(
-                        color: Colors.amberAccent,
-                        fontFamily: 'Monte',
-                        fontSize: 50)),
-                Text("Total Events",
-                    style: TextStyle(
-                        color: Color.fromRGBO(13, 169, 196, 1),
-                        fontFamily: 'Monte',
-                        fontSize: 30))
-              ],
-            )));
-        result.add(SizedBox(width: 20));
-      }
     return result;
   }
 

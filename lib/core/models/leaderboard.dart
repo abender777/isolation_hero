@@ -1,21 +1,36 @@
 class Leaderboard {
-  String name;
-  String pointsEarned;
-  String rank;
+  int id;
+  int points;
+  int user;
+  int level;
+  String userEmail;
+  String username;
 
-  Leaderboard({this.name, this.pointsEarned, this.rank});
+  Leaderboard(
+      {this.id,
+      this.points,
+      this.user,
+      this.level,
+      this.userEmail,
+      this.username});
 
   Leaderboard.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    pointsEarned = json['points_earned'];
-    rank = json['rank'];
+    id = json['id'];
+    points = json['points'];
+    user = json['user'];
+    level = json['level'];
+    userEmail = json['user_email'];
+    username = json['username'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['points_earned'] = this.pointsEarned;
-    data['rank'] = this.rank;
+    data['id'] = this.id;
+    data['points'] = this.points;
+    data['user'] = this.user;
+    data['level'] = this.level;
+    data['user_email'] = this.userEmail;
+    data['username'] = this.username;
     return data;
   }
 }

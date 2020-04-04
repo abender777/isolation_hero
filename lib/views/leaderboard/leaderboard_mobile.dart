@@ -21,7 +21,7 @@ class _LeaderboardMobileState extends State<_LeaderboardMobile> {
   @override
   void initState() {
     super.initState();
-    this.viewModel.getLearderbords();
+    this.viewModel.getLeaderboard("1");
   }
 
   @override
@@ -47,24 +47,26 @@ class _LeaderboardMobileState extends State<_LeaderboardMobile> {
     if (this.viewModel.leaderboards != null) {
       for (int count = 0; count < this.viewModel.leaderboards.length; count++) {
         result.add(Container(
-          decoration: BoxDecoration(
+            decoration: BoxDecoration(
                 color: Theme.of(context).buttonColor,
                 borderRadius: BorderRadius.circular(8)),
             child: Row(children: <Widget>[
               SizedBox(width: 5),
               Column(children: <Widget>[
-                CircleAvatar(child: Text((count + 1).toString(), overflow: TextOverflow.ellipsis))
+                CircleAvatar(
+                    child: Text((count + 1).toString(),
+                        overflow: TextOverflow.ellipsis))
               ]),
               SizedBox(width: 10),
               Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(this.viewModel.leaderboards[count].name,
+                    Text(this.viewModel.leaderboards[count].username != null ? this.viewModel.leaderboards[count].username : this.viewModel.leaderboards[count].userEmail,
                         style: TextStyle(
                             color: Colors.amberAccent,
                             fontFamily: 'Monte',
                             fontSize: 20)),
-                    Text(this.viewModel.leaderboards[count].pointsEarned,
+                    Text(this.viewModel.leaderboards[count].points.toString(),
                         style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'Monte',

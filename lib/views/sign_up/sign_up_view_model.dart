@@ -47,11 +47,14 @@ class SignUpViewModel extends BaseViewModel {
     );
     final AuthResult authResult = await _auth.signInWithCredential(credential);
     final FirebaseUser user = authResult.user;
-    addLoginInfoInDatabase(user.displayName, user.photoUrl, user.email);
-    return await fetchAndSetUserId(user.email, user.uid);
+    String userName = user.displayName;
+    if(user.displayName != null && user.displayName.contains(" ")){
+      user.displayName.replaceAll(" ", "-");
+    }
+    return await fetchAndSetUserId(userName, user.email, user.uid);
   }
 
-  Future<bool> fetchAndSetUserId(String emailId, String firebaseUserId) async {
+  Future<bool> fetchAndSetUserId(String userName, String emailId, String firebaseUserId) async {
     bool result = false;
     final response =
         await http.get(API_BASE_URL + '/api/checkuserexists/' + emailId);
@@ -69,23 +72,6 @@ class SignUpViewModel extends BaseViewModel {
       }
     }
     return result;
-  }
-
-  void addLoginInfoInDatabase(
-      String displayName, String photoUrl, String email) async {
-    try {
-      if (displayName != null) {
-        insertSetting("DisplayName", displayName);
-      }
-      if (photoUrl != null) {
-        insertSetting("PhotoUrl", photoUrl);
-      }
-      if (email != null) {
-        insertSetting("Email", email);
-      }
-    } catch (e) {
-      print(e);
-    }
   }
 
   void insertSetting(String settingName, Object settingValue) {
@@ -123,7 +109,7 @@ class SignUpViewModel extends BaseViewModel {
 
   Future<bool> login(String email, String password) async {
     bool result = false;
-    var body = {"email": email, "password": password};
+    var body = {"username": email, "password": password};
 
     final response =
         await http.post(API_BASE_URL + '/users/rest-auth/login/', body: body);
@@ -142,7 +128,7 @@ class SignUpViewModel extends BaseViewModel {
 
   Future<bool> register(String userName, String email, String password) async {
     bool result = false;
-    var body = {"email": email, "password1": password, "password2": password};
+    var body = {"username": userName, "email": email, "password1": password, "password2": password};
     final response = await http
         .post(API_BASE_URL + '/users/rest-auth/registration/', body: body);
 
@@ -157,6 +143,9 @@ class SignUpViewModel extends BaseViewModel {
     }
     if (response.statusCode == 400) {
       var error = json.decode(response.body);
+      if (error['username'] != null) {
+        setLoginError = error['username'][0].toString();
+      }
       if (error['email'] != null) {
         setLoginError = error['email'][0].toString();
       }
