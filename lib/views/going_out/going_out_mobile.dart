@@ -63,21 +63,17 @@ class _GoingOutMobileState extends State<_GoingOutMobile> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Row(children: <Widget>[
-                              SizedBox(width: 20),
-                              Text("Reason",
-                                  style: TextStyle(color: Colors.white)),
-                            ]),
-                            SizedBox(height: 10),
-                            Row(children: <Widget>[
                               Container(
                                 padding: EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                     color: Theme.of(context).buttonColor,
-                                    borderRadius: BorderRadius.circular(10)),
+                                    borderRadius: BorderRadius.circular(10),
+                                    ),
                                 width: MediaQuery.of(context).size.width * 0.93,
                                 // dropdown below..
                                 child: new DropdownButton<String>(
-                                  hint: Text("Select Reason"),
+                                  isExpanded: true,
+                                  hint: Text("Select Reason", style: TextStyle(color: Colors.white)),
                                   focusColor: Colors.white,
                                   value: _selectedReason,
                                     items: this
@@ -86,7 +82,7 @@ class _GoingOutMobileState extends State<_GoingOutMobile> {
                                         .map((MovementReason movementReason) {
                                       return new DropdownMenuItem<String>(
                                         value: movementReason.id.toString(),
-                                        child: new Text(movementReason.name),
+                                        child: new Text(movementReason.name, style: TextStyle(color: Colors.white)),
                                       );
                                     }).toList(),
                                     onChanged: (newValue) {
@@ -104,12 +100,6 @@ class _GoingOutMobileState extends State<_GoingOutMobile> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Row(children: <Widget>[
-                              SizedBox(width: 20),
-                              Text("Back In",
-                                  style: TextStyle(color: Colors.white)),
-                            ]),
-                            SizedBox(height: 10),
-                            Row(children: <Widget>[
                               Container(
                                 padding: EdgeInsets.all(10),
                                 decoration: BoxDecoration(
@@ -118,6 +108,7 @@ class _GoingOutMobileState extends State<_GoingOutMobile> {
                                 width: MediaQuery.of(context).size.width * 0.93,
                                 // dropdown below..
                                 child: new DropdownButton<String>(
+                                    isExpanded: true,
                                     hint: Text("Back In"),
                                     value: _selectedTime,
                                     items: this
@@ -127,7 +118,7 @@ class _GoingOutMobileState extends State<_GoingOutMobile> {
                                       return new DropdownMenuItem<String>(
                                         value:
                                             backInTime.timeInMinutes.toString(),
-                                        child: new Text(backInTime.name),
+                                        child: new Text(backInTime.name, style: TextStyle(color: Colors.white)),
                                       );
                                     }).toList(),
                                     onChanged: (newValue) {

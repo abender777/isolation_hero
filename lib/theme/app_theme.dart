@@ -11,6 +11,7 @@ final lightTheme = ThemeData(
     fontFamily: 'Monte',
     hintColor: Colors.grey,
     buttonColor: Color.fromRGBO(44, 74, 104, 1),
+    canvasColor: Color.fromRGBO(44, 74, 104, 1),
     buttonTheme: ButtonThemeData(
       buttonColor: Color.fromRGBO(44, 74, 104, 1),
       shape:
