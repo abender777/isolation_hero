@@ -161,7 +161,7 @@ class SignUpViewModel extends BaseViewModel {
     bool result = false;
     SecuredStorage securedStorage = SecuredStorage.instance;
     String userId = await securedStorage.readValue("user_id");
-    var body = {"points": "100", "user": userId, "level": "1"};
+    var body = {"points": "100", "user": userId, "level": "1", "is_active": "1"};
 
     final response =
         await http.post(API_BASE_URL + '/api/userlevelscore/', body: body);

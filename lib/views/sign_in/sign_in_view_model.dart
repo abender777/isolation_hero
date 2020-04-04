@@ -21,7 +21,7 @@ class SignInViewModel extends BaseViewModel {
 
   Future<bool> login(String userName, String email, String password) async {
     bool result = false;
-    var body = {"email": email, "password": password};
+    var body = {"username": email, "password": password};
 
     final response = await http
         .post(API_BASE_URL + '/users/rest-auth/login/',

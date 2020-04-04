@@ -13,7 +13,7 @@
     <application>
         android:name=".Application"
         tools:replace="android:label"
-        android:label="background_fetch_example"
+        android:label="Isolation Hero"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name="io.flutter.embedding.android.FlutterActivity"

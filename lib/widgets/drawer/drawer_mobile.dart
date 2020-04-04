@@ -8,6 +8,7 @@ class _DrawerMobile extends StatefulWidget {
 }
 
 class _DrawerState extends State<_DrawerMobile> {
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
   int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
@@ -22,8 +23,8 @@ class _DrawerState extends State<_DrawerMobile> {
         padding: EdgeInsets.only(top: 30),
         children: <Widget>[
           new Container(
-              child: new DrawerHeader(child:
-              AvatarGlow(
+              child: new DrawerHeader(
+                child: AvatarGlow(
                   endRadius: 60,
                   duration: Duration(seconds: 2),
                   glowColor: Colors.white24,
@@ -41,7 +42,7 @@ class _DrawerState extends State<_DrawerMobile> {
                         radius: 30.0,
                       )),
                 ),
-),
+              ),
               color: Color.fromRGBO(44, 74, 104, 1)),
           new Container(
               color: Color.fromRGBO(44, 74, 104, 1),
@@ -49,14 +50,20 @@ class _DrawerState extends State<_DrawerMobile> {
                 menuItem(1, "My Stats", FontAwesomeIcons.sortNumericUpAlt,
                     MyLeaderboardView()),
                 Divider(color: Colors.white),
+                menuItem(2, "Leaderboard", FontAwesomeIcons.trophy,
+                    LeaderboardView()),
+                Divider(color: Colors.white),
                 menuItem(
-                    2, "Leaderboard", FontAwesomeIcons.trophy, LeaderboardView()),
+                    3, "Going Out", FontAwesomeIcons.running, GoingOutView()),
                 Divider(color: Colors.white),
-                menuItem(3, "Going Out", FontAwesomeIcons.running, GoingOutView()),
+                menuItem(4, "Earn More Points", FontAwesomeIcons.plusCircle,
+                    EarnMorePointsView()),
                 Divider(color: Colors.white),
-                menuItem(3, "Earn More Points", FontAwesomeIcons.plusCircle, EarnMorePointsView()),
+                menuItem(
+                    5, "My Profile", FontAwesomeIcons.user, UserProfileView()),
                 Divider(color: Colors.white),
-                menuItem(3, "My Profile", FontAwesomeIcons.user, UserProfileView())
+                menuItemForLogout(
+                    6, "Logout", FontAwesomeIcons.signOutAlt, SignInView())
               ]))
         ],
       ),
@@ -68,7 +75,10 @@ class _DrawerState extends State<_DrawerMobile> {
     return ListTile(
         title: Text(
           name,
-          style: TextStyle(fontFamily: 'Monte', fontSize: 16, color: Color.fromRGBO(13, 169, 196, 1)),
+          style: TextStyle(
+              fontFamily: 'Monte',
+              fontSize: 16,
+              color: Color.fromRGBO(13, 169, 196, 1)),
         ),
         onTap: () {
           setState(() {
@@ -79,5 +89,39 @@ class _DrawerState extends State<_DrawerMobile> {
         },
         trailing: Icon(icon, color: Colors.amber, size: 20.0),
         selected: _selectedIndex == menuBarNumber);
+  }
+
+  ListTile menuItemForLogout(
+      int menuBarNumber, String name, Object icon, Object action) {
+    return ListTile(
+        title: Text(
+          name,
+          style: TextStyle(
+              fontFamily: 'Monte',
+              fontSize: 16,
+              color: Color.fromRGBO(13, 169, 196, 1)),
+        ),
+        onTap: () {
+          setState(() {
+            _selectedIndex = menuBarNumber;
+          });
+          logout();
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => action));
+        },
+        trailing: Icon(icon, color: Colors.amber, size: 20.0),
+        selected: _selectedIndex == menuBarNumber);
+  }
+
+  void logout() async {
+    try {
+      _googleSignIn.signOut();
+    } on Exception {
+      final response =
+          await http.get(API_BASE_URL + '/users/rest-auth/logout/');
+      if (response.statusCode == 200) {
+        print("Logout done");
+      }
+    }
   }
 }
