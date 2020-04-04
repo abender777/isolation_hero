@@ -237,8 +237,11 @@ class _SignUpMobileState extends State<_SignUpMobile> {
                       children: <Widget>[
                         MaterialButton(
                           onPressed: () {
-                            this.viewModel.signInWithGoogle().then((userId) {
-                              if (userId != null && userId) {
+                            this
+                                .viewModel
+                                .signInWithGoogle()
+                                .then((loginSuccessful) {
+                              if (loginSuccessful != null && loginSuccessful) {
                                 this
                                     .viewModel
                                     .getUserIsolationLocation()
@@ -258,6 +261,8 @@ class _SignUpMobileState extends State<_SignUpMobile> {
                                                     MyLeaderboardView()));
                                   }
                                 });
+                              } else {
+                                _showDialog(this.viewModel.loginError);
                               }
                             });
                           },

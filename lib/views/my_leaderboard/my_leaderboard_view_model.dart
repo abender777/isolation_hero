@@ -6,15 +6,18 @@ import 'package:isolationhero/core/models/daily_stat.dart';
 import 'package:isolationhero/core/models/user_stat.dart';
 import 'package:http/http.dart' as http;
 import 'package:isolationhero/core/services/secure_store.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyLeaderboardViewModel extends BaseViewModel {
   MyLeaderboardViewModel();
 
   List<UserStat> _userStats;
   List<UserDailyStat> _userDailyStats;
+  int _totalEvents;
 
   List<UserStat> get userStats => this._userStats;
   List<UserDailyStat> get userDailyStats => this._userDailyStats;
+  int get totalEvents => this._totalEvents;
 
   set setUserStats(List<UserStat> userStats) {
     this._userStats = userStats;
@@ -23,6 +26,11 @@ class MyLeaderboardViewModel extends BaseViewModel {
 
   set setUserDailyStats(List<UserDailyStat> userDailyStats) {
     this._userDailyStats = userDailyStats;
+    notifyListeners();
+  }
+
+  set setTotalEvents(int totalEvents) {
+    this._totalEvents = totalEvents;
     notifyListeners();
   }
 
@@ -48,6 +56,18 @@ class MyLeaderboardViewModel extends BaseViewModel {
               ? tagObjsJson["level"].toString()
               : "0"));
       setUserStats = learderbordStats;
+    }
+  }
+
+  void getTotalEvents() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Read fetch_events from SharedPreferences
+    List<String> events = [];
+    String json = prefs.getString(EVENTS_KEY);
+    if (json != null) {
+      events = jsonDecode(json).cast<String>();
+      setTotalEvents = events.length;
     }
   }
 

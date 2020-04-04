@@ -57,12 +57,16 @@ class SignUpViewModel extends BaseViewModel {
         await http.get(API_BASE_URL + '/api/checkuserexists/' + emailId);
     if (response.statusCode == 200) {
       if (json.decode(response.body)['user_exists'] == 1) {
-        login(emailId, firebaseUserId);
+        bool loggedIn = await login(emailId, firebaseUserId);
+        if (loggedIn) {
+          result = true;
+        } else {
+          setLoginError = "Error login using your google account";
+        }
       }
       if (json.decode(response.body)['user_exists'] == 0) {
-        register("", emailId, firebaseUserId);
+        result = await register("", emailId, firebaseUserId);
       }
-      result = true;
     }
     return result;
   }
@@ -143,9 +147,13 @@ class SignUpViewModel extends BaseViewModel {
         .post(API_BASE_URL + '/users/rest-auth/registration/', body: body);
 
     if (response.statusCode == 201) {
-      login(email, password);
-      addPoints();
-      result = true;
+      bool loggedIn = await login(email, password);
+      if (loggedIn) {
+        await addPoints();
+        result = true;
+      } else {
+        setLoginError = "Error in login";
+      }
     }
     if (response.statusCode == 400) {
       var error = json.decode(response.body);
