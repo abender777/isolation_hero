@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:background_fetch/background_fetch.dart';
@@ -6,41 +5,23 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:isolationhero/core/locator.dart';
 import 'package:isolationhero/core/models/constants.dart';
+import 'package:isolationhero/core/services/secure_store.dart';
 import 'package:isolationhero/theme/app_theme.dart';
 import 'package:isolationhero/views/introduction/introduction_view.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'core/services/navigator_service.dart';
+import 'package:http/http.dart' as http;
 
 /// This "Headless Task" is run when app is terminated.
 void backgroundFetchHeadlessTask(String taskId) async {
-  print("[BackgroundFetch] Headless event received: $taskId");
-  DateTime timestamp = DateTime.now();
-
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-
-  // Read fetch_events from SharedPreferences
-  List<String> events = [];
-  String json = prefs.getString(EVENTS_KEY);
-  if (json != null) {
-    events = jsonDecode(json).cast<String>();
-  }
-
-  // Add new event.
-  events.insert(0, "$taskId@$timestamp [Headless]");
-  // Persist fetch events in SharedPreferences
-  prefs.setString(EVENTS_KEY, jsonEncode(events));
-
+  saveLocation();
   BackgroundFetch.finish(taskId);
-
-  if (taskId == 'flutter_background_fetch') {
-    BackgroundFetch.scheduleTask(TaskConfig(
-        taskId: "com.transistorsoft.customtask",
-        delay: 5000,
-        periodic: true,
-        forceAlarmManager: true,
-        stopOnTerminate: false,
-        enableHeadless: true));
-  }
+  BackgroundFetch.scheduleTask(TaskConfig(
+      taskId: "com.isolationhero.customtask",
+      delay: 5000,
+      periodic: false,
+      forceAlarmManager: true,
+      stopOnTerminate: false,
+      enableHeadless: true));
 }
 
 void main() async {
@@ -50,14 +31,20 @@ void main() async {
   BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
 }
 
-void saveLocation(
-    List<String> events, String taskId, DateTime timestamp) async {
+void saveLocation() async {
+  SecuredStorage securedStorage = SecuredStorage.instance;
+  final userId = await securedStorage.readValue("user_id");
+
   await Geolocator()
       .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
       .then((onValue) {
     if (onValue != null) {
-      events.insert(0,
-          "$taskId@$timestamp@${onValue.longitude}@${onValue.longitude} [Headless]");
+      var body = {
+        "lattitude": onValue.latitude.toString(),
+        "longitude": onValue.longitude.toString(),
+        "user": userId != null ? userId.toString() : "0"
+      };
+      http.post(API_BASE_URL + '/api/userlocationhistory/', body: body);
     }
   });
 }
@@ -86,9 +73,6 @@ class PlatformEnabledButton extends RaisedButton {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool _enabled = true;
-  int _status = 0;
-  List<DateTime> _events = [];
 
   @override
   void initState() {
@@ -100,41 +84,34 @@ class _MyAppState extends State<MyApp> {
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
     // Configure BackgroundFetch.
-    BackgroundFetch.configure(BackgroundFetchConfig(
-        minimumFetchInterval: 15,
-        stopOnTerminate: false,
-        enableHeadless: true,
-        requiresBatteryNotLow: false,
-        requiresCharging: false,
-        requiresStorageNotLow: false,
-        requiresDeviceIdle: false,
-        requiredNetworkType: NetworkType.NONE
-    ), (String taskId) async {
+    BackgroundFetch.configure(
+        BackgroundFetchConfig(
+            minimumFetchInterval: 15,
+            stopOnTerminate: false,
+            enableHeadless: true,
+            requiresBatteryNotLow: false,
+            requiresCharging: false,
+            requiresStorageNotLow: false,
+            requiresDeviceIdle: false,
+            requiredNetworkType: NetworkType.ANY), (String taskId) async {
       // This is the fetch-event callback.
       print("[BackgroundFetch] Event received $taskId");
-      setState(() {
-        _events.insert(0, new DateTime.now());
-      });
-      // IMPORTANT:  You must signal completion of your task or the OS can punish your app
-      // for taking too long in the background.
+      saveLocation();
       BackgroundFetch.finish(taskId);
     }).then((int status) {
       print('[BackgroundFetch] configure success: $status');
-      setState(() {
-        _status = status;
-      });
     }).catchError((e) {
       print('[BackgroundFetch] configure ERROR: $e');
-      setState(() {
-        _status = e;
-      });
     });
 
-    // Optionally query the current BackgroundFetch status.
-    int status = await BackgroundFetch.status;
-    setState(() {
-      _status = status;
-    });
+    BackgroundFetch.scheduleTask(TaskConfig(
+        taskId: "com.isolationhero.customtask",
+        delay: 10000,
+        periodic: false,
+        forceAlarmManager: true,
+        stopOnTerminate: false,
+        enableHeadless: true
+    ));
 
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
@@ -144,7 +121,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: lightTheme,
