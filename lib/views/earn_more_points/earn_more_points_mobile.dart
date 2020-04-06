@@ -40,9 +40,9 @@ class _EarnMorePointsMobileState extends State<_EarnMorePointsMobile> {
 
     if (this.viewModel.noDataFound != null && this.viewModel.noDataFound) {
       setState(() {
-        Container(
+        body = Container(
             child: Text(
-                "Seems like you have earned all bonus points!! We will add new link soon, Stay connected!! Stay Isolated!! Stay Safe!!"));
+                "Seems like you have earned all bonus points!! We will add new link soon, Stay connected!! Stay Isolated!! Stay Safe!!", style: TextStyle(color: Colors.white)));
       });
     }
     return MasterWidget(

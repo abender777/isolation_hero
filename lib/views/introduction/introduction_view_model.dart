@@ -43,16 +43,14 @@ class IntroductionViewModel extends BaseViewModel {
   Future<bool> verifyToken(String token) async {
     bool result = false;
     var body = {"token": token};
-    print(API_BASE_URL + '/users/api-token-verify/');
-    await http
-        .post(API_BASE_URL + '/users/api-token-verify/', body: body)
-        .then((response) {
+    
+    final response = await http
+        .post(API_BASE_URL + '/users/api-token-verify/', body: body);
       if (response.statusCode == 200) {
         result = true;
       } else {
         result = false;
       }
-    });
     return result;
   }
 

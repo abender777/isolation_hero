@@ -103,7 +103,7 @@ class _MyAppState extends State<MyApp> {
     BackgroundFetch.configure(BackgroundFetchConfig(
         minimumFetchInterval: 15,
         stopOnTerminate: false,
-        enableHeadless: false,
+        enableHeadless: true,
         requiresBatteryNotLow: false,
         requiresCharging: false,
         requiresStorageNotLow: false,

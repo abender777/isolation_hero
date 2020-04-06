@@ -42,6 +42,12 @@ class _IntroductionPageState extends State<_IntroductionMobile> {
 
   @override
   Widget build(BuildContext context) {
+    if (this.viewModel.isTokenValid == null) {
+      setState(() {
+        body = Center(child: CircularProgressIndicator());
+      });
+    }
+
     if (this.viewModel.isTokenValid != null && this.viewModel.isTokenValid) {
       setState(() {
         body = MyLeaderboardView();
@@ -127,7 +133,7 @@ class _IntroductionPageState extends State<_IntroductionMobile> {
           ),
         );
       });
-    } 
+    }
 
     return body;
   }
