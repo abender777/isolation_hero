@@ -68,7 +68,7 @@ class SignUpViewModel extends BaseViewModel {
         }
       }
       if (json.decode(response.body)['user_exists'] == 0) {
-        result = await register("", emailId, firebaseUserId);
+        result = await register(userName, emailId, firebaseUserId);
       }
     }
     return result;
