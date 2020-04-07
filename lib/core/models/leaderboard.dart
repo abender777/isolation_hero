@@ -1,6 +1,6 @@
 class Leaderboard {
   int id;
-  int points;
+  double points;
   int user;
   int level;
   String userEmail;

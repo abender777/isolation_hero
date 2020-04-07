@@ -4,7 +4,7 @@ class BonusPointLink {
   String name;
   String description;
   String validTill;
-  int points;
+  double points;
   String createdAt;
   String updatedAt;
 
