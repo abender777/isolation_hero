@@ -7,21 +7,26 @@ class _AdditionalInformationMobile extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _AdditionalInformationState();
+    return _AdditionalInformationState(this.viewModel);
   }
 }
 
 enum Gender { male, female, other, not_to_say }
 
 class _AdditionalInformationState extends State<_AdditionalInformationMobile> {
+  final AdditionalInformationViewModel viewModel;
+  _AdditionalInformationState(this.viewModel);
+
   Widget body;
   Gender _gender;
   List<String> _ageValues;
+  int _selectedGender;
+  int _selectedAge;
 
   @override
   void initState() {
     super.initState();
-    _gender = Gender.male;
+    _gender = Gender.not_to_say;
     _ageValues = List<String>();
     for (int count = 13; count <= 100; count++) {
       _ageValues.add(count.toString());
@@ -48,10 +53,6 @@ class _AdditionalInformationState extends State<_AdditionalInformationMobile> {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Row(children: <Widget>[
-                      SizedBox(width: 20),
-                      Text("Age", style: TextStyle(color: Colors.white)),
-                    ]),
                     SizedBox(height: 10),
                     Row(children: <Widget>[
                       Container(
@@ -59,16 +60,20 @@ class _AdditionalInformationState extends State<_AdditionalInformationMobile> {
                         decoration: BoxDecoration(
                             color: Theme.of(context).buttonColor,
                             borderRadius: BorderRadius.circular(10)),
-                        width: MediaQuery.of(context).size.width * 0.95,
+                        width: MediaQuery.of(context).size.width * 0.93,
                         // dropdown below..
                         child: new DropdownButton<String>(
+                            isExpanded: true,
+                            hint: Text("Age", style: TextStyle(color: Colors.white)),
                             items: _ageValues.map((String value) {
                               return new DropdownMenuItem<String>(
                                 value: value,
-                                child: new Text(value),
+                                child: new Text(value, style: TextStyle(color: Colors.white)),
                               );
                             }).toList(),
-                            onChanged: (_) {}),
+                            onChanged: (newValue) {
+                              _selectedAge = int.parse(newValue);
+                            }),
                       )
                     ])
                   ])),
@@ -83,6 +88,7 @@ class _AdditionalInformationState extends State<_AdditionalInformationMobile> {
                   onChanged: (Gender value) {
                     setState(() {
                       _gender = value;
+                      _selectedGender = 1;
                     });
                   },
                 ),
@@ -96,6 +102,7 @@ class _AdditionalInformationState extends State<_AdditionalInformationMobile> {
                   onChanged: (Gender value) {
                     setState(() {
                       _gender = value;
+                      _selectedGender = 2;
                     });
                   },
                 ),
@@ -109,6 +116,7 @@ class _AdditionalInformationState extends State<_AdditionalInformationMobile> {
                   onChanged: (Gender value) {
                     setState(() {
                       _gender = value;
+                      _selectedGender = 3;
                     });
                   },
                 ),
@@ -122,6 +130,7 @@ class _AdditionalInformationState extends State<_AdditionalInformationMobile> {
                   onChanged: (Gender value) {
                     setState(() {
                       _gender = value;
+                      _selectedGender = 4;
                     });
                   },
                 ),
@@ -134,6 +143,9 @@ class _AdditionalInformationState extends State<_AdditionalInformationMobile> {
               buttonColor: Theme.of(context).buttonColor,
               child: RaisedButton(
                 onPressed: () {
+                  if(_selectedAge!=null && _selectedGender!=null){
+                    this.viewModel.saveUserProfile(_selectedAge.toString(), _selectedGender.toString());
+                  }
                   locator<NavigatorService>().navigateToPageWithReplacement(
                       MaterialPageRoute(
                           builder: (context) => LocationSetupView()));

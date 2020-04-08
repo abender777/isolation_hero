@@ -66,7 +66,7 @@ class _LeaderboardMobileState extends State<_LeaderboardMobile> {
                             color: Colors.amberAccent,
                             fontFamily: 'Monte',
                             fontSize: 20)),
-                    Text(this.viewModel.leaderboards[count].points.toString(),
+                    Text(this.viewModel.leaderboards[count].points.toStringAsFixed(2),
                         style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'Monte',

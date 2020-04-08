@@ -60,7 +60,7 @@ class _MyLeaderboardState extends State<_MyLeaderboardMobile> {
     if (this.viewModel.userStats != null) {
       for (int count = 0; count < this.viewModel.userStats.length; count++) {
         result.add(Container(
-            width: 160.0,
+            padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
                 color: Color.fromRGBO(44, 74, 104, 1),
                 borderRadius: BorderRadius.circular(8)),

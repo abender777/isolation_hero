@@ -34,13 +34,6 @@ class _IntroductionPageState extends State<_IntroductionMobile> {
     );
   }
 
-  Widget _buildImage(String assetName) {
-    return Align(
-      child: Image.asset('assets/$assetName.jpg', width: 350.0),
-      alignment: Alignment.bottomCenter,
-    );
-  }
-
   List<PageViewModel> getInstructionsPages() {
     List<PageViewModel> result = new List<PageViewModel>();
     if (this.viewModel.instructions != null) {
@@ -60,10 +53,15 @@ class _IntroductionPageState extends State<_IntroductionMobile> {
               this.viewModel.instructions[count].imageUrl,
               placeholderBuilder: (BuildContext context) => Container(
                   padding: const EdgeInsets.all(30.0),
-                  child: const CircularProgressIndicator()),
-            ),
+                  height: 50,
+                  width: 50,
+                  child: const CircularProgressIndicator())),
             decoration: pageDecoration));
       }
+    } else {
+      result.add(PageViewModel(
+            title: "",
+            body: ""));
     }
     return result;
   }

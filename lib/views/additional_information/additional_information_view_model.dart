@@ -7,7 +7,7 @@ class AdditionalInformationViewModel extends BaseViewModel {
   AdditionalInformationViewModel();
 
   Future<bool> saveUserProfile(
-      String userName, String age, String gender) async {
+      String age, String gender) async {
     bool result = false;
     SecuredStorage securedStorage = SecuredStorage.instance;
     String userId = await securedStorage.readValue("user_id");
