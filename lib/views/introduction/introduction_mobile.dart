@@ -21,6 +21,7 @@ class _IntroductionPageState extends State<_IntroductionMobile> {
   @override
   void initState() {
     super.initState();
+    this.viewModel.getInstructions();
     this.viewModel.isIntroductionSeenByUser();
     this.viewModel.verifyUserToken();
   }
@@ -38,6 +39,33 @@ class _IntroductionPageState extends State<_IntroductionMobile> {
       child: Image.asset('assets/$assetName.jpg', width: 350.0),
       alignment: Alignment.bottomCenter,
     );
+  }
+
+  List<PageViewModel> getInstructionsPages() {
+    List<PageViewModel> result = new List<PageViewModel>();
+    if (this.viewModel.instructions != null) {
+      const bodyStyle = TextStyle(fontSize: 19.0, color: Colors.white);
+      const pageDecoration = const PageDecoration(
+        titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
+        bodyTextStyle: bodyStyle,
+        descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+        imagePadding: EdgeInsets.zero,
+      );
+
+      for (int count = 0; count < this.viewModel.instructions.length; count++) {
+        result.add(PageViewModel(
+            title: "",
+            body: this.viewModel.instructions[count].description,
+            image: SvgPicture.network(
+              this.viewModel.instructions[count].imageUrl,
+              placeholderBuilder: (BuildContext context) => Container(
+                  padding: const EdgeInsets.all(30.0),
+                  child: const CircularProgressIndicator()),
+            ),
+            decoration: pageDecoration));
+      }
+    }
+    return result;
   }
 
   @override
@@ -60,73 +88,23 @@ class _IntroductionPageState extends State<_IntroductionMobile> {
     }
     if (this.viewModel.isIntroSeen != null && !this.viewModel.isIntroSeen) {
       setState(() {
-        const bodyStyle = TextStyle(fontSize: 19.0);
-        const pageDecoration = const PageDecoration(
-          titleTextStyle:
-              TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
-          bodyTextStyle: bodyStyle,
-          descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-          imagePadding: EdgeInsets.zero,
-        );
-
         body = IntroductionScreen(
           key: introKey,
-          pages: [
-            PageViewModel(
-              title: "Wash your hands",
-              body:
-                  "Regularly and thoroughly clean your hands with an alcohol-based hand rub or wash them with soap and water",
-              image: _buildImage('img1'),
-              decoration: pageDecoration,
-            ),
-            PageViewModel(
-              title: "Maintain social distancing",
-              body:
-                  "Maintain at least 2 metres (3 feet) distance between yourself and anyone else",
-              image: _buildImage('img2'),
-              decoration: pageDecoration,
-            ),
-            PageViewModel(
-              title: "Avoid touching eyes, nose and mouth",
-              body:
-                  "Hands touch many surfaces and can pick up viruses. Once contaminated, hands can transfer the virus to your eyes, nose or mouth",
-              image: _buildImage('img3'),
-              decoration: pageDecoration,
-            ),
-            PageViewModel(
-              title: "Be at home if unwell",
-              body:
-                  "Stay home if you feel unwell. If you have a fever, cough and difficulty breathing, seek medical attention and call in advance. Follow the directions of your local health authority",
-              image: _buildImage('img2'),
-              footer: RaisedButton(
-                onPressed: () {
-                  introKey.currentState?.animateScroll(0);
-                },
-                child: const Text(
-                  'FooButton',
-                  style: TextStyle(color: Colors.white),
-                ),
-                color: Colors.lightBlue,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              decoration: pageDecoration,
-            ),
-          ],
+          pages: getInstructionsPages(),
           onDone: () => _onIntroEnd(context),
           onSkip: () => _onIntroEnd(context),
           showSkipButton: true,
           skipFlex: 0,
           nextFlex: 0,
-          skip: const Text('Skip'),
-          next: const Icon(Icons.arrow_forward),
+          skip: const Text('Skip', style: TextStyle(color: Colors.white)),
+          next: const Icon(Icons.arrow_forward, color: Colors.white),
           done:
-              const Text('Done', style: TextStyle(fontWeight: FontWeight.w600)),
+              const Text('Done', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white)),
           dotsDecorator: const DotsDecorator(
             size: Size(10.0, 10.0),
-            color: Color(0xFFBDBDBD),
+            color: Colors.white,
             activeSize: Size(22.0, 10.0),
+            activeColor: Colors.amber,
             activeShape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(25.0)),
             ),

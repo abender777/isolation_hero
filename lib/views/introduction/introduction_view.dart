@@ -1,5 +1,6 @@
 library introduction_view;
 
+import 'package:flutter_svg/svg.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:isolationhero/views/my_leaderboard/my_leaderboard_view.dart';
 import 'package:isolationhero/views/sign_up/sign_up_view.dart';

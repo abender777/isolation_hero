@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:isolationhero/core/base/base_view_model.dart';
 import 'package:isolationhero/core/models/constants.dart';
+import 'package:isolationhero/core/models/instruction.dart';
 import 'package:isolationhero/core/services/secure_store.dart';
 import 'package:http/http.dart' as http;
 
@@ -60,6 +63,25 @@ class IntroductionViewModel extends BaseViewModel {
     }
     if (introSeen == "1") {
       setIsIntroSeen = true;
+    }
+  }
+
+  List<Instruction> _instructions;
+
+  List<Instruction> get instructions => this._instructions;
+
+  set setInstructions(List<Instruction> instructions) {
+    this._instructions = instructions;
+    notifyListeners();
+  }
+
+  void getInstructions() async {
+    final response = await http.get(API_BASE_URL + '/api/instruction/');
+
+    if (response.statusCode == 200) {
+      var tagObjsJson = json.decode(response.body)['results'] as List;
+      setInstructions =
+          tagObjsJson.map((tagJson) => Instruction.fromJson(tagJson)).toList();
     }
   }
 }
