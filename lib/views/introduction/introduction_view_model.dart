@@ -1,7 +1,5 @@
 import 'package:isolationhero/core/base/base_view_model.dart';
 import 'package:isolationhero/core/models/constants.dart';
-import 'package:isolationhero/core/models/setting.dart';
-import 'package:isolationhero/core/services/database_helper.dart';
 import 'package:isolationhero/core/services/secure_store.dart';
 import 'package:http/http.dart' as http;
 
@@ -26,8 +24,8 @@ class IntroductionViewModel extends BaseViewModel {
 
   void setIntroductionComplete() async {
     try {
-      DatabaseHelper helper = DatabaseHelper.instance;
-      helper.insert(Setting("introduction_viewed_by_user", 1));
+      SecuredStorage securedStorage = SecuredStorage.instance;
+      await securedStorage.insertValue("intro-seen", "1");
     } catch (e) {
       print(e);
     }
@@ -43,37 +41,25 @@ class IntroductionViewModel extends BaseViewModel {
   Future<bool> verifyToken(String token) async {
     bool result = false;
     var body = {"token": token};
-    
-    final response = await http
-        .post(API_BASE_URL + '/users/api-token-verify/', body: body);
-      if (response.statusCode == 200) {
-        result = true;
-      } else {
-        result = false;
-      }
+
+    final response =
+        await http.post(API_BASE_URL + '/users/api-token-verify/', body: body);
+    if (response.statusCode == 200) {
+      result = true;
+    } else {
+      result = false;
+    }
     return result;
   }
 
-  Future<bool> isIntroductionSeenByUser() async {
-    bool result = false;
-    DatabaseHelper helper = DatabaseHelper.instance;
-    await helper.querySetting("introduction_viewed_by_user").then((onValue) {
-      if (onValue != null) {
-        result = onValue.value == 1;
-        setIsIntroSeen = onValue.value == 1;
-      }
-    });
-    return result;
-  }
-
-  bool isUserLoggedIn() {
-    DatabaseHelper helper = DatabaseHelper.instance;
-    helper.querySetting("user_logged_in").then((onValue) {
-      if (onValue != null) {
-        return onValue.value;
-      }
-      return false;
-    });
-    return false;
+  void isIntroductionSeenByUser() async {
+    SecuredStorage securedStorage = SecuredStorage.instance;
+    String introSeen = await securedStorage.readValue("intro-seen");
+    if (introSeen == null || introSeen == "null") {
+      setIsIntroSeen = false;
+    }
+    if (introSeen == "1") {
+      setIsIntroSeen = true;
+    }
   }
 }

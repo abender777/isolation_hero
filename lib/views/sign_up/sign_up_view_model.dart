@@ -5,8 +5,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:isolationhero/core/base/base_view_model.dart';
 import 'package:isolationhero/core/models/auth_user.dart';
 import 'package:isolationhero/core/models/constants.dart';
-import 'package:isolationhero/core/models/setting.dart';
-import 'package:isolationhero/core/services/database_helper.dart';
 import 'package:http/http.dart' as http;
 import 'package:isolationhero/core/services/secure_store.dart';
 
@@ -49,7 +47,7 @@ class SignUpViewModel extends BaseViewModel {
     final FirebaseUser user = authResult.user;
     String userName = user.displayName;
     if(user.displayName != null && user.displayName.contains(" ")){
-      user.displayName.replaceAll(" ", "-");
+      userName = user.displayName.replaceAll(" ", "-");
     }
     return await fetchAndSetUserId(userName, user.email, user.uid);
   }
@@ -74,11 +72,6 @@ class SignUpViewModel extends BaseViewModel {
     return result;
   }
 
-  void insertSetting(String settingName, Object settingValue) {
-    DatabaseHelper helper = DatabaseHelper.instance;
-    Setting settingDisplayName = Setting(settingName, settingValue);
-    helper.insert(settingDisplayName);
-  }
 
   Future<FirebaseUser> handleSignInEmail(String email, String password) async {
     AuthResult result =

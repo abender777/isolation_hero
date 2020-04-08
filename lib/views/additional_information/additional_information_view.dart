@@ -1,11 +1,13 @@
 library additional_information_view;
 
+import 'package:isolationhero/core/locator.dart';
 import 'package:isolationhero/views/location_setup/location_setup_view.dart';
 import 'package:isolationhero/widgets/master/master_widget.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:flutter/material.dart';
 import 'additional_information_view_model.dart';
+import '../../core/services/navigator_service.dart';
 
 part 'additional_information_mobile.dart';
 part 'additional_information_tablet.dart';

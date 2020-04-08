@@ -28,7 +28,7 @@ class _SignUpMobileState extends State<_SignUpMobile> {
       this.viewModel.register(userName, email, password).then((result) {
         if (result != null && result) {
           locator<NavigatorService>().navigateToPageWithReplacement(
-              MaterialPageRoute(builder: (context) => LocationSetupView()));
+              MaterialPageRoute(builder: (context) => AdditionalInformationView()));              
         } else {
           _showDialog(this.viewModel.loginError);
         }

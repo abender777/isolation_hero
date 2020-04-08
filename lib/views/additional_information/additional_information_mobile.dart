@@ -55,8 +55,7 @@ class _AdditionalInformationState extends State<_AdditionalInformationMobile> {
                     SizedBox(height: 10),
                     Row(children: <Widget>[
                       Container(
-                        padding:
-                            EdgeInsets.all(10),
+                        padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                             color: Theme.of(context).buttonColor,
                             borderRadius: BorderRadius.circular(10)),
@@ -135,12 +134,9 @@ class _AdditionalInformationState extends State<_AdditionalInformationMobile> {
               buttonColor: Theme.of(context).buttonColor,
               child: RaisedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LocationSetupView(),
-                    ),
-                  );
+                  locator<NavigatorService>().navigateToPageWithReplacement(
+                      MaterialPageRoute(
+                          builder: (context) => LocationSetupView()));
                 },
                 child:
                     Text('CONTINUE', style: Theme.of(context).textTheme.button),
@@ -154,12 +150,9 @@ class _AdditionalInformationState extends State<_AdditionalInformationMobile> {
                 buttonColor: Theme.of(context).buttonColor,
                 child: RaisedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LocationSetupView(),
-                      ),
-                    );
+                    locator<NavigatorService>().navigateToPageWithReplacement(
+                        MaterialPageRoute(
+                            builder: (context) => LocationSetupView()));
                   },
                   child: Text('NEVER MIND, SKIP THIS STEP',
                       style: Theme.of(context).textTheme.button),

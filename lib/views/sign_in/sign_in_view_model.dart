@@ -16,7 +16,7 @@ class SignInViewModel extends BaseViewModel {
 
   set setLoginError(String loginError) {
     this._loginError = loginError;
-    //notifyListeners();
+    notifyListeners();
   }
 
   Future<bool> login(String userName, String email, String password) async {
