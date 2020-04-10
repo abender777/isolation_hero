@@ -7,10 +7,8 @@ import 'package:isolationhero/core/locator.dart';
 import 'package:isolationhero/core/models/constants.dart';
 import 'package:isolationhero/core/services/secure_store.dart';
 import 'package:isolationhero/theme/app_theme.dart';
-import 'package:isolationhero/views/introduction/introduction_view.dart';
 import 'package:isolationhero/views/pushmessage.dart';
-import 'package:isolationhero/views/sign_up/sign_up_view.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:isolationhero/views/introduction/introduction_view.dart';
 import 'core/services/navigator_service.dart';
 import 'package:http/http.dart' as http;
 
@@ -31,7 +29,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocatorInjector.setupLocator();
   runApp(new MyApp());
- // BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
+  BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
+  PushMessaging().initState();
 }
 
 void saveLocation() async {
@@ -128,6 +127,6 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         theme: lightTheme,
         navigatorKey: locator<NavigatorService>().navigatorKey,
-        home: PushMessagingExample());
+        home: IntroductionView());
   }
 }
