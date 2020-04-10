@@ -1,30 +1,28 @@
 import 'dart:io';
 
-import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:isolationhero/core/locator.dart';
 import 'package:isolationhero/core/models/constants.dart';
 import 'package:isolationhero/core/services/secure_store.dart';
 import 'package:isolationhero/theme/app_theme.dart';
-import 'package:isolationhero/views/pushmessage.dart';
 import 'package:isolationhero/views/introduction/introduction_view.dart';
 import 'core/services/navigator_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:workmanager/workmanager.dart';
 
 /// This "Headless Task" is run when app is terminated.
-void backgroundFetchHeadlessTask(String taskId) async {
-  _saveLocation();
-  BackgroundFetch.finish(taskId);
-  BackgroundFetch.scheduleTask(TaskConfig(
-      taskId: "com.isolationhero.customtask",
-      delay: 5000,
-      periodic: false,
-      forceAlarmManager: true,
-      stopOnTerminate: false,
-      enableHeadless: true));
-}
+// void backgroundFetchHeadlessTask(String taskId) async {
+//   _saveLocation();
+//   BackgroundFetch.finish(taskId);
+//   BackgroundFetch.scheduleTask(TaskConfig(
+//       taskId: "com.isolationhero.customtask",
+//       delay: 5000,
+//       periodic: false,
+//       forceAlarmManager: true,
+//       stopOnTerminate: false,
+//       enableHeadless: true));
+// }
 
 void initWorkManager() {
   Workmanager.executeTask((task, inputData) {
@@ -41,10 +39,11 @@ void main() async {
   Workmanager.registerPeriodicTask(
     "1",
     "firebaseTask",
-    frequency: Duration(minutes: 1),
+    frequency: Duration(minutes: 15),
   );
   runApp(new MyApp());
-  BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
+  _saveLocation();
+  //BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
   //PushMessaging().initState();
 }
 
@@ -94,46 +93,46 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    initPlatformState();
-    BackgroundFetch.start();
+    //initPlatformState();
+    //BackgroundFetch.start();
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    // Configure BackgroundFetch.
-    BackgroundFetch.configure(
-        BackgroundFetchConfig(
-            minimumFetchInterval: 15,
-            stopOnTerminate: false,
-            enableHeadless: true,
-            requiresBatteryNotLow: false,
-            requiresCharging: false,
-            requiresStorageNotLow: false,
-            requiresDeviceIdle: false), (String taskId) async {
-      // This is the fetch-event callback.
-      print("[BackgroundFetch] Event received $taskId");
-      _saveLocation();
-      BackgroundFetch.finish(taskId);
-    }).then((int status) {
-      print('[BackgroundFetch] configure success: $status');
-    }).catchError((e) {
-      print('[BackgroundFetch] configure ERROR: $e');
-    });
+  // Future<void> initPlatformState() async {
+  //   // Configure BackgroundFetch.
+  //   BackgroundFetch.configure(
+  //       BackgroundFetchConfig(
+  //           minimumFetchInterval: 15,
+  //           stopOnTerminate: false,
+  //           enableHeadless: true,
+  //           requiresBatteryNotLow: false,
+  //           requiresCharging: false,
+  //           requiresStorageNotLow: false,
+  //           requiresDeviceIdle: false), (String taskId) async {
+  //     // This is the fetch-event callback.
+  //     print("[BackgroundFetch] Event received $taskId");
+  //     _saveLocation();
+  //     BackgroundFetch.finish(taskId);
+  //   }).then((int status) {
+  //     print('[BackgroundFetch] configure success: $status');
+  //   }).catchError((e) {
+  //     print('[BackgroundFetch] configure ERROR: $e');
+  //   });
 
-    BackgroundFetch.scheduleTask(TaskConfig(
-        taskId: "com.isolationhero.customtask",
-        delay: 10000,
-        periodic: false,
-        forceAlarmManager: true,
-        stopOnTerminate: false,
-        enableHeadless: true
-    ));
+  //   BackgroundFetch.scheduleTask(TaskConfig(
+  //       taskId: "com.isolationhero.customtask",
+  //       delay: 10000,
+  //       periodic: false,
+  //       forceAlarmManager: true,
+  //       stopOnTerminate: false,
+  //       enableHeadless: true
+  //   ));
 
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.
-    if (!mounted) return;
-  }
+  //   if (!mounted) return;
+  // }
 
   @override
   Widget build(BuildContext context) {
