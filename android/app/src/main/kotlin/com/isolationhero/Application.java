@@ -10,8 +10,11 @@ import io.flutter.app.FlutterApplication;
 import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
+import io.flutter.plugin.common.PluginRegistry;
+import io.flutter.plugin.common.PluginRegistry.PluginRegistrantCallback;
+import io.flutter.plugins.firebasemessaging.FlutterFirebaseMessagingService;
 
-public class Application  extends FlutterApplication {
+public class Application  extends FlutterApplication implements PluginRegistrantCallback {
     @Override
     public void onCreate() {
 
@@ -33,7 +36,7 @@ public class Application  extends FlutterApplication {
         */
 
         super.onCreate();
-
+        FlutterFirebaseMessagingService.setPluginRegistrant(this);
         ///
         /// TEST onInitialized callback for custom MethodChannel
         ///
@@ -53,5 +56,9 @@ public class Application  extends FlutterApplication {
         });
         */
 
+    }
+    @Override
+    public void registerWith(PluginRegistry registry) {
+        FirebaseCloudMessagingPluginRegistrant.registerWith(registry);
     }
 }
