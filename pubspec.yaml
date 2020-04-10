@@ -27,6 +27,7 @@ dependencies:
     url_launcher: ^5.4.2
     flutter_svg: ^0.17.4
     firebase_messaging: ^6.0.13
+    workmanager: ^0.2.2
 
 dev_dependencies:
     flutter_test:

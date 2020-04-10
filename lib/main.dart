@@ -11,10 +11,11 @@ import 'package:isolationhero/views/pushmessage.dart';
 import 'package:isolationhero/views/introduction/introduction_view.dart';
 import 'core/services/navigator_service.dart';
 import 'package:http/http.dart' as http;
+import 'package:workmanager/workmanager.dart';
 
 /// This "Headless Task" is run when app is terminated.
 void backgroundFetchHeadlessTask(String taskId) async {
-  saveLocation();
+  _saveLocation();
   BackgroundFetch.finish(taskId);
   BackgroundFetch.scheduleTask(TaskConfig(
       taskId: "com.isolationhero.customtask",
@@ -25,15 +26,29 @@ void backgroundFetchHeadlessTask(String taskId) async {
       enableHeadless: true));
 }
 
+void initWorkManager() {
+  Workmanager.executeTask((task, inputData) {
+    _saveLocation(); //simpleTask will be emitted here.
+    print("Native called background task: $task");
+    return Future.value(true);
+  });
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocatorInjector.setupLocator();
+  Workmanager.initialize(initWorkManager);
+  Workmanager.registerPeriodicTask(
+    "1",
+    "firebaseTask",
+    frequency: Duration(minutes: 1),
+  );
   runApp(new MyApp());
   BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
-  PushMessaging().initState();
+  //PushMessaging().initState();
 }
 
-void saveLocation() async {
+void _saveLocation() async {
   SecuredStorage securedStorage = SecuredStorage.instance;
   final userId = await securedStorage.readValue("user_id");
 
@@ -94,11 +109,10 @@ class _MyAppState extends State<MyApp> {
             requiresBatteryNotLow: false,
             requiresCharging: false,
             requiresStorageNotLow: false,
-            requiresDeviceIdle: false,
-            requiredNetworkType: NetworkType.ANY), (String taskId) async {
+            requiresDeviceIdle: false), (String taskId) async {
       // This is the fetch-event callback.
       print("[BackgroundFetch] Event received $taskId");
-      saveLocation();
+      _saveLocation();
       BackgroundFetch.finish(taskId);
     }).then((int status) {
       print('[BackgroundFetch] configure success: $status');
