@@ -5,6 +5,8 @@ import 'package:isolationhero/core/models/constants.dart';
 import 'package:isolationhero/core/models/instruction.dart';
 import 'package:isolationhero/core/services/secure_store.dart';
 import 'package:http/http.dart' as http;
+import 'package:isolationhero/core/models/user_location.dart';
+import 'package:geolocator/geolocator.dart';
 
 class IntroductionViewModel extends BaseViewModel {
   IntroductionViewModel();
@@ -84,5 +86,9 @@ class IntroductionViewModel extends BaseViewModel {
       setInstructions =
           tagObjsJson.map((tagJson) => Instruction.fromJson(tagJson)).toList();
     }
+  }
+
+  void getLocation() async {
+    await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
   }
 }
