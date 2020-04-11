@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:isolationhero/core/models/bonus_point_link.dart';
 import 'package:isolationhero/core/models/constants.dart';
 import 'package:isolationhero/core/services/secure_store.dart';
+import 'package:alice/alice.dart';
 
 class EarnMorePointsViewModel extends BaseViewModel {
   EarnMorePointsViewModel();
@@ -26,11 +27,14 @@ class EarnMorePointsViewModel extends BaseViewModel {
   }
 
   void getBonusPointLinks() async {
+    Alice alice = Alice(showNotification: true, darkTheme: true);
     SecuredStorage securedStorage = SecuredStorage.instance;
     String userId = await securedStorage.readValue("user_id");
 
     final response = await http
-        .get(API_BASE_URL + '/api/activebonuspointlink/' + userId + "/");
+        .get(API_BASE_URL + '/api/activebonuspointlink/' + userId + "/").then((response) {
+      alice.onHttpResponse(response);
+    });;
 
     if (response.statusCode == 200) {
       var tagObjsJson = json.decode(response.body) as List;

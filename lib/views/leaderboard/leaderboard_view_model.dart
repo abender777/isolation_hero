@@ -21,7 +21,7 @@ class LeaderboardViewModel extends BaseViewModel {
 
     final response =
         await http.get(API_BASE_URL + '/api/leaderboard/' + level + "/");
-
+    alice.onHttpResponse(response);
     if (response.statusCode == 200) {
       var tagObjsJson = json.decode(response.body)['results'] as List;
       setLearderbords =

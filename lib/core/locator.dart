@@ -16,23 +16,5 @@ class LocatorInjector {
     _log.d('Initializing Navigator Service');
     locator.registerLazySingleton(() => NavigatorService());
   }
-
-  static Future<void> saveLocation() async {
-    SecuredStorage securedStorage = SecuredStorage.instance;
-    final userId = securedStorage.readValue("user_id");
-
-    Position position = await Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    var body = {
-      "lattitude": position.latitude != null
-          ? position.latitude.toString()
-          : "not_received",
-      "longitude": position.longitude != null
-          ? position.longitude.toString()
-          : "not_received",
-      "user": userId != null ? userId.toString() : "33"
-    };
-    http.post(API_BASE_URL + '/api/userlocationhistory/', body: body);
-  }
 }
 

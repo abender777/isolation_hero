@@ -26,7 +26,7 @@ class SignInViewModel extends BaseViewModel {
     final response = await http
         .post(API_BASE_URL + '/users/rest-auth/login/',
             body: body);
-
+    alice.onHttpResponse(response);
       if (response.statusCode == 200) {
         AuthUser authUser = AuthUser.fromJson(json.decode(response.body));
         SecuredStorage securedStorage = SecuredStorage.instance;

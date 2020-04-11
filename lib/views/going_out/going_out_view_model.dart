@@ -30,7 +30,7 @@ class GoingOutViewModel extends BaseViewModel {
 
   void getMovementReasons() async {
     final response = await http.get(API_BASE_URL + '/api/movementreason/');
-
+    alice.onHttpResponse(response);
     if (response.statusCode == 200) {
       var tagObjsJson = json.decode(response.body)['results'] as List;
       setMovementReasons = tagObjsJson
@@ -71,6 +71,7 @@ class GoingOutViewModel extends BaseViewModel {
     await http
         .post(API_BASE_URL + '/api/usermovement/', body: body)
         .then((response) {
+      alice.onHttpResponse(response);
       if (response.statusCode == 201) {
         result = true;
       } else {

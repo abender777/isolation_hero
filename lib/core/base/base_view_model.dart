@@ -1,19 +1,21 @@
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 import '../logger.dart';
+import 'package:alice/alice.dart';
 
 class BaseViewModel extends ChangeNotifier {
   String _title;
   bool _busy;
   Logger log;
   bool _isDisposed = false;
-
+  Alice alice;
   BaseViewModel({
     bool busy = false,
     String title,
   })  : _busy = busy,
       _title = title {
     log = getLogger(title ?? this.runtimeType.toString());
+   alice  = Alice(showNotification: true, darkTheme: true);
   }
 
   bool get busy => this._busy;

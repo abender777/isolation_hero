@@ -16,7 +16,7 @@ class AdditionalInformationViewModel extends BaseViewModel {
 
     final response =
         await http.post(API_BASE_URL + '/api/userprofile/', body: body);
-
+    alice.onHttpResponse(response);
     if (response.statusCode == 201) {
       result = true;
     }

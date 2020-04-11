@@ -40,7 +40,7 @@ class MyLeaderboardViewModel extends BaseViewModel {
 
     final response =
         await http.get(API_BASE_URL + '/api/userscore/' + userId + '/');
-
+    alice.onHttpResponse(response);
     if (response.statusCode == 200) {
       var tagObjsJson = json.decode(response.body);
 
@@ -77,7 +77,7 @@ class MyLeaderboardViewModel extends BaseViewModel {
 
     final response =
         await http.get(API_BASE_URL + '/api/userdailystatlist/' + userId + '/');
-
+    alice.onHttpResponse(response);
     if (response.statusCode == 200) {
       var tagObjsJson = json.decode(response.body)['results'] as List;
       setUserDailyStats = tagObjsJson

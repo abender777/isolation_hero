@@ -10,6 +10,7 @@ import 'package:isolationhero/views/introduction/introduction_view.dart';
 import 'core/services/navigator_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:workmanager/workmanager.dart';
+import 'package:alice/alice.dart';
 
 /// This "Headless Task" is run when app is terminated.
 // void backgroundFetchHeadlessTask(String taskId) async {
@@ -35,12 +36,6 @@ void initWorkManager() {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocatorInjector.setupLocator();
-  Workmanager.initialize(initWorkManager);
-  Workmanager.registerPeriodicTask(
-    "1",
-    "firebaseTask",
-    frequency: Duration(minutes: 15),
-  );
   runApp(new MyApp());
   _saveLocation();
   //BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
@@ -48,6 +43,7 @@ void main() async {
 }
 
 void _saveLocation() async {
+  var alice = Alice(showNotification: true, darkTheme: true);
   SecuredStorage securedStorage = SecuredStorage.instance;
   final userId = await securedStorage.readValue("user_id");
 
@@ -60,7 +56,11 @@ void _saveLocation() async {
         "longitude": onValue.longitude.toString(),
         "user": userId != null ? userId.toString() : "0"
       };
-      http.post(API_BASE_URL + '/api/userlocationhistory/', body: body);
+      http
+          .post(API_BASE_URL + '/api/userlocationhistory/', body: body)
+          .then((response) {
+        alice.onHttpResponse(response);
+      });
     }
   });
 }
@@ -89,12 +89,14 @@ class PlatformEnabledButton extends RaisedButton {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   void initState() {
     super.initState();
-    //initPlatformState();
-    //BackgroundFetch.start();
+    Workmanager.initialize(initWorkManager, isInDebugMode: true);
+    Workmanager.registerPeriodicTask(
+      "1",
+      "firebaseTask",
+    );
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -128,9 +130,9 @@ class _MyAppState extends State<MyApp> {
   //       enableHeadless: true
   //   ));
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
+  // If the widget was removed from the tree while the asynchronous platform
+  // message was in flight, we want to discard the reply rather than calling
+  // setState to update our non-existent appearance.
   //   if (!mounted) return;
   // }
 

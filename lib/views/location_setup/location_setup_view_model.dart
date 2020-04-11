@@ -48,7 +48,7 @@ class LocationSetupViewModel extends BaseViewModel {
             "&lon=" +
             position.longitude.toString() +
             "&zoom=18&addressdetails=1");
-
+    alice.onHttpResponse(response);
     if (response.statusCode == 200) {
       var tagObjJson = json.decode(response.body);
       if (tagObjJson != null) {

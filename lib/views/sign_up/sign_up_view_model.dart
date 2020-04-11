@@ -56,6 +56,7 @@ class SignUpViewModel extends BaseViewModel {
     bool result = false;
     final response =
         await http.get(API_BASE_URL + '/api/checkuserexists/' + emailId);
+    alice.onHttpResponse(response);
     if (response.statusCode == 200) {
       if (json.decode(response.body)['user_exists'] == 1) {
         bool loggedIn = await login(emailId, firebaseUserId);

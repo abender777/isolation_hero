@@ -30,6 +30,7 @@ class _SignInMobileState extends State<_SignInMobile> {
         } else {
           _showDialog(this.viewModel.loginError);
         }
+        Navigator.pop(context);
       });
     }
   }
@@ -161,7 +162,7 @@ class _SignInMobileState extends State<_SignInMobile> {
                         ),
                       ))
                 ]))),
-        Align(
+          Align(
           alignment: FractionalOffset.bottomCenter,
           child: ButtonTheme(
               minWidth: MediaQuery.of(context).size.width,
@@ -169,11 +170,14 @@ class _SignInMobileState extends State<_SignInMobile> {
               buttonColor: Theme.of(context).buttonColor,
               child: RaisedButton(
                 onPressed: () {
+                  setState(() {
+                    body = Center(child: CircularProgressIndicator());
+                  });
                   submit();
                 },
                 child: Text('LOGIN', style: Theme.of(context).textTheme.button),
               )),
-        )
+        ),
       ]);
     });
     return MasterWidget(body: body);

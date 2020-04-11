@@ -47,6 +47,7 @@ class IntroductionViewModel extends BaseViewModel {
 
     final response =
         await http.post(API_BASE_URL + '/users/api-token-verify/', body: body);
+    alice.onHttpResponse(response);
     if (response.statusCode == 200) {
       result = true;
     } else {
