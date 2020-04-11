@@ -30,7 +30,6 @@ class _SignInMobileState extends State<_SignInMobile> {
         } else {
           _showDialog(this.viewModel.loginError);
         }
-        Navigator.pop(context);
       });
     }
   }

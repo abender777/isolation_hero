@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:io';
+import 'dart:isolate';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -9,7 +11,7 @@ import 'package:isolationhero/theme/app_theme.dart';
 import 'package:isolationhero/views/introduction/introduction_view.dart';
 import 'core/services/navigator_service.dart';
 import 'package:http/http.dart' as http;
-import 'package:workmanager/workmanager.dart';
+import 'package:workmanager/workmanager.dart' as workManager;
 import 'package:alice/alice.dart';
 
 /// This "Headless Task" is run when app is terminated.
@@ -24,11 +26,12 @@ import 'package:alice/alice.dart';
 //       stopOnTerminate: false,
 //       enableHeadless: true));
 // }
-
+int counter = 0;
 void initWorkManager() {
-  Workmanager.executeTask((task, inputData) {
+  workManager.Workmanager.executeTask((task, inputData) {
     _saveLocation(); //simpleTask will be emitted here.
-    print("Native called background task: $task");
+     counter = counter++;
+    print("Native called background task: $task, $counter");
     return Future.value(true);
   });
 }
@@ -37,6 +40,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocatorInjector.setupLocator();
   runApp(new MyApp());
+  SecuredStorage securedStorage = SecuredStorage.instance;
+  await securedStorage.insertValue(
+      "histoy_url", API_BASE_URL + '/api/userlocationhistory/');
   _saveLocation();
   //BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
   //PushMessaging().initState();
@@ -46,23 +52,18 @@ void _saveLocation() async {
   var alice = Alice(showNotification: true, darkTheme: true);
   SecuredStorage securedStorage = SecuredStorage.instance;
   final userId = await securedStorage.readValue("user_id");
-
-  await Geolocator()
-      .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-      .then((onValue) {
-    if (onValue != null) {
-      var body = {
-        "lattitude": onValue.latitude.toString(),
-        "longitude": onValue.longitude.toString(),
-        "user": userId != null ? userId.toString() : "0"
-      };
-      http
-          .post(API_BASE_URL + '/api/userlocationhistory/', body: body)
-          .then((response) {
-        alice.onHttpResponse(response);
-      });
-    }
-  });
+  final url = await securedStorage.readValue("histoy_url");
+  Position location = await Geolocator().getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+      locationPermissionLevel: GeolocationPermission.locationAlways);
+    var body = {
+      "lattitude": location != null ? location.latitude.toString() : -37.81384,
+      "longitude": location != null ?  location.longitude.toString() : 144.963028,
+      "user": userId != null ? userId.toString() : "33"
+    };
+    http.post(url, body: body).then((response) {
+      alice.onHttpResponse(response);
+    });
 }
 
 class MyApp extends StatefulWidget {
@@ -89,14 +90,22 @@ class PlatformEnabledButton extends RaisedButton {
 }
 
 class _MyAppState extends State<MyApp> {
+  final String backgroundTaskId = "isolocationtask0";
+  final String backgroundTaskTag = "isolocation";
+
   @override
   void initState() {
+    workManager.Workmanager.initialize(initWorkManager, isInDebugMode: true);
+    workManager.Workmanager.registerPeriodicTask("$backgroundTaskId$counter",
+        "isolocationClientLocationTracking-0$counter",
+        tag: backgroundTaskTag,
+        frequency: Duration(minutes: 15),
+        existingWorkPolicy: workManager.ExistingWorkPolicy.keep,
+        backoffPolicy: workManager.BackoffPolicy.linear,
+        constraints: workManager.Constraints(
+          networkType: workManager.NetworkType.connected,
+        ));
     super.initState();
-    Workmanager.initialize(initWorkManager, isInDebugMode: true);
-    Workmanager.registerPeriodicTask(
-      "1",
-      "firebaseTask",
-    );
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
