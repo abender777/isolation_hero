@@ -25,8 +25,16 @@ class _SignInMobileState extends State<_SignInMobile> {
       _formKey.currentState.save();
       this.viewModel.login("", userNameOrEmail, password).then((result) {
         if (result != null && result) {
-          locator<NavigatorService>().navigateToPageWithReplacement(
-              MaterialPageRoute(builder: (context) => MyLeaderboardView()));
+          this.viewModel.getUserIsolationLocation();
+          bool isolationLocationSet = this.viewModel.isolationLocationSet;
+          if (isolationLocationSet != null && !isolationLocationSet) {
+            locator<NavigatorService>().navigateToPageWithReplacement(
+                MaterialPageRoute(builder: (context) => LocationSetupView()));
+          }
+          if (isolationLocationSet != null && isolationLocationSet) {
+            locator<NavigatorService>().navigateToPageWithReplacement(
+                MaterialPageRoute(builder: (context) => MyLeaderboardView()));
+          }
         } else {
           _showDialog(this.viewModel.loginError);
         }
@@ -72,7 +80,13 @@ class _SignInMobileState extends State<_SignInMobile> {
                       child: Row(children: <Widget>[
                         IconButton(
                             icon: Icon(Icons.arrow_back, color: Colors.white),
-                            onPressed: null),
+                            onPressed: () => {
+                                  locator<NavigatorService>()
+                                      .navigateToPageWithReplacement(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SignUpView()))
+                                }),
                         Text("Sign In",
                             style:
                                 TextStyle(color: Colors.white, fontSize: 30)),
@@ -139,7 +153,7 @@ class _SignInMobileState extends State<_SignInMobile> {
                         },
                         decoration: InputDecoration(
                           hintText: 'Password',
-                          prefixIcon: Icon(FontAwesomeIcons.eye),
+                          prefixIcon: Icon(FontAwesomeIcons.lock),
                           hintStyle: TextStyle(
                               color: Theme.of(context).hintColor,
                               fontFamily: 'Monte'),

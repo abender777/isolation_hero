@@ -36,9 +36,10 @@ class IntroductionViewModel extends BaseViewModel {
 
   void verifyUserToken() async {
     SecuredStorage securedStorage = SecuredStorage.instance;
-    String token = await securedStorage.readValue("token");
-    bool isTokenValid = await verifyToken(token);
-    setIsTokenValid = isTokenValid;
+    String userId = await securedStorage.readValue("user_id");
+    if(userId != null || userId != "null"){
+      setIsTokenValid = true;
+    }
   }
 
   Future<bool> verifyToken(String token) async {

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:isolationhero/core/locator.dart';
-import 'package:workmanager/workmanager.dart';
 
 final Map<String, Item> _items = <String, Item>{};
 

@@ -4,6 +4,7 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:isolationhero/core/models/constants.dart';
+import 'package:isolationhero/core/services/secure_store.dart';
 import 'package:isolationhero/views/earn_more_points/earn_more_points_view.dart';
 import 'package:isolationhero/views/going_out/going_out_view.dart';
 import 'package:isolationhero/views/leaderboard/leaderboard_view.dart';

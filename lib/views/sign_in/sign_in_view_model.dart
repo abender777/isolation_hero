@@ -10,9 +10,16 @@ class SignInViewModel extends BaseViewModel {
 
   SignInViewModel();
 
+  bool _isolationLocationSet;
   String _loginError;
 
+  bool get isolationLocationSet => this._isolationLocationSet;
   String get loginError => this._loginError;
+
+  set setIsolationLocationSet(bool isolationLocationSet) {
+    this._isolationLocationSet = isolationLocationSet;
+    notifyListeners();
+  }
 
   set setLoginError(String loginError) {
     this._loginError = loginError;
@@ -43,4 +50,24 @@ class SignInViewModel extends BaseViewModel {
       }
     return result;
   }
+
+  Future<bool> getUserIsolationLocation() async {
+    bool result = false;
+    SecuredStorage securedStorage = SecuredStorage.instance;
+    String userId = await securedStorage.readValue("user_id");
+
+    final response = await http
+        .get(API_BASE_URL + '/api/isolationlocationbyuser/' + userId + '/');
+
+    if (response.statusCode == 200) {
+      setIsolationLocationSet = true;
+      result = true;
+    }
+    if (response.statusCode == 404) {
+      setIsolationLocationSet = false;
+      result = false;
+    }
+    return result;
+  }
+
 }

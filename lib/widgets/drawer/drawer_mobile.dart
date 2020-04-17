@@ -36,9 +36,7 @@ class _DrawerState extends State<_DrawerMobile> {
                       shape: CircleBorder(),
                       child: CircleAvatar(
                         backgroundColor: Colors.grey[100],
-                        child: FlutterLogo(
-                          size: 30.0,
-                        ),
+                        child: Image(image: ExactAssetImage("assets/ih.png")),
                         radius: 30.0,
                       )),
                 ),
@@ -59,9 +57,9 @@ class _DrawerState extends State<_DrawerMobile> {
                 menuItem(4, "Earn More Points", FontAwesomeIcons.plusCircle,
                     EarnMorePointsView()),
                 Divider(color: Colors.white),
-                menuItem(
-                    5, "My Profile", FontAwesomeIcons.user, UserProfileView()),
-                Divider(color: Colors.white),
+                // menuItem(
+                //     5, "My Profile", FontAwesomeIcons.user, UserProfileView()),
+                // Divider(color: Colors.white),
                 menuItemForLogout(
                     6, "Logout", FontAwesomeIcons.signOutAlt, SignInView())
               ]))
@@ -115,10 +113,14 @@ class _DrawerState extends State<_DrawerMobile> {
 
   void logout() async {
     try {
+        SecuredStorage securedStorage = SecuredStorage.instance;
+        await securedStorage.deleteValue("user_id");
+        await securedStorage.deleteValue("token");
       _googleSignIn.signOut();
     } on Exception {
       final response =
           await http.get(API_BASE_URL + '/users/rest-auth/logout/');
+
       if (response.statusCode == 200) {
         print("Logout done");
       }

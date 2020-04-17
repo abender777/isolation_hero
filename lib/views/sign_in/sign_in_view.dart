@@ -2,7 +2,9 @@ library sign_in_view;
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:isolationhero/core/locator.dart';
+import 'package:isolationhero/views/location_setup/location_setup_view.dart';
 import 'package:isolationhero/views/my_leaderboard/my_leaderboard_view.dart';
+import 'package:isolationhero/views/sign_up/sign_up_view.dart';
 import 'package:isolationhero/widgets/master/master_widget.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:responsive_builder/responsive_builder.dart';

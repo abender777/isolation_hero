@@ -21,9 +21,7 @@ class _LoadingMobile extends StatelessWidget {
           shape: CircleBorder(),
           child: CircleAvatar(
             backgroundColor: Colors.grey[100],
-            child: FlutterLogo(
-              size: 30.0,
-            ),
+            child: Image(image: ExactAssetImage("assets/ih.png")),
             radius: 30.0,
           )),
     )));

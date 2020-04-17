@@ -22,7 +22,6 @@ class _MyLeaderboardState extends State<_MyLeaderboardMobile> {
     super.initState();
     this.viewModel.getUserStats();
     this.viewModel.getUserDailyStats();
-    this.viewModel.getTotalEvents();
   }
 
   @override
