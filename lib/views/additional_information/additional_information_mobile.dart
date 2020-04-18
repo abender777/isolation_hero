@@ -21,7 +21,7 @@ class _AdditionalInformationState extends State<_AdditionalInformationMobile> {
   Gender _gender;
   List<String> _ageValues;
   int _selectedGender;
-  int _selectedAge;
+  String _selectedAge;
 
   @override
   void initState() {
@@ -65,14 +65,18 @@ class _AdditionalInformationState extends State<_AdditionalInformationMobile> {
                         child: new DropdownButton<String>(
                             isExpanded: true,
                             hint: Text("Age", style: TextStyle(color: Colors.white)),
+                            focusColor: Colors.white,
+                            value: _selectedAge,
                             items: _ageValues.map((String value) {
                               return new DropdownMenuItem<String>(
-                                value: value,
+                                value: value.toString(),
                                 child: new Text(value, style: TextStyle(color: Colors.white)),
                               );
                             }).toList(),
                             onChanged: (newValue) {
-                              _selectedAge = int.parse(newValue);
+                              setState(() {
+                                _selectedAge = newValue;
+                              });
                             }),
                       )
                     ])

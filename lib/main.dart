@@ -41,8 +41,7 @@ void _saveLocation() async {
     SecuredStorage securedStorage = SecuredStorage.instance;
     final userId = await securedStorage.readValue("user_id");
     Position location = await Geolocator().getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-        locationPermissionLevel: GeolocationPermission.locationAlways);
+        desiredAccuracy: LocationAccuracy.high);
     var body = {
       "lattitude": location.latitude.toString(),
       "longitude": location.longitude.toString(),
