@@ -4,15 +4,15 @@ import 'dart:io';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart';
 import 'package:isolationhero/core/locator.dart';
 import 'package:isolationhero/core/services/secure_store.dart';
 import 'package:isolationhero/theme/app_theme.dart';
 import 'package:isolationhero/views/introduction/introduction_view.dart';
 import 'package:isolationhero/views/pushmessage.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'core/services/navigator_service.dart';
 import 'package:http/http.dart' as http;
+import 'package:device_info/device_info.dart';
 
 /// This "Headless Task" is run when app is terminated.
 void backgroundFetchHeadlessTask(String taskId) async {
@@ -37,18 +37,23 @@ void main() async {
 }
 
 void _saveLocation() async {
-  if (await Permission.location.request().isGranted) {
     SecuredStorage securedStorage = SecuredStorage.instance;
     final userId = await securedStorage.readValue("user_id");
-    Position location = await Geolocator().getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+    Location location = new Location();
+    PermissionStatus _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+    LocationData locationData = await location.getLocation();
     var body = {
-      "lattitude": location.latitude.toString(),
-      "longitude": location.longitude.toString(),
+      "lattitude": locationData.latitude.toString(),
+      "longitude": locationData.longitude.toString(),
       "user": userId.toString()
     };
     http.post('http://54.212.117.37/api/userlocationhistory/', body: body);
-  }
 }
 
 
@@ -78,8 +83,10 @@ class PlatformEnabledButton extends RaisedButton {
 class _MyAppState extends State<MyApp> {
   int _status;
   void permissionChecker() async {
-    if (await Permission.speech.isPermanentlyDenied) {
-      openAppSettings();
+    Location location = new Location();
+    PermissionStatus _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      await location.requestPermission();
     }
   }
 

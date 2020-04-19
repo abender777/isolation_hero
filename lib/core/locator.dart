@@ -3,7 +3,7 @@ import '../core/services/navigator_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:isolationhero/core/services/secure_store.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart';
 import 'package:isolationhero/core/models/constants.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,8 +21,8 @@ class LocatorInjector {
     SecuredStorage securedStorage = SecuredStorage.instance;
     final userId = securedStorage.readValue("user_id");
 
-    Position position = await Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    Location location = new Location();
+    LocationData position = await location.getLocation();
     var body = {
       "lattitude": position.latitude != null
           ? position.latitude.toString()

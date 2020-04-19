@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart';
 import 'package:isolationhero/core/base/base_view_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:isolationhero/core/models/constants.dart';
@@ -9,15 +9,15 @@ import 'package:isolationhero/core/services/secure_store.dart';
 
 class LocationSetupViewModel extends BaseViewModel {
   LocationSetupViewModel();
-  Position _position;
+  LocationData _position;
   String _address;
   UserLocation _userLocation;
 
-  Position get position => this._position;
+  LocationData get position => this._position;
   String get address => this._address;
   UserLocation get userLocation => this._userLocation;
 
-  set setPosition(Position position) {
+  set setPosition(LocationData position) {
     this._position = position;
     notifyListeners();
   }
@@ -33,15 +33,16 @@ class LocationSetupViewModel extends BaseViewModel {
   }
 
   void getLocation() async {
-    await Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+    Location location = new Location();
+
+    await location.getLocation()
         .then((onValue) {
       setPosition = onValue;
       getLocationName(onValue);
     });
   }
 
-  void getLocationName(Position position) async {
+  void getLocationName(LocationData position) async {
     final response = await http.get(
         "https://nominatim.openstreetmap.org/reverse?format=json&lat=" +
             position.latitude.toString() +
