@@ -178,21 +178,18 @@ class _SignInMobileState extends State<_SignInMobile> {
               SizedBox(
                 height: 50.0,
               ),
+              Divider(),
+              Text("OR sing in using your Google account",
+                  style: TextStyle(color: Colors.white)),
+              SizedBox(
+                height: 20.0,
+              ),
               Column(children: <Widget>[
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       MaterialButton(
                         onPressed: () {
-                          if (this.viewModel.loginDone == null) {
-                            setState(() {
-                              body = CircularProgressIndicator();
-                              _showDialogWithParams(
-                                  "We are logging in, it will take few seconds, please wait",
-                                  "Please Wait!!",
-                                  false);
-                            });
-                          }
                           this
                               .viewModel
                               .signInWithGoogle()
@@ -221,6 +218,16 @@ class _SignInMobileState extends State<_SignInMobile> {
                                   "Login Error!!", true);
                             }
                           });
+
+                          if (this.viewModel.loginDone == null) {
+                            setState(() {
+                              body = CircularProgressIndicator();
+                              _showDialogWithParams(
+                                  "We are logging in, it will take few seconds, please wait",
+                                  "Please Wait!!",
+                                  false);
+                            });
+                          }
                         },
                         color: Colors.white,
                         textColor: Theme.of(context).buttonColor,
