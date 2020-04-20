@@ -1,11 +1,11 @@
 import 'dart:convert';
 
+import 'package:location/location.dart';
 import 'package:isolationhero/core/base/base_view_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:isolationhero/core/models/constants.dart';
 import 'package:isolationhero/core/models/user_location.dart';
 import 'package:isolationhero/core/services/secure_store.dart';
-import 'package:location/location.dart';
 
 class LocationSetupViewModel extends BaseViewModel {
   LocationSetupViewModel();
@@ -35,36 +35,18 @@ class LocationSetupViewModel extends BaseViewModel {
   void getLocation() async {
     Location location = new Location();
 
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-    LocationData _locationData;
-
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        return;
-      }
-    }
-
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        return;
-      }
-    }
-    _locationData = await location.getLocation();
-    setPosition = _locationData;
-    getLocationName(_locationData);
+    await location.getLocation().then((onValue) {
+      setPosition = onValue;
+      getLocationName(onValue);
+    });
   }
 
-  void getLocationName(LocationData location) async {
+  void getLocationName(LocationData position) async {
     final response = await http.get(
         "https://nominatim.openstreetmap.org/reverse?format=json&lat=" +
-            location.latitude.toString() +
+            _position.latitude.toString() +
             "&lon=" +
-            location.longitude.toString() +
+            _position.longitude.toString() +
             "&zoom=18&addressdetails=1");
 
     if (response.statusCode == 200) {
@@ -90,10 +72,19 @@ class LocationSetupViewModel extends BaseViewModel {
       "longitude": userLocation.lon.toString(),
       "city_name": userLocation.address.city != null
           ? userLocation.address.city
-          : userLocation.address.town != null ? userLocation.address.town : userLocation.address.county != null ? userLocation.address.county : "",
-      "state_name": userLocation.address.state != null ? userLocation.address.state : "",
-      "country_name": userLocation.address.country != null ? userLocation.address.country : "",
-      "zip_code": userLocation.address.postcode != null ? userLocation.address.postcode : "",
+          : userLocation.address.town != null
+              ? userLocation.address.town
+              : userLocation.address.county != null
+                  ? userLocation.address.county
+                  : "",
+      "state_name":
+          userLocation.address.state != null ? userLocation.address.state : "",
+      "country_name": userLocation.address.country != null
+          ? userLocation.address.country
+          : "",
+      "zip_code": userLocation.address.postcode != null
+          ? userLocation.address.postcode
+          : "",
       "is_default": "1",
       "user": userId
     };
@@ -130,5 +121,4 @@ class LocationSetupViewModel extends BaseViewModel {
     });
     return result;
   }
-
 }

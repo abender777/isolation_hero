@@ -57,19 +57,15 @@ void _saveLocation() async {
       return;
     }
   }
-
-  _locationData = await location.getLocation();
-
-  SecuredStorage securedStorage = SecuredStorage.instance;
-  final userId = await securedStorage.readValue("user_id");
-//    Position location = await Geolocator().getCurrentPosition(
-//        desiredAccuracy: LocationAccuracy.high);
-  var body = {
-    "lattitude": _locationData.latitude.toString(),
-    "longitude": _locationData.longitude.toString(),
-    "user": userId.toString()
-  };
-  http.post('http://54.212.117.37/api/userlocationhistory/', body: body);
+    SecuredStorage securedStorage = SecuredStorage.instance;
+    final userId = await securedStorage.readValue("user_id");
+    LocationData locationData = await location.getLocation();
+    var body = {
+      "lattitude": locationData.latitude.toString(),
+      "longitude": locationData.longitude.toString(),
+      "user": userId.toString()
+    };
+    http.post('http://54.212.117.37/api/userlocationhistory/', body: body);
 }
 
 class MyApp extends StatefulWidget {
@@ -97,6 +93,14 @@ class PlatformEnabledButton extends RaisedButton {
 
 class _MyAppState extends State<MyApp> {
   int _status;
+
+  void permissionChecker() async {
+    Location location = new Location();
+    PermissionStatus _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      await location.requestPermission();
+    }
+  }
 
   @override
   void initState() {
