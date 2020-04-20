@@ -49,19 +49,19 @@ class _IntroductionPageState extends State<_IntroductionMobile> {
         result.add(PageViewModel(
             title: "",
             body: this.viewModel.instructions[count].description,
-            image: SvgPicture.network(
-              this.viewModel.instructions[count].imageUrl,
-              placeholderBuilder: (BuildContext context) => Container(
-                  padding: const EdgeInsets.all(30.0),
-                  height: 50,
-                  width: 50,
-                  child: const CircularProgressIndicator())),
+            image: this.viewModel.instructions[count].imageUrl.endsWith(".svg")
+                ? SvgPicture.network(
+                    this.viewModel.instructions[count].imageUrl,
+                    placeholderBuilder: (BuildContext context) => Container(
+                        padding: const EdgeInsets.all(30.0),
+                        height: 50,
+                        width: 50,
+                        child: const CircularProgressIndicator()))
+                : Image.network(this.viewModel.instructions[count].imageUrl),
             decoration: pageDecoration));
       }
     } else {
-      result.add(PageViewModel(
-            title: "",
-            body: ""));
+      result.add(PageViewModel(title: "", body: ""));
     }
     return result;
   }
@@ -96,8 +96,9 @@ class _IntroductionPageState extends State<_IntroductionMobile> {
           nextFlex: 0,
           skip: const Text('Skip', style: TextStyle(color: Colors.white)),
           next: const Icon(Icons.arrow_forward, color: Colors.white),
-          done:
-              const Text('Done', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white)),
+          done: const Text('Done',
+              style:
+                  TextStyle(fontWeight: FontWeight.w600, color: Colors.white)),
           dotsDecorator: const DotsDecorator(
             size: Size(10.0, 10.0),
             color: Colors.white,
