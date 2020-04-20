@@ -11,12 +11,19 @@ class IntroductionViewModel extends BaseViewModel {
 
   bool _isTokenValid;
   bool _isIntroSeen;
+  bool _isolationLocationSet;
 
   bool get isTokenValid => this._isTokenValid;
   bool get isIntroSeen => this._isIntroSeen;
+  bool get isolationLocationSet => this._isolationLocationSet;
 
   set setIsTokenValid(bool isTokenValid) {
     this._isTokenValid = isTokenValid;
+    notifyListeners();
+  }
+
+  set setIsolationLocationSet(bool isolationLocationSet) {
+    this._isolationLocationSet = isolationLocationSet;
     notifyListeners();
   }
 
@@ -37,9 +44,32 @@ class IntroductionViewModel extends BaseViewModel {
   void verifyUserToken() async {
     SecuredStorage securedStorage = SecuredStorage.instance;
     String userId = await securedStorage.readValue("user_id");
-    if(userId != null || userId != "null"){
+    if (userId != null || userId != "null") {
       setIsTokenValid = true;
     }
+  }
+
+  Future<bool> getUserIsolationLocation() async {
+    bool result = false;
+    SecuredStorage securedStorage = SecuredStorage.instance;
+    String userId = await securedStorage.readValue("user_id");
+
+    if (userId != null || userId != "null") {
+      final response = await http
+          .get(API_BASE_URL + '/api/isolationlocationbyuser/' + userId + '/');
+
+      if (response.statusCode == 200) {
+        setIsolationLocationSet = true;
+        result = true;
+      }
+      if (response.statusCode == 404) {
+        setIsolationLocationSet = false;
+        result = false;
+      }
+    } else {
+      setIsolationLocationSet = false;
+    }
+    return result;
   }
 
   Future<bool> verifyToken(String token) async {

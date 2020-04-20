@@ -1,9 +1,7 @@
 library location_setup_view;
 
-import 'package:flutter_map/plugin_api.dart';
 import 'package:isolationhero/views/my_leaderboard/my_leaderboard_view.dart';
 import 'package:isolationhero/widgets/master/master_widget.dart';
-import 'package:latlong/latlong.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:flutter/material.dart';

@@ -24,6 +24,7 @@ class _IntroductionPageState extends State<_IntroductionMobile> {
     this.viewModel.getInstructions();
     this.viewModel.isIntroductionSeenByUser();
     this.viewModel.verifyUserToken();
+    this.viewModel.getUserIsolationLocation();
   }
 
   void _onIntroEnd(context) {
@@ -76,7 +77,12 @@ class _IntroductionPageState extends State<_IntroductionMobile> {
 
     if (this.viewModel.isTokenValid != null && this.viewModel.isTokenValid) {
       setState(() {
-        body = MyLeaderboardView();
+        if (this.viewModel.isolationLocationSet != null &&
+            this.viewModel.isolationLocationSet) {
+          body = MyLeaderboardView();
+        } else {
+          body = LocationSetupView();
+        }
       });
     }
     if (this.viewModel.isTokenValid != null && !this.viewModel.isTokenValid) {
