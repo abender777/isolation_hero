@@ -11,31 +11,43 @@ import 'package:isolationhero/core/services/secure_store.dart';
 class SignUpViewModel extends BaseViewModel {
   SignUpViewModel();
 
-  final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   bool _isolationLocationSet;
+  bool _loginDone;
+  String _loginError;
+  bool _startShowingAlert;
 
   bool get isolationLocationSet => this._isolationLocationSet;
+  bool get loginDone => this._loginDone;
+  String get loginError => this._loginError;
+  bool get startShowingAlert => this._startShowingAlert;
 
   set setIsolationLocationSet(bool isolationLocationSet) {
     this._isolationLocationSet = isolationLocationSet;
     notifyListeners();
   }
 
-  String _loginError;
-
-  String get loginError => this._loginError;
+  set setLoginDone(bool loginDone) {
+    this._loginDone = loginDone;
+    notifyListeners();
+  }
 
   set setLoginError(String loginError) {
     this._loginError = loginError;
     notifyListeners();
   }
 
+  set setStartShowingAlert(bool startShowingAlert) {
+    this._startShowingAlert = startShowingAlert;
+    notifyListeners();
+  }
+
   Future<bool> signInWithGoogle() async {
     final GoogleSignInAccount googleSignInAccount =
         await _googleSignIn.signIn();
+    setStartShowingAlert = true;
     final GoogleSignInAuthentication googleSignInAuthentication =
         await googleSignInAccount.authentication;
 
@@ -46,13 +58,21 @@ class SignUpViewModel extends BaseViewModel {
     final AuthResult authResult = await _auth.signInWithCredential(credential);
     final FirebaseUser user = authResult.user;
     String userName = user.displayName;
-    if(user.displayName != null && user.displayName.contains(" ")){
+    if (user.displayName != null && user.displayName.contains(" ")) {
       userName = user.displayName.replaceAll(" ", "-");
     }
-    return await fetchAndSetUserId(userName, user.email, user.uid);
+    bool loginDone = await fetchAndSetUserId(userName, user.email, user.uid);
+    if (loginDone) {
+      await getUserIsolationLocation();
+      setLoginDone = true;
+    } else {
+      setLoginDone = false;
+    }
+    return loginDone;
   }
 
-  Future<bool> fetchAndSetUserId(String userName, String emailId, String firebaseUserId) async {
+  Future<bool> fetchAndSetUserId(
+      String userName, String emailId, String firebaseUserId) async {
     bool result = false;
     final response =
         await http.get(API_BASE_URL + '/api/checkuserexists/' + emailId);
@@ -72,16 +92,15 @@ class SignUpViewModel extends BaseViewModel {
     return result;
   }
 
-
   Future<FirebaseUser> handleSignInEmail(String email, String password) async {
-    AuthResult result =
-        await auth.signInWithEmailAndPassword(email: email, password: password);
+    AuthResult result = await _auth.signInWithEmailAndPassword(
+        email: email, password: password);
     final FirebaseUser user = result.user;
 
     assert(user != null);
     assert(await user.getIdToken() != null);
 
-    final FirebaseUser currentUser = await auth.currentUser();
+    final FirebaseUser currentUser = await _auth.currentUser();
     assert(user.uid == currentUser.uid);
 
     print('signInEmail succeeded: $user');
@@ -90,7 +109,7 @@ class SignUpViewModel extends BaseViewModel {
   }
 
   Future<FirebaseUser> handleSignUp(email, password) async {
-    AuthResult result = await auth.createUserWithEmailAndPassword(
+    AuthResult result = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
     final FirebaseUser user = result.user;
 
@@ -121,7 +140,12 @@ class SignUpViewModel extends BaseViewModel {
 
   Future<bool> register(String userName, String email, String password) async {
     bool result = false;
-    var body = {"username": userName, "email": email, "password1": password, "password2": password};
+    var body = {
+      "username": userName,
+      "email": email,
+      "password1": password,
+      "password2": password
+    };
     final response = await http
         .post(API_BASE_URL + '/users/rest-auth/registration/', body: body);
 
@@ -154,7 +178,12 @@ class SignUpViewModel extends BaseViewModel {
     bool result = false;
     SecuredStorage securedStorage = SecuredStorage.instance;
     String userId = await securedStorage.readValue("user_id");
-    var body = {"points": "100", "user": userId, "level": "1", "is_active": "1"};
+    var body = {
+      "points": "100",
+      "user": userId,
+      "level": "1",
+      "is_active": "1"
+    };
 
     final response =
         await http.post(API_BASE_URL + '/api/userlevelscore/', body: body);

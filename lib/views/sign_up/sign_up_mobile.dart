@@ -28,31 +28,33 @@ class _SignUpMobileState extends State<_SignUpMobile> {
       this.viewModel.register(userName, email, password).then((result) {
         if (result != null && result) {
           locator<NavigatorService>().navigateToPageWithReplacement(
-              MaterialPageRoute(builder: (context) => AdditionalInformationView()));              
+              MaterialPageRoute(
+                  builder: (context) => AdditionalInformationView()));
         } else {
-          _showDialog(this.viewModel.loginError);
+          _showDialog(this.viewModel.loginError, "Login Error!!", true);
         }
       });
     }
   }
 
-  void _showDialog(String message) {
+  void _showDialog(String message, String header, bool showbutton) {
     // flutter defined function
     showDialog(
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Login Error!!"),
+          title: new Text(header),
           content: new Text(message),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
-            new FlatButton(
-              child: new Text("Close"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
+            if (showbutton)
+              new FlatButton(
+                child: new Text("Close"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
           ],
         );
       },
@@ -61,7 +63,6 @@ class _SignUpMobileState extends State<_SignUpMobile> {
 
   @override
   Widget build(BuildContext context) {
-    //return MasterWidget(showDrawer: true, body: body, title: "My Stats");
     setState(() {
       body = Container(
           padding: EdgeInsets.all(5),
@@ -235,24 +236,32 @@ class _SignUpMobileState extends State<_SignUpMobile> {
                       children: <Widget>[
                         MaterialButton(
                           onPressed: () {
+                            if (this.viewModel.loginDone == null) {
+                              setState(() {
+                                body = CircularProgressIndicator();
+                                _showDialog(
+                                    "We are logging in, it will take few seconds, please wait",
+                                    "Please Wait!!",
+                                    false);
+                              });
+                            }
                             this
                                 .viewModel
                                 .signInWithGoogle()
                                 .then((loginSuccessful) {
                               if (loginSuccessful != null && loginSuccessful) {
-                                this.viewModel.getUserIsolationLocation();
-                                bool isolationLocationSet =
-                                    this.viewModel.isolationLocationSet;
-                                if (isolationLocationSet != null &&
-                                    !isolationLocationSet) {
+                                if (this.viewModel.isolationLocationSet !=
+                                        null &&
+                                    !this.viewModel.isolationLocationSet) {
                                   locator<NavigatorService>()
                                       .navigateToPageWithReplacement(
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   LocationSetupView()));
                                 }
-                                if (isolationLocationSet != null &&
-                                    isolationLocationSet) {
+                                if (this.viewModel.isolationLocationSet !=
+                                        null &&
+                                    this.viewModel.isolationLocationSet) {
                                   locator<NavigatorService>()
                                       .navigateToPageWithReplacement(
                                           MaterialPageRoute(
@@ -260,7 +269,10 @@ class _SignUpMobileState extends State<_SignUpMobile> {
                                                   MyLeaderboardView()));
                                 }
                               } else {
-                                _showDialog(this.viewModel.loginError);
+                                Navigator.of(context, rootNavigator: true)
+                                    .pop('dialog');
+                                _showDialog(this.viewModel.loginError,
+                                    "Login Error!!", true);
                               }
                             });
                           },

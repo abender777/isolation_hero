@@ -1,23 +1,23 @@
 import 'dart:convert';
 
-import 'package:geolocator/geolocator.dart';
 import 'package:isolationhero/core/base/base_view_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:isolationhero/core/models/constants.dart';
 import 'package:isolationhero/core/models/user_location.dart';
 import 'package:isolationhero/core/services/secure_store.dart';
+import 'package:location/location.dart';
 
 class LocationSetupViewModel extends BaseViewModel {
   LocationSetupViewModel();
-  Position _position;
+  LocationData _position;
   String _address;
   UserLocation _userLocation;
 
-  Position get position => this._position;
+  LocationData get position => this._position;
   String get address => this._address;
   UserLocation get userLocation => this._userLocation;
 
-  set setPosition(Position position) {
+  set setPosition(LocationData position) {
     this._position = position;
     notifyListeners();
   }
@@ -33,20 +33,38 @@ class LocationSetupViewModel extends BaseViewModel {
   }
 
   void getLocation() async {
-    await Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((onValue) {
-      setPosition = onValue;
-      getLocationName(onValue);
-    });
+    Location location = new Location();
+
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+    _locationData = await location.getLocation();
+    setPosition = _locationData;
+    getLocationName(_locationData);
   }
 
-  void getLocationName(Position position) async {
+  void getLocationName(LocationData location) async {
     final response = await http.get(
         "https://nominatim.openstreetmap.org/reverse?format=json&lat=" +
-            position.latitude.toString() +
+            location.latitude.toString() +
             "&lon=" +
-            position.longitude.toString() +
+            location.longitude.toString() +
             "&zoom=18&addressdetails=1");
 
     if (response.statusCode == 200) {
@@ -72,10 +90,10 @@ class LocationSetupViewModel extends BaseViewModel {
       "longitude": userLocation.lon.toString(),
       "city_name": userLocation.address.city != null
           ? userLocation.address.city
-          : userLocation.address.town,
-      "state_name": userLocation.address.state,
-      "country_name": userLocation.address.country,
-      "zip_code": userLocation.address.postcode,
+          : userLocation.address.town != null ? userLocation.address.town : userLocation.address.county != null ? userLocation.address.county : "",
+      "state_name": userLocation.address.state != null ? userLocation.address.state : "",
+      "country_name": userLocation.address.country != null ? userLocation.address.country : "",
+      "zip_code": userLocation.address.postcode != null ? userLocation.address.postcode : "",
       "is_default": "1",
       "user": userId
     };

@@ -9,6 +9,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 import 'package:flutter/material.dart';
 import 'location_setup_view_model.dart';
 
+
 part 'location_setup_mobile.dart';
 part 'location_setup_tablet.dart';
 part 'location_setup_desktop.dart';

@@ -10,7 +10,6 @@ import 'package:isolationhero/views/going_out/going_out_view.dart';
 import 'package:isolationhero/views/leaderboard/leaderboard_view.dart';
 import 'package:isolationhero/views/my_leaderboard/my_leaderboard_view.dart';
 import 'package:isolationhero/views/sign_in/sign_in_view.dart';
-import 'package:isolationhero/views/user_profile/user_profile_view.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
